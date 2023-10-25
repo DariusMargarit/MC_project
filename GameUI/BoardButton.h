@@ -1,12 +1,13 @@
 #pragma once
 #include <QWidget>
+#include "Position.h"
 
 class BoardButton : public QWidget
 {
 	Q_OBJECT
 
 public:
-	BoardButton(QWidget* parent = nullptr);
+	BoardButton(Position position, QWidget* parent = nullptr);
 	~BoardButton() = default;
 
 protected:
@@ -14,6 +15,6 @@ protected:
 	void paintEvent(QPaintEvent* event) override;
 
 private:
-	
+	Position m_position;
 };
 

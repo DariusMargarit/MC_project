@@ -2,28 +2,26 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-BoardButton::BoardButton(QWidget* parent)
+BoardButton::BoardButton(Position position, QWidget* parent)
+	: m_position(position)
 {
 
 }
 
 void BoardButton::mousePressEvent(QMouseEvent* event)
 {
-
+	qDebug() << m_position.GetX() << m_position.GetY();
 }
 
 void BoardButton::paintEvent(QPaintEvent* event)
 {
 	QWidget::paintEvent(event);
 	QPainter painter(this);
-	int textX = 5;
-	int textY = 5;
-	painter.setRenderHint(QPainter::TextAntialiasing, true);
 	QBrush brush(Qt::black);
-	int centerX = width() / 2;
-	int centerY = height() / 2;
+	
+	QPoint center(width() / 2, height() / 2);
 	int radius = qMin(width(), height()) / 6;
 	painter.setBrush(brush);
-	painter.drawEllipse(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+	painter.drawEllipse(center.x() - radius, center.y() - radius, 2 * radius, 2 * radius);
 	
 }
