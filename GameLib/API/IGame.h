@@ -7,6 +7,5 @@ class IGame {
 	virtual void MakeBridge(Position firstPosition, Position secondPosition) = 0;
 	virtual void RemoveBridge(Position firstPosition, Position secondPosition) = 0;
 
-
 	virtual ~IGame() = default;
 };

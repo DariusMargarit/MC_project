@@ -3,6 +3,7 @@
 #include <QGridLayout>
 
 #include "BoardButton.h"
+#include "Position.h"
 
 class Board : public QWidget
 {

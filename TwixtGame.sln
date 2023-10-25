@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameLib", "GameLib\GameLib.vcxproj", "{46153700-50F6-4CB0-AFA8-C101F849904C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameUI", "GameUI\GameUI.vcxproj", "{5E0F28DE-5DC1-482E-8A47-FF0F14FDF162}"
+	ProjectSection(ProjectDependencies) = postProject
+		{46153700-50F6-4CB0-AFA8-C101F849904C} = {46153700-50F6-4CB0-AFA8-C101F849904C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
