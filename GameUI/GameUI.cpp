@@ -6,7 +6,9 @@ GameUI::GameUI(QWidget *parent)
 {
     ui.setupUi(this);
     QGridLayout* mainGridLayout = new QGridLayout();
-	QWidget* mainWidget = new QWidget();
+    m_board = new Board(10);
+    mainGridLayout->addWidget(m_board);
+    ui.centralWidget->setLayout(mainGridLayout);
 }
 
 GameUI::~GameUI()

@@ -4,6 +4,7 @@
 class BoardButton : public QWidget
 {
 	Q_OBJECT
+
 public:
 	BoardButton(QWidget* parent = nullptr);
 	~BoardButton() = default;
@@ -11,5 +12,8 @@ public:
 protected:
 	void mousePressEvent(QMouseEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
+
+private:
+	
 };
 

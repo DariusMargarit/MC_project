@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 
 #include "ui_GameUI.h"
-#include "BoardButton.h";
+#include "Board.h";
 
 class GameUI : public QMainWindow
 {
@@ -15,4 +15,5 @@ public:
 
 private:
     Ui::GameUIClass ui;
+    Board* m_board;
 };
