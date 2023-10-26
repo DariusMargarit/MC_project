@@ -11,10 +11,9 @@ public:
 	~BoardButton() = default;
 
 protected:
-	void mousePressEvent(QMouseEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 private:
-	Position m_position;
+
 };
 

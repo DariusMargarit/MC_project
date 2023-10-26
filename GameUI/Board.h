@@ -21,6 +21,7 @@ public:
 
 protected:
 	void paintEvent(QPaintEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
 
 private:
 	QLineF GetLineDelimiter(EDirection direction) const;

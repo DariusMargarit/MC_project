@@ -8,20 +8,18 @@ BoardButton::BoardButton(Position position, QWidget* parent)
 
 }
 
-void BoardButton::mousePressEvent(QMouseEvent* event)
-{
-	qDebug() << m_position.GetX() << m_position.GetY();
-}
-
 void BoardButton::paintEvent(QPaintEvent* event)
 {
+
 	QWidget::paintEvent(event);
 	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing, true);
 	QBrush brush(Qt::black);
-	
-	QPoint center(width() / 2, height() / 2);
-	int radius = qMin(width(), height()) / 6;
 	painter.setBrush(brush);
-	painter.drawEllipse(center.x() - radius, center.y() - radius, 2 * radius, 2 * radius);
+
+	QPointF center(width() / 2.0f, height() / 2.0f);
+	float radius = qMin(width(), height()) / 6.0f;
+
+	painter.drawEllipse(center, radius, radius);
 	
 }

@@ -1,4 +1,5 @@
 #include <QPainter>
+#include <QMouseEvent>
 
 #include "Board.h"
 
@@ -50,6 +51,18 @@ void Board::paintEvent(QPaintEvent* event)
 	painter.drawLine(rightLine);
 
 	
+}
+
+void Board::mousePressEvent(QMouseEvent* event)
+{
+	QWidget* selectedWidget = childAt(event->pos());
+	if (qobject_cast<BoardButton*>(selectedWidget))
+	{
+		int index = m_layout->indexOf(selectedWidget);
+		int row, column, rowSpan, columnSpan;
+		m_layout->getItemPosition(index, &row, &column, &rowSpan, &columnSpan);
+		qDebug() << row << column;
+	}
 }
 
 QLineF Board::GetLineDelimiter(EDirection direction) const

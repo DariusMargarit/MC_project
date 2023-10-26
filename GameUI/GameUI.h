@@ -13,6 +13,9 @@ public:
     GameUI(QWidget *parent = nullptr);
     ~GameUI();
 
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
+
 private:
     Ui::GameUIClass ui;
     Board* m_board;
