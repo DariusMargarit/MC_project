@@ -20,7 +20,7 @@ void Board::InitializeButtons(uint32_t size)
 		{
 			if ((row == 0 || row == size - 1) && (column == 0 || column == size - 1))
 				continue;
-			m_buttons[row][column] = new BoardButton(Position(row, column));
+			m_buttons[row][column] = new BoardButton();
 			m_layout->addWidget(m_buttons[row][column], row, column);
 		}
 	}

@@ -2,8 +2,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-BoardButton::BoardButton(Position position, QWidget* parent)
-	: m_position(position)
+BoardButton::BoardButton(QWidget* parent)
 {
 
 }

@@ -4,13 +4,20 @@
 GameUI::GameUI(QWidget *parent)
     : QMainWindow(parent)
 {
-    ui.setupUi(this);
-    QGridLayout* mainGridLayout = new QGridLayout();
-    m_board = new Board(24);
-    mainGridLayout->addWidget(m_board);
-    ui.centralWidget->setLayout(mainGridLayout);
+    m_ui.setupUi(this);
+    m_screens = new QStackedWidget();
+    setCentralWidget(m_screens);
+    m_mainMenuScreen = new MainMenuScreen();
+    m_screens->addWidget(m_mainMenuScreen);
+    m_screens->setCurrentWidget(m_mainMenuScreen);
 }
 
 GameUI::~GameUI()
 {
+
+}
+
+void GameUI::mousePressEvent(QMouseEvent* event)
+{
+  
 }

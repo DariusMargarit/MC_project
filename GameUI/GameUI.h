@@ -1,9 +1,11 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+#include <QStackedWidget>
 
 #include "ui_GameUI.h"
-#include "Board.h";
+#include "MainMenuScreen.h";
+#include "SettingsScreen.h";
+#include "GameScreen.h";
 
 class GameUI : public QMainWindow
 {
@@ -17,6 +19,9 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
 
 private:
-    Ui::GameUIClass ui;
-    Board* m_board;
+    Ui::GameUIClass m_ui;
+    QStackedWidget* m_screens;
+    MainMenuScreen* m_mainMenuScreen;
+    SettingsScreen* m_settingsScreen;
+    GameScreen* m_gameScreen;
 };

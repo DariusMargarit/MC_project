@@ -7,7 +7,7 @@ class BoardButton : public QWidget
 	Q_OBJECT
 
 public:
-	BoardButton(Position position, QWidget* parent = nullptr);
+	BoardButton(QWidget* parent = nullptr);
 	~BoardButton() = default;
 
 protected:

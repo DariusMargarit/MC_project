@@ -107,6 +107,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameScreen.cpp" />
+    <ClCompile Include="MainMenuScreen.cpp" />
+    <ClCompile Include="SettingsScreen.cpp" />
     <QtRcc Include="GameUI.qrc" />
     <QtUic Include="GameUI.ui" />
     <QtMoc Include="GameUI.h" />
@@ -120,6 +123,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="GameScreen.h" />
+    <ClInclude Include="MainMenuScreen.h" />
+    <ClInclude Include="SettingsScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
