@@ -1,4 +1,12 @@
 <RCC>
-    <qresource prefix="GameUI">
+    <qresource prefix="/GameUI">
+        <file>images/presentation.png</file>
+        <file>fonts/Montserrat-Black.ttf</file>
+        <file>fonts/Montserrat-Bold.ttf</file>
+        <file>fonts/Montserrat-Light.ttf</file>
+        <file>fonts/Montserrat-Medium.ttf</file>
+        <file>fonts/Montserrat-Regular.ttf</file>
+        <file>fonts/Montserrat-SemiBold.ttf</file>
+        <file>fonts/Montserrat-Thin.ttf</file>
     </qresource>
 </RCC>

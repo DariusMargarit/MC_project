@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QStackedWidget>
+#include <QMainWindow>
 
-#include "ui_GameUI.h"
 #include "MainMenuScreen.h";
 #include "SettingsScreen.h";
 #include "GameScreen.h";
@@ -19,7 +19,8 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
 
 private:
-    Ui::GameUIClass m_ui;
+    void LoadFonts();
+
     QStackedWidget* m_screens;
     MainMenuScreen* m_mainMenuScreen;
     SettingsScreen* m_settingsScreen;

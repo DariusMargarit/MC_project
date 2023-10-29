@@ -66,6 +66,9 @@
     <Filter Include="Screens\Settings\Source Files\Widgets">
       <UniqueIdentifier>{c33fe520-06fa-4de1-96dd-bd71d126da80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main Files\Utils">
+      <UniqueIdentifier>{9a90bf90-f92d-45b0-9dc2-e1bf68378819}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GameUI.qrc">
@@ -97,6 +100,9 @@
     <ClCompile Include="SettingsScreen.cpp">
       <Filter>Screens\Settings\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileUtils.cpp">
+      <Filter>Main Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -110,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="SettingsScreen.h">
       <Filter>Screens\Settings\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileUtils.h">
+      <Filter>Main Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
