@@ -15,10 +15,15 @@ public:
     GameUI(QWidget *parent = nullptr);
     ~GameUI();
 
+public slots:
+    void OnMainMenuButtonClicked(const EButtonPressed& button);
+
+
 protected:
     void mousePressEvent(QMouseEvent* event) override;
 
 private:
+    void InitializeScreen();
     void LoadFonts();
 
     QStackedWidget* m_screens;

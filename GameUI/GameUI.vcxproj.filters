@@ -103,13 +103,13 @@
     <ClCompile Include="FileUtils.cpp">
       <Filter>Main Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Screens\Main Menu\Header Files\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
       <Filter>Screens\Game\Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuScreen.h">
-      <Filter>Screens\Main Menu\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameScreen.h">
       <Filter>Screens\Game\Header Files</Filter>
@@ -120,6 +120,9 @@
     <ClInclude Include="FileUtils.h">
       <Filter>Main Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Screens\Main Menu\Header Files\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BoardButton.h">
@@ -127,6 +130,9 @@
     </QtMoc>
     <QtMoc Include="GameUI.h">
       <Filter>Main Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MainMenuScreen.h">
+      <Filter>Screens\Main Menu\Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

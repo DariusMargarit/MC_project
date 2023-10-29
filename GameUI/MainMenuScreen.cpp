@@ -1,6 +1,6 @@
 
 #include <QLabel>
-#include <QGraphicsDropShadowEffect>
+#include <QMouseEvent>
 
 #include "MainMenuScreen.h"
 #include "FileUtils.h"
@@ -18,6 +18,16 @@ MainMenuScreen::MainMenuScreen(QWidget* parent)
 	setStyleSheet(stylesheet);
 }
 
+void MainMenuScreen::mousePressEvent(QMouseEvent* event)
+{
+	QWidget* selectedWidget = childAt(event->pos());
+	if (!selectedWidget) return;
+	if (WidgetIs(selectedWidget, "playButton"))
+		emit(Clicked(EButtonPressed::playButton));
+	else if (WidgetIs(selectedWidget, "settingsButton"))
+		emit(Clicked(EButtonPressed::settingsButton));
+}
+
 void MainMenuScreen::InitPage()
 {
 
@@ -31,23 +41,10 @@ void MainMenuScreen::InitPage()
 	mainText->setObjectName("mainText");
 
 
-	QWidget* playButton = new QWidget();
-	InitButton(*playButton, "Play", "Play local with your friends");
+	Button* playButton = new Button("Play", "Play local with your friends", "#466b3a");
 	playButton->setObjectName("playButton");
-	auto playButtonEffect = new QGraphicsDropShadowEffect();
-	playButtonEffect->setXOffset(0);
-	playButtonEffect->setYOffset(8);
-	playButtonEffect->setColor("#466b3a");
-	playButton->setGraphicsEffect(playButtonEffect);
-
-	QWidget* settingsButton = new QWidget();
-	InitButton(*settingsButton, "Settings", "Change the game settings");
+	Button* settingsButton = new Button("Settings", "Change the game settings", "#333230");
 	settingsButton->setObjectName("settingsButton");
-	auto settingsButtonEffect = new QGraphicsDropShadowEffect();
-	settingsButtonEffect->setXOffset(0);
-	settingsButtonEffect->setYOffset(8);
-	settingsButtonEffect->setColor("#333230");
-	settingsButton->setGraphicsEffect(settingsButtonEffect);
 	
 
 	m_layout->addWidget(imageWidget, 0, 0, 4, 1);
@@ -56,26 +53,8 @@ void MainMenuScreen::InitPage()
 	m_layout->addWidget(settingsButton, 3, 1, Qt::AlignCenter);
 }
 
-void MainMenuScreen::InitButton(QWidget& button, const QString& firstLabel, const QString& secondLabel)
+bool MainMenuScreen::WidgetIs(QWidget* widget, QString objectName)
 {
-	QGridLayout* buttonLayout = new QGridLayout();
-
-	QLabel* titleLabel = new QLabel(firstLabel);
-	titleLabel->setObjectName("titleLabel");
-
-	QLabel* descriptionLabel = new QLabel(secondLabel);
-	descriptionLabel->setObjectName("descriptionLabel");
-
-	titleLabel->setScaledContents(true);
-	descriptionLabel->setScaledContents(true);
-
-	buttonLayout->addWidget(titleLabel, 0, 0, Qt::AlignLeft);
-	buttonLayout->addWidget(descriptionLabel, 1, 0, Qt::AlignLeft);
-
-
-	button.setLayout(buttonLayout);
-
-
-
-
+	return widget->parentWidget()->objectName() == objectName || widget->objectName() == objectName;
 }
+
