@@ -6,6 +6,9 @@
 Board::Board(uint32_t size)
 	: m_layout{new QGridLayout()}
 {
+	m_layout->setSpacing(0);
+	m_layout->setContentsMargins(0, 0, 0, 0);
+
 	InitializeButtons(size);
 
 }

@@ -24,6 +24,12 @@ GameUI::~GameUI()
 void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
 {
     qDebug() << (int) button;
+    if (button == EButtonPressed::playButton)
+    {
+        m_gameScreen = new GameScreen();
+        m_screens->addWidget(m_gameScreen);
+        m_screens->setCurrentWidget(m_gameScreen);
+    }
 }
 
 void GameUI::mousePressEvent(QMouseEvent* event)
@@ -39,6 +45,12 @@ void GameUI::InitializeScreen()
 	m_screens->addWidget(m_mainMenuScreen);
 	m_screens->setCurrentWidget(m_mainMenuScreen);
 	setCentralWidget(m_screens);
+
+	m_gameScreen = new GameScreen();
+	m_screens->addWidget(m_gameScreen);
+
+    m_settingsScreen = new SettingsScreen();
+    m_screens->addWidget(m_settingsScreen);
 }
 
 void GameUI::LoadFonts()

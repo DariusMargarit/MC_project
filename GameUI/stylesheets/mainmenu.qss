@@ -1,5 +1,5 @@
 QLabel#imageWidget {
-	margin: 20;
+	margin: 20 0 20 20;
 	border: 10px solid;
 	border-radius: 20px;
 }

@@ -125,14 +125,14 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="BoardButton.h">
-      <Filter>Screens\Game\Header Files\Widgets</Filter>
-    </QtMoc>
     <QtMoc Include="GameUI.h">
       <Filter>Main Files</Filter>
     </QtMoc>
     <QtMoc Include="MainMenuScreen.h">
       <Filter>Screens\Main Menu\Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="BoardButton.h">
+      <Filter>Screens\Game\Header Files\Widgets</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
