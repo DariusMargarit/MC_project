@@ -2,10 +2,14 @@
 #include <vector>
 #include "IColumn.h"
 #include "Bridge.h"
+#include "Position.h"
 
 class Board {
 private:
-	std::vector<IColumn*> m_Columns;
-	std::vector<Bridge*> m_Bridges;
-	// board matrix
+	std::vector<Position*> m_Columns;
+	std::vector<std::pair<Position*, Position*>> m_Bridges;
+	std::vector<std::vector<IColumn*>> matrix;
+
+public:
+	Board();
 };
