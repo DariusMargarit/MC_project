@@ -12,3 +12,7 @@ Board::~Board() {
 		delete matrix[index];
 	}
 }
+
+Board::Board(const Board& otherBoard) {
+
+}

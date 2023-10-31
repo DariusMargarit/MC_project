@@ -2,7 +2,7 @@
 #include <vector>
 #include "IColumn.h"
 #include "Bridge.h"
-#include "Position.h"
+#include "API/Position.h"
 
 class Board {
 private:
@@ -12,5 +12,6 @@ private:
 
 public:
 	Board();
+	Board(const Board&);
 	~Board();
 };
