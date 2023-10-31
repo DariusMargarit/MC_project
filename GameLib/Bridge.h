@@ -9,5 +9,5 @@ enum class EPlayer {
 class Bridge {
 private:
 	EPlayer m_Player;
-	IColumn* m_FirstColumn, m_SecondColumn;
+	IColumn* m_FirstColumn, *m_SecondColumn;
 };
