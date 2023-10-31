@@ -16,6 +16,9 @@ const EPlayer Column::GetPlayer() const
 	return EPlayer();
 }
 
-Column& Column::operator=(const IColumn& otherColumn)
+Column& Column::operator=(const Column& otherColumn)
 {
+	if (this->GetPlayer() != otherColumn.GetPlayer())
+		this->m_Player = otherColumn.GetPlayer();
+	return *this;
 }

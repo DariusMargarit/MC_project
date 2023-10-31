@@ -10,8 +10,7 @@ public:
 	~Column();
 
 	const EPlayer GetPlayer() const;
-
-	Column& operator=(const IColumn&) override;
+	Column& operator=(const Column&);
 private:
 	EPlayer m_Player;
 };
