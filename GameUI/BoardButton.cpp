@@ -33,7 +33,7 @@ void BoardButton::paintEvent(QPaintEvent* event)
 		: painter.setBrush(QBrush(Qt::white));
 
 	QPointF center(width() / 2.0f, height() / 2.0f);
-	float radius = qMin(width(), height()) / 6.0f;
+	float radius = qMin(width(), height()) / 8.0f;
 
 	painter.drawEllipse(center, radius, radius);
 	

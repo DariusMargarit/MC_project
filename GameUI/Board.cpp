@@ -2,14 +2,19 @@
 #include <QMouseEvent>
 
 #include "Board.h"
+#include "FileUtils.h"
 
 Board::Board(uint32_t size)
 	: m_layout{new QGridLayout()}
 {
+	setObjectName("board");
 	m_layout->setSpacing(0);
 	m_layout->setContentsMargins(0, 0, 0, 0);
 
 	InitializeButtons(size);
+	QString stylesheet = FileUtils::StylesheetFileToString("./stylesheets/game.qss");
+	setStyleSheet(stylesheet);
+
 
 }
 
@@ -37,7 +42,7 @@ void Board::paintEvent(QPaintEvent* event)
 	QPen pen;
 
 	pen.setWidth(2);
-	pen.setColor(Qt::red);
+	pen.setColor("#e0ae48");
 	painter.setPen(pen);
 
 	QLineF topLine = GetLineDelimiter(EDirection::top);
@@ -45,7 +50,7 @@ void Board::paintEvent(QPaintEvent* event)
 	painter.drawLine(topLine);
 	painter.drawLine(bottomLine);
 
-	pen.setColor(Qt::black);
+	pen.setColor("#54c49f");
 	painter.setPen(pen);
 
 	QLineF leftLine = GetLineDelimiter(EDirection::left);

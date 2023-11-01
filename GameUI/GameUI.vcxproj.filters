@@ -79,12 +79,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Board.cpp">
-      <Filter>Screens\Game\Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="BoardButton.cpp">
-      <Filter>Screens\Game\Source Files\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="GameUI.cpp">
       <Filter>Main Files</Filter>
     </ClCompile>
@@ -104,7 +98,13 @@
       <Filter>Main Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>Screens\Main Menu\Header Files\Widgets</Filter>
+      <Filter>Screens\Main Menu\Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardButton.cpp">
+      <Filter>Screens\Game\Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Screens\Game\Source Files\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

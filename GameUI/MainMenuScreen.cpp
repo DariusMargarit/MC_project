@@ -9,10 +9,10 @@ MainMenuScreen::MainMenuScreen(QWidget* parent)
 {
 	m_layout = new QGridLayout();
 	InitPage();
-	setLayout(m_layout);
-
 	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSpacing(0);
+	setLayout(m_layout);
+
 
 	auto stylesheet = FileUtils::StylesheetFileToString("stylesheets/mainmenu.qss");
 	setStyleSheet(stylesheet);
@@ -41,9 +41,9 @@ void MainMenuScreen::InitPage()
 	mainText->setObjectName("mainText");
 
 
-	Button* playButton = new Button("Play", "Play local with your friends", "#466b3a");
+	Button* playButton = new Button("Play", "Play local with your friends", "#466b3a", QPixmap(":/GameUI/images/controller.png"), false);
 	playButton->setObjectName("playButton");
-	Button* settingsButton = new Button("Settings", "Change the game settings", "#333230");
+	Button* settingsButton = new Button("Settings", "Change the game settings", "#333230", QPixmap(":/GameUI/images/settings.png"), true);
 	settingsButton->setObjectName("settingsButton");
 	
 
