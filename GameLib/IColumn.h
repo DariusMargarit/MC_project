@@ -1,9 +1,13 @@
 #pragma once
 
+enum class EPlayer {
+	FirstPlayer,
+	SecondPlayer
+};
+
 class IColumn
 {
 public:
-	IColumn() = default;
 	virtual ~IColumn() = default;
-	/*virtual const EPlayer GetPlayer() const = 0;*/
+	virtual const EPlayer& GetPlayer() const = 0;
 };

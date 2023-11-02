@@ -1,10 +1,6 @@
 #pragma once
-#include "IColumn.h"
 
-enum class EPlayer {
-	FirstPlayer,
-	SecondPlayer
-};
+#include "IColumn.h"
 
 class Bridge {
 public:

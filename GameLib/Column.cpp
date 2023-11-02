@@ -11,7 +11,7 @@ Column::Column(const Column& otherColumn)
 Column::~Column()
 {}
 
-const EPlayer Column::GetPlayer() const
+const EPlayer& Column::GetPlayer() const
 {
 	return EPlayer();
 }
