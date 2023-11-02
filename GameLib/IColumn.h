@@ -5,9 +5,8 @@ enum class EPlayer {
 	SecondPlayer
 };
 
-class IColumn
+struct IColumn
 {
-public:
 	virtual ~IColumn() = default;
 	virtual const EPlayer& GetPlayer() const = 0;
 };

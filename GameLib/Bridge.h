@@ -14,5 +14,5 @@ public:
 
 
 private:
-	IColumn* m_FirstColumn, *m_SecondColumn;
+	IColumn* m_firstColumn, *m_secondColumn;
 };

@@ -1,5 +1,9 @@
 #include "Game.h"
 
+Game::~Game()
+{
+}
+
 void Game::PlaceColumn(Position position)
 {
 	m_board.PlaceColumn(position, m_turn);

@@ -1,20 +1,20 @@
 #include "Bridge.h"
 
 Bridge::Bridge(IColumn& firstColumn, IColumn& secondColumn)
-	: m_FirstColumn{&firstColumn}
-	, m_SecondColumn{&secondColumn}
+	: m_firstColumn{&firstColumn}
+	, m_secondColumn{&secondColumn}
 {
 }
 
 
 const IColumn* Bridge::GetFirstColumn() const
 {
-	return m_FirstColumn;
+	return m_firstColumn;
 }
 
 const IColumn* Bridge::GetSecondColumn() const
 {
-	return m_SecondColumn;
+	return m_secondColumn;
 }
 
 

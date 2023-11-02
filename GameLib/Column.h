@@ -14,5 +14,5 @@ public:
 	const EPlayer& GetPlayer() const override;
 
 private:
-	EPlayer m_Player;
+	EPlayer m_player;
 };

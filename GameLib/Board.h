@@ -7,9 +7,9 @@
 
 class Board {
 private:
-	std::vector<Position*> m_Columns;
-	std::vector<std::pair<Position*, Position*>> m_Bridges;
-	std::vector<std::vector<IColumn*>> matrix;
+	std::vector<Position*> m_columns;
+	std::vector<std::pair<Position*, Position*>> m_bridges;
+	std::vector<std::vector<IColumn*>> m_matrix;
 	bool ValidPlaceColumn(Position&) const;
 public:
 	Board();

@@ -13,7 +13,7 @@ public:
 	void PlaceColumn(Position position) override;
 	void MakeBridge(Position firstPosition, Position secondPosition) override;
     void RemoveBridge(Position firstPosition, Position secondPosition) override;
-
+	~Game();
 
 };
 
