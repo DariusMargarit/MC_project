@@ -5,8 +5,14 @@
 class Bridge {
 public:
 	Bridge(IColumn& firstColumn,IColumn& secondColumn);
+	~Bridge() = default;
+
+	const IColumn* GetFirstColumn() const;
+	const IColumn* GetSecondColumn() const;
+
+
+
 
 private:
-	EPlayer m_Player;
 	IColumn* m_FirstColumn, *m_SecondColumn;
 };
