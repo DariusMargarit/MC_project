@@ -13,7 +13,7 @@ Column::~Column()
 
 const EPlayer& Column::GetPlayer() const
 {
-	return EPlayer();
+	return m_Player;
 }
 
 Column& Column::operator=(const Column& otherColumn)
