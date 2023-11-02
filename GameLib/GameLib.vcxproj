@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Column.cpp" />
     <ClCompile Include="Position.cpp" />
   </ItemGroup>
