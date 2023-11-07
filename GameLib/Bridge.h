@@ -10,6 +10,7 @@ public:
 	const IColumn* GetFirstColumn() const;
 	const IColumn* GetSecondColumn() const;
 	Bridge(const Bridge& otherBridge);
+	Bridge& operator=(const Bridge& otherBridge);
 
 
 

@@ -29,6 +29,27 @@ Bridge::Bridge(const Bridge& otherBridge)
 
 }
 
+Bridge& Bridge::operator=(const Bridge& otherBridge)
+{
+	if (this == &otherBridge)
+		return *this;
+
+	if (otherBridge.m_firstColumn)
+		m_firstColumn = otherBridge.m_firstColumn;
+	else 
+		m_firstColumn = nullptr;
+	
+
+	if (otherBridge.m_secondColumn) 
+		m_secondColumn = otherBridge.m_secondColumn;
+	else
+		m_secondColumn = nullptr;
+	
+
+	return *this;
+}
+
+
 
 
 
