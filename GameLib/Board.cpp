@@ -33,5 +33,19 @@ void Board::PlaceColumn(Position& position, const EPlayer& player)
 }
 
 Board::Board(const Board& otherBoard) {
-	// copy constructor
+	for (Position* position : otherBoard.m_columns) {
+		this->m_columns.push_back(position);
+	}
+	for (const auto& bridgePair : otherBoard.m_bridges) {
+		this->	m_bridges.push_back(std::make_pair(bridgePair.first, bridgePair.second));
+		
+	}
+
+	for (const std::vector<IColumn*>& row : otherBoard.m_matrix) {
+		std::vector<IColumn*> newRow;
+		for (IColumn* column : row) {
+			newRow.push_back(column);
+		}
+		this->m_matrix.push_back(newRow);
+	}
 }
