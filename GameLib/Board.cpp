@@ -1,4 +1,6 @@
-#include "Board.h"
+module Board;
+
+import Column;
 
 bool Board::ValidPlaceColumn(Position& position) const
 {
@@ -37,8 +39,8 @@ Board::Board(const Board& otherBoard) {
 		this->m_columns.push_back(position);
 	}
 	for (const auto& bridgePair : otherBoard.m_bridges) {
-		this->	m_bridges.push_back(std::make_pair(bridgePair.first, bridgePair.second));
-		
+		this->m_bridges.push_back(std::make_pair(bridgePair.first, bridgePair.second));
+
 	}
 
 	for (const std::vector<IColumn*>& row : otherBoard.m_matrix) {

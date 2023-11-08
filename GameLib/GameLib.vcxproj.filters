@@ -14,47 +14,45 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\API">
-      <UniqueIdentifier>{54071eec-d028-4c1b-8930-cbbe0e6e31be}</UniqueIdentifier>
+      <UniqueIdentifier>{20b02743-cc1e-4ab3-9e7f-555e7da1c8bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IGame.cppm">
+      <Filter>Header Files\API</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cppm">
+      <Filter>Header Files\API</Filter>
+    </ClCompile>
     <ClCompile Include="Position.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Column.cppm">
+      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Column.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Bridge.cppm">
+      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Bridge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Board.cppm">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cppm">
+      <Filter>Header Files</Filter>
+    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="API\IGame.h">
+    <ClCompile Include="IColumn.cppm">
       <Filter>Header Files\API</Filter>
-    </ClInclude>
-    <ClInclude Include="API\Position.h">
-      <Filter>Header Files\API</Filter>
-    </ClInclude>
-    <ClInclude Include="IColumn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Column.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bridge.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

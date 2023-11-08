@@ -3,7 +3,6 @@
 #include <QGridLayout>
 
 #include "BoardButton.h"
-#include "Position.h"
 
 enum class EDirection
 {

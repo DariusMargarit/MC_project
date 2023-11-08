@@ -1,4 +1,4 @@
-#include "Game.h"
+module Game;
 
 Game::~Game()
 {
@@ -11,7 +11,7 @@ void Game::PlaceColumn(Position position)
 
 void Game::MakeBridge(Position firstPosition, Position secondPosition)
 {
-	
+
 }
 
 void Game::RemoveBridge(Position firstPosition, Position secondPosition)

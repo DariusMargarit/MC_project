@@ -1,8 +1,8 @@
 #pragma once
+
 #include <QWidget>
 #include <QEvent>
 
-#include "Position.h"
 
 class BoardButton : public QWidget
 {

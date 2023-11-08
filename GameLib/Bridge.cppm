@@ -1,10 +1,10 @@
-#pragma once
+export module Bridge;
 
-#include "IColumn.h"
+export import IColumn;
 
-class Bridge {
+export class Bridge {
 public:
-	Bridge(IColumn& firstColumn,IColumn& secondColumn);
+	Bridge(IColumn& firstColumn, IColumn& secondColumn);
 	~Bridge() = default;
 
 	const IColumn* GetFirstColumn() const;
@@ -15,5 +15,5 @@ public:
 
 
 private:
-	IColumn* m_firstColumn, *m_secondColumn;
+	IColumn* m_firstColumn, * m_secondColumn;
 };

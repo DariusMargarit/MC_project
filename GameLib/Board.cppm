@@ -1,11 +1,12 @@
-#pragma once
-#include <vector>
-#include "IColumn.h"
-#include "Bridge.h"
-#include "API/Position.h"
-#include "Column.h"
+export module Board;
 
-class Board {
+import <vector>;
+
+export import Position;
+export import IColumn;
+export import Bridge;
+
+export class Board {
 private:
 	std::vector<Position*> m_columns;
 	std::vector<std::pair<Position*, Position*>> m_bridges;

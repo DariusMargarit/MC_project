@@ -1,11 +1,11 @@
-#pragma once
+export module IColumn;
 
-enum class EPlayer {
+export enum class _declspec(dllexport) EPlayer {
 	FirstPlayer,
 	SecondPlayer
 };
 
-struct IColumn
+export struct _declspec(dllexport) IColumn
 {
 	virtual ~IColumn() = default;
 	virtual const EPlayer& GetPlayer() const = 0;

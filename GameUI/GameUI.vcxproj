@@ -66,21 +66,39 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../GameLib/API;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>GameLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../x64/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
+    <QtMoc>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </QtMoc>
+    <QtRcc>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../GameLib/API;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>GameLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../x64/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
+    <QtMoc>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </QtMoc>
+    <QtRcc>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -113,7 +131,6 @@
     <ClCompile Include="MainMenuScreen.cpp" />
     <ClCompile Include="SettingsScreen.cpp" />
     <QtRcc Include="GameUI.qrc" />
-    <QtUic Include="GameUI.ui" />
     <QtMoc Include="GameUI.h" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardButton.cpp" />
@@ -130,6 +147,11 @@
     <ClInclude Include="GameScreen.h" />
     <QtMoc Include="MainMenuScreen.h" />
     <ClInclude Include="SettingsScreen.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameLib\GameLib.vcxproj">
+      <Project>{46153700-50f6-4cb0-afa8-c101f849904c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

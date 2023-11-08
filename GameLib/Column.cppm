@@ -1,8 +1,8 @@
-#pragma once
-#include"IColumn.h"
+export module Column;
 
+export import IColumn;
 
-class Column : public IColumn
+export class Column : public IColumn
 {
 public:
 	Column(const EPlayer&);

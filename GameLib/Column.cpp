@@ -1,11 +1,11 @@
-#include "Column.h"
+module Column;
 
 Column::Column(const EPlayer& Player)
-	:m_player{Player}
+	:m_player{ Player }
 {}
 
 Column::Column(const Column& otherColumn)
-	:m_player{otherColumn.GetPlayer()}
+	:m_player{ otherColumn.GetPlayer() }
 {}
 
 Column::~Column()
