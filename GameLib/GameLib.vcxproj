@@ -155,10 +155,10 @@
     <ClCompile Include="Column.cppm" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game.cppm" />
-    <ClCompile Include="IColumn.cppm" />
-    <ClCompile Include="IGame.cppm" />
+    <ClCompile Include="IColumn.h" />
+    <ClCompile Include="IGame.h" />
     <ClCompile Include="Position.cpp" />
-    <ClCompile Include="Position.cppm" />
+    <ClCompile Include="Position.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

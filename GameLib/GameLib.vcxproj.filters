@@ -18,10 +18,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IGame.cppm">
+    <ClCompile Include="IGame.h">
       <Filter>Header Files\API</Filter>
     </ClCompile>
-    <ClCompile Include="Position.cppm">
+    <ClCompile Include="Position.h">
       <Filter>Header Files\API</Filter>
     </ClCompile>
     <ClCompile Include="Position.cpp">
@@ -51,7 +51,7 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IColumn.cppm">
+    <ClCompile Include="IColumn.h">
       <Filter>Header Files\API</Filter>
     </ClCompile>
   </ItemGroup>

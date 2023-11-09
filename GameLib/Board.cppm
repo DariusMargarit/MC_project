@@ -2,8 +2,8 @@ export module Board;
 
 import <vector>;
 
-export import Position;
-export import IColumn;
+export import "Position.h";
+export import "IColumn.h";
 export import Bridge;
 
 export class Board {

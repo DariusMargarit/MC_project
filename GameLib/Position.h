@@ -1,10 +1,8 @@
-module;
+#pragma once
 
 #include <cstdint>
 
-export module Position;
-
-export class _declspec(dllexport) Position
+class _declspec(dllexport) Position
 {
 public:
 	Position(uint16_t x, uint16_t y);

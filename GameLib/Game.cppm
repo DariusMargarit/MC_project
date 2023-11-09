@@ -1,7 +1,8 @@
 export module Game;
 
-export import IGame;
+export import "IGame.h";
 export import Board;
+
 
 export class Game : public IGame {
 private:
@@ -17,4 +18,8 @@ public:
 	~Game();
 
 };
+
+export IGame* IGame::Produce() {
+	return new Game();
+}
 

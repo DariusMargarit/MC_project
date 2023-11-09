@@ -9,7 +9,6 @@ GameUI::GameUI(QWidget *parent)
     : QMainWindow(parent)
 {
     resize(1100, 600);
-    LoadFonts();
 	QString stylesheet = FileUtils::StylesheetFileToString("stylesheets/default.qss");
 	setStyleSheet(stylesheet);
 

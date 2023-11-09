@@ -1,6 +1,6 @@
 export module Column;
 
-export import IColumn;
+export import "IColumn.h";
 
 export class Column : public IColumn
 {

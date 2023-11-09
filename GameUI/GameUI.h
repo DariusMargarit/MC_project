@@ -7,6 +7,9 @@
 #include "SettingsScreen.h";
 #include "GameScreen.h";
 
+#include "../GameLib/IGame.h"
+
+
 class GameUI : public QMainWindow
 {
     Q_OBJECT

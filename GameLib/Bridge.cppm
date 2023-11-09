@@ -1,6 +1,6 @@
 export module Bridge;
 
-export import IColumn;
+export import "IColumn.h";
 
 export class Bridge {
 public:
