@@ -157,6 +157,8 @@
     <ClCompile Include="Game.cppm" />
     <ClCompile Include="IColumn.h" />
     <ClCompile Include="IGame.h" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player.cppm" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Position.h" />
   </ItemGroup>
