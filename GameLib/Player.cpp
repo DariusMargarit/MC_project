@@ -55,3 +55,8 @@ std::string_view Player::GetName() const
 {
 	return m_name;
 }
+
+IPlayer* IPlayer ::Produce(std::string_view name, std::string_view color)
+{
+	return new Player(name, color);
+}

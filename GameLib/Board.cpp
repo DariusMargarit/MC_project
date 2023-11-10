@@ -2,16 +2,22 @@ module Board;
 
 import Column;
 
-
-bool Board::ValidPlaceColumn(Position& position) const
+Board::Board(uint16_t size)
+	: m_matrix{size, std::vector<IColumn*>(size, nullptr)}
 {
-	if (std::find(m_columns.begin(), m_columns.end(), &position) != m_columns.end()) {
-		return true;
-	}
-	return false;
+
 }
 
-bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
+bool Board::ValidPlaceColumn(Position position) const
+{
+	if (std::find(m_columns.begin(), m_columns.end(), &position) != m_columns.end()) 
+	{
+		return false;
+	}
+	return true;
+}
+
+bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 {
 	int absValueX = abs(firstPosition.GetX() - secondPosition.GetX());
 	int absValueY = abs(firstPosition.GetY() - secondPosition.GetY());
@@ -33,6 +39,11 @@ Board::~Board() {
 			delete m_matrix[index1][index2];
 		}
 	}
+}
+
+IColumn* Board::GetElement(Position position) const
+{
+	return m_matrix[position.GetX()][position.GetY()];
 }
 
 void Board::PlaceColumn(Position& position, IPlayer* player)

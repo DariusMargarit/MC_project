@@ -7,9 +7,10 @@ export import Board;
 export class Game : public IGame
 {
 public:
-	Game(IPlayer* player1, IPlayer* player2);
+	Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize);
 
 	IPlayer* GetTurn() const override;
+	IBoard* GetBoard() const override;
 
 	void PlaceColumn(Position position) override;
 	void MakeBridge(Position firstPosition, Position secondPosition) override;
@@ -21,7 +22,7 @@ private:
 	void ChangeTurn();
 
 private:
-	Board m_board;
+	Board* m_board;
 	uint16_t m_columnSize;
 	IPlayer* m_player1, *m_player2, *m_turn;
 };
