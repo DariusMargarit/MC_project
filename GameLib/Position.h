@@ -14,6 +14,5 @@ public:
 
 private:
 	uint16_t m_x, m_y;
-
 };
 

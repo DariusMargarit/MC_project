@@ -1,12 +1,10 @@
 #pragma once
 
-enum class _declspec(dllexport) EPlayer {
-	FirstPlayer,
-	SecondPlayer
-};
+#include "IPlayer.h"
 
 struct _declspec(dllexport) IColumn
 {
+	virtual IPlayer* GetPlayer() const = 0;
+
 	virtual ~IColumn() = default;
-	virtual const EPlayer& GetPlayer() const = 0;
 };

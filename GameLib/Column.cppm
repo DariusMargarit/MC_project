@@ -5,14 +5,13 @@ export import "IColumn.h";
 export class Column : public IColumn
 {
 public:
-	Column(const EPlayer&);
-	Column(const Column&);
-	~Column();
+	Column(IPlayer* player);
+	Column(const Column& other);
 
 	Column& operator=(const Column&);
 
-	const EPlayer& GetPlayer() const override;
+	IPlayer* GetPlayer() const override;
 
 private:
-	EPlayer m_player;
+	IPlayer* m_player;
 };

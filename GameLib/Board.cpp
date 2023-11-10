@@ -2,6 +2,7 @@ module Board;
 
 import Column;
 
+
 bool Board::ValidPlaceColumn(Position& position) const
 {
 	if (std::find(m_columns.begin(), m_columns.end(), &position) != m_columns.end()) {
@@ -23,10 +24,6 @@ bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
 	return false;
 }
 
-Board::Board() {
-
-}
-
 Board::~Board() {
 	for (int index = 0; index < m_columns.size(); index++) {
 		delete m_columns[index];
@@ -38,7 +35,7 @@ Board::~Board() {
 	}
 }
 
-void Board::PlaceColumn(Position& position, const EPlayer& player)
+void Board::PlaceColumn(Position& position, IPlayer* player)
 {
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn = new Column(player);
@@ -47,7 +44,7 @@ void Board::PlaceColumn(Position& position, const EPlayer& player)
 	}
 }
 
-void Board::MakeBridge(Position& firstPosition, Position& secondPosition, const EPlayer& player)
+void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
 	if (ValidBridge(firstPosition, secondPosition)) {
 		Bridge *bridge = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],

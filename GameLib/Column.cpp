@@ -1,17 +1,18 @@
 module Column;
 
-Column::Column(const EPlayer& Player)
-	:m_player{ Player }
-{}
+Column::Column(IPlayer* Player)
+	:m_player{Player}
+{
+
+}
 
 Column::Column(const Column& otherColumn)
 	:m_player{ otherColumn.GetPlayer() }
-{}
+{
 
-Column::~Column()
-{}
+}
 
-const EPlayer& Column::GetPlayer() const
+IPlayer* Column::GetPlayer() const
 {
 	return m_player;
 }

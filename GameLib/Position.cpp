@@ -1,8 +1,8 @@
 #include "Position.h"
 
 Position::Position(uint16_t x, uint16_t y)
-	: m_x{ x }
-	, m_y{ y }
+	: m_x{x}
+	, m_y{y}
 {
 
 }

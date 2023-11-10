@@ -2,21 +2,18 @@ export module Player;
 
 export import "IPlayer.h";
 
-export class Player : public IPlayer {
+export class Player : public IPlayer
+{
 public:
-	Player();
-	Player(char*,const std::string&);
+	Player(std::string_view name, std::string_view color);
 	Player(const Player* other);
 	Player(Player&& other) noexcept;
-	~Player();
 	Player& operator= (const Player* other);
-	Player& operator = (Player&& other) noexcept;
+	Player& operator= (Player&& other) noexcept;
 
-	char* GetColor() const override;
-	const std::string& GetName() const override;
+	std::string_view GetColor() const override;
+	std::string_view GetName() const override;
 
 private:
-	char* m_color;
-	std::string m_name;
-
+	std::string m_name, m_color;
 };
