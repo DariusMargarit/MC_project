@@ -160,6 +160,9 @@
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Position.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IPlayer.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -55,4 +55,9 @@
       <Filter>Header Files\API</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IPlayer.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
