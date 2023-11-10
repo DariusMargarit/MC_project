@@ -1,8 +1,8 @@
 module Bridge;
 
-Bridge::Bridge(IColumn& firstColumn, IColumn& secondColumn)
-	: m_firstColumn{ &firstColumn }
-	, m_secondColumn{ &secondColumn }
+Bridge::Bridge(IColumn* firstColumn, IColumn* secondColumn)
+	: m_firstColumn{firstColumn}
+	, m_secondColumn{secondColumn}
 {
 }
 

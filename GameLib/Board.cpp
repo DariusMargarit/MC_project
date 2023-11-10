@@ -10,6 +10,19 @@ bool Board::ValidPlaceColumn(Position& position) const
 	return false;
 }
 
+bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
+{
+	int absValueX = abs(firstPosition.GetX() - secondPosition.GetX());
+	int absValueY = abs(firstPosition.GetY() - secondPosition.GetY());
+	if (absValueX == 0 || absValueY == 0) {
+		return false;
+	}
+	if (absValueX + absValueY == 3) {
+		return true;
+	}
+	return false;
+}
+
 Board::Board() {
 
 }
@@ -34,13 +47,21 @@ void Board::PlaceColumn(Position& position, const EPlayer& player)
 	}
 }
 
+void Board::MakeBridge(Position& firstPosition, Position& secondPosition, const EPlayer& player)
+{
+	if (ValidBridge(firstPosition, secondPosition)) {
+		Bridge *bridge = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
+			m_matrix[secondPosition.GetY()][secondPosition.GetX()]);
+		m_bridges.push_back(bridge);
+	}
+}
+
 Board::Board(const Board& otherBoard) {
 	for (Position* position : otherBoard.m_columns) {
 		this->m_columns.push_back(position);
 	}
 	for (const auto& bridgePair : otherBoard.m_bridges) {
-		this->m_bridges.push_back(std::make_pair(bridgePair.first, bridgePair.second));
-
+		this->	m_bridges.push_back(bridgePair);
 	}
 
 	for (const std::vector<IColumn*>& row : otherBoard.m_matrix) {

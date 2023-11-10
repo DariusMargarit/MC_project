@@ -4,7 +4,7 @@ export import "IColumn.h";
 
 export class Bridge {
 public:
-	Bridge(IColumn& firstColumn, IColumn& secondColumn);
+	Bridge(IColumn* firstColumn,IColumn* secondColumn);
 	~Bridge() = default;
 
 	const IColumn* GetFirstColumn() const;
