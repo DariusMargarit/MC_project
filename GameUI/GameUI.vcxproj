@@ -141,12 +141,12 @@
     <QtMoc Include="BoardButton.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h" />
+    <QtMoc Include="Board.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="FileUtils.h" />
-    <ClInclude Include="GameScreen.h" />
+    <QtMoc Include="GameScreen.h" />
     <QtMoc Include="MainMenuScreen.h" />
-    <ClInclude Include="SettingsScreen.h" />
+    <QtMoc Include="SettingsScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameLib\GameLib.vcxproj">

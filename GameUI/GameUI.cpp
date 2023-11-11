@@ -9,10 +9,13 @@ GameUI::GameUI(QWidget *parent)
     : QMainWindow(parent)
 {
     resize(1100, 600);
+    LoadFonts();
+    InitializeMainMenu();
+
+    // Set the stylesheet from file
 	QString stylesheet = FileUtils::StylesheetFileToString("stylesheets/default.qss");
 	setStyleSheet(stylesheet);
 
-    InitializeScreen();
 }
 
 GameUI::~GameUI()
@@ -23,9 +26,11 @@ GameUI::~GameUI()
 void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
 {
     qDebug() << (int) button;
+
+    // Load game screen when button pressed 
     if (button == EButtonPressed::playButton)
     {
-        m_gameScreen = new GameScreen();
+        m_gameScreen = new GameScreen(this);
         m_screens->addWidget(m_gameScreen);
         m_screens->setCurrentWidget(m_gameScreen);
     }
@@ -36,20 +41,21 @@ void GameUI::mousePressEvent(QMouseEvent* event)
   
 }
 
-void GameUI::InitializeScreen()
+void GameUI::InitializeMainMenu()
 {
-	m_screens = new QStackedWidget();
-	m_mainMenuScreen = new MainMenuScreen();
-	connect(m_mainMenuScreen, &MainMenuScreen::Clicked, this, &GameUI::OnMainMenuButtonClicked);
+    // Initialize StackedWidget and the main menu screen
+	m_screens = new QStackedWidget(this);
+	m_mainMenuScreen = new MainMenuScreen(this);
+
+    // Add main menu screen to screen list
 	m_screens->addWidget(m_mainMenuScreen);
 	m_screens->setCurrentWidget(m_mainMenuScreen);
+
+    // Make a connection between 
+	connect(m_mainMenuScreen, &MainMenuScreen::Clicked, this, &GameUI::OnMainMenuButtonClicked);
+
+    // Display the screen
 	setCentralWidget(m_screens);
-
-	m_gameScreen = new GameScreen();
-	m_screens->addWidget(m_gameScreen);
-
-    m_settingsScreen = new SettingsScreen();
-    m_screens->addWidget(m_settingsScreen);
 }
 
 void GameUI::LoadFonts()

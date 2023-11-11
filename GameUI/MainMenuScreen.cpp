@@ -6,14 +6,19 @@
 #include "FileUtils.h"
 
 MainMenuScreen::MainMenuScreen(QWidget* parent)
+	: QWidget(parent)
+	, m_layout(new QGridLayout(this))
 {
-	m_layout = new QGridLayout();
-	InitPage();
+	// Init the page content
+	InitPageWidgets();
+
+	// Add rules for the layout
 	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSpacing(0);
+	m_layout->setSizeConstraint(QLayout::SetMinimumSize);
 	setLayout(m_layout);
 
-
+	// import the stylesheet for design
 	auto stylesheet = FileUtils::StylesheetFileToString("stylesheets/mainmenu.qss");
 	setStyleSheet(stylesheet);
 }
@@ -21,32 +26,40 @@ MainMenuScreen::MainMenuScreen(QWidget* parent)
 void MainMenuScreen::mousePressEvent(QMouseEvent* event)
 {
 	QWidget* selectedWidget = childAt(event->pos());
+
 	if (!selectedWidget) return;
+
+	// Emit click on play button widget clicked
 	if (WidgetIs(selectedWidget, "playButton"))
 		emit(Clicked(EButtonPressed::playButton));
+	// Emit click on settings button clicked
 	else if (WidgetIs(selectedWidget, "settingsButton"))
 		emit(Clicked(EButtonPressed::settingsButton));
 }
 
-void MainMenuScreen::InitPage()
+void MainMenuScreen::InitPageWidgets()
 {
-
-	QLabel* imageWidget = new QLabel();
+	// Image init
+	QLabel* imageWidget = new QLabel(this);
 	imageWidget->setObjectName("imageWidget");
 	QPixmap presentationImage(":/GameUI/images/presentation.png");
 	imageWidget->setPixmap(presentationImage);
 	imageWidget->setScaledContents(true);
 
-	QLabel* mainText = new QLabel("    Play Twixt\non the #1 App!");
+	// Header text init
+	QLabel* mainText = new QLabel("    Play Twixt\non the #1 App!", this);
+	mainText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	mainText->setObjectName("mainText");
 
-
-	Button* playButton = new Button("Play", "Play local with your friends", "#466b3a", QPixmap(":/GameUI/images/controller.png"), false);
+	// Play button init
+	Button* playButton = new Button("Play", "Play local with your friends", "#466b3a", QPixmap(":/GameUI/images/controller.png"), false, this);
 	playButton->setObjectName("playButton");
-	Button* settingsButton = new Button("Settings", "Change the game settings", "#333230", QPixmap(":/GameUI/images/settings.png"), true);
+
+	// Settings button init
+	Button* settingsButton = new Button("Settings", "Change the game settings", "#333230", QPixmap(":/GameUI/images/settings.png"), true, this);
 	settingsButton->setObjectName("settingsButton");
 	
-
+	// Add widgets for the screen layout
 	m_layout->addWidget(imageWidget, 0, 0, 4, 1);
 	m_layout->addWidget(mainText, 0, 1, 2, 1, Qt::AlignCenter);
 	m_layout->addWidget(playButton, 2, 1, Qt::AlignCenter);

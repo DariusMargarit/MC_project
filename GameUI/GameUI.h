@@ -26,7 +26,7 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
 
 private:
-    void InitializeScreen();
+    void InitializeMainMenu();
     void LoadFonts();
 
     QStackedWidget* m_screens;

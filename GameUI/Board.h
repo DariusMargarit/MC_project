@@ -6,16 +6,18 @@
 
 enum class EDirection
 {
-	top,
-	bottom,
-	left,
-	right,
+	Top,
+	Bottom,
+	Left,
+	Right,
 };
 
 class Board : public QWidget
 {
+	Q_OBJECT
+
 public:
-	Board(uint32_t size);
+	Board(uint32_t size, QWidget* parent = nullptr);
 	void InitializeButtons(uint32_t size);
 
 protected:

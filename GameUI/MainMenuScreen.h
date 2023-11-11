@@ -22,9 +22,10 @@ protected:
 	void mousePressEvent(QMouseEvent* event) override;
 
 private:
-	void InitPage();
+	void InitPageWidgets();
 	bool WidgetIs(QWidget* widget, QString objectName);
 
+private:
 	QGridLayout* m_layout;
 
 };

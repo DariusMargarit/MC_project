@@ -3,7 +3,8 @@
 #include <QMouseEvent>
 
 BoardButton::BoardButton(QWidget* parent)
-	: m_hover(false)
+	: QWidget(parent)
+	, m_hover(false)
 {
 
 }

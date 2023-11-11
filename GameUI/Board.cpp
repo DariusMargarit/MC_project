@@ -4,14 +4,17 @@
 #include "Board.h"
 #include "FileUtils.h"
 
-Board::Board(uint32_t size)
-	: m_layout{new QGridLayout()}
+Board::Board(uint32_t size, QWidget* parent)
+	: QWidget(parent)
+	, m_layout(new QGridLayout(this))
 {
 	setObjectName("board");
+
 	m_layout->setSpacing(0);
 	m_layout->setContentsMargins(0, 0, 0, 0);
 
 	InitializeButtons(size);
+
 	QString stylesheet = FileUtils::StylesheetFileToString("./stylesheets/game.qss");
 	setStyleSheet(stylesheet);
 
@@ -45,16 +48,16 @@ void Board::paintEvent(QPaintEvent* event)
 	pen.setColor("#e0ae48");
 	painter.setPen(pen);
 
-	QLineF topLine = GetLineDelimiter(EDirection::top);
-	QLineF bottomLine = GetLineDelimiter(EDirection::bottom);
+	QLineF topLine = GetLineDelimiter(EDirection::Top);
+	QLineF bottomLine = GetLineDelimiter(EDirection::Bottom);
 	painter.drawLine(topLine);
 	painter.drawLine(bottomLine);
 
 	pen.setColor("#54c49f");
 	painter.setPen(pen);
 
-	QLineF leftLine = GetLineDelimiter(EDirection::left);
-	QLineF rightLine = GetLineDelimiter(EDirection::right);
+	QLineF leftLine = GetLineDelimiter(EDirection::Left);
+	QLineF rightLine = GetLineDelimiter(EDirection::Right);
 	painter.drawLine(leftLine);
 	painter.drawLine(rightLine);
 
@@ -78,9 +81,9 @@ QLineF Board::GetLineDelimiter(EDirection direction) const
 	uint64_t size{ m_buttons.size() };
 	uint64_t row, column;
 	QPointF leftColumn, besideLeftColumn, rightColumn, besideRightColumn;
-	if (direction == EDirection::top || direction == EDirection::bottom)
+	if (direction == EDirection::Top || direction == EDirection::Bottom)
 	{
-		row = direction == EDirection::top ? 0 : size - 2;
+		row = direction == EDirection::Top ? 0 : size - 2;
 		leftColumn = m_buttons[row][1]->geometry().center();
 		besideLeftColumn = m_buttons[row + 1][1]->geometry().center();
 		rightColumn = m_buttons[row][size - 2]->geometry().center();
@@ -88,7 +91,7 @@ QLineF Board::GetLineDelimiter(EDirection direction) const
 	}
 	else
 	{
-		column = direction == EDirection::left ? 0 : size - 2;
+		column = direction == EDirection::Left ? 0 : size - 2;
 		leftColumn = m_buttons[1][column]->geometry().center();
 		besideLeftColumn = m_buttons[1][column + 1]->geometry().center();
 		rightColumn = m_buttons[size - 2][column]->geometry().center();
