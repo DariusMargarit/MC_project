@@ -1,19 +1,19 @@
 module Column;
 
-Column::Column(IPlayer* Player)
-	:m_player{Player}
+Column::Column(IPlayer* player)
+	:m_player{ player }
 {
 
 }
 
-Column::Column(const Column& otherColumn)
-	:m_player{ otherColumn.GetPlayer() }
+Column::Column(const Column& other)
+	:m_player{ other.m_player }
 {
 
 }
 
 Column::Column(Column&& other) noexcept
-	:m_player{other.m_player}
+	:m_player{ other.m_player }
 {
 	other.m_player = nullptr;
 }
@@ -23,10 +23,10 @@ IPlayer* Column::GetPlayer() const
 	return m_player;
 }
 
-Column& Column::operator=(const Column& otherColumn)
+Column& Column::operator=(const Column& other)
 {
-	if (this->GetPlayer() != otherColumn.GetPlayer())
-		this->m_player = otherColumn.GetPlayer();
+	if (m_player != other.m_player)
+		m_player = other.m_player;
 	return *this;
 }
 
@@ -37,5 +37,6 @@ Column& Column::operator=(Column&& other) noexcept
 	m_player = other.m_player;
 
 	other.m_player = nullptr;
+
 	return *this;
 }
