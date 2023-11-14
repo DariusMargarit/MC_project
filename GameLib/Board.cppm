@@ -17,7 +17,7 @@ public:
 	IColumn* GetElement(Position pos) const override;
 	void PlaceColumn(Position& position, IPlayer* player);
 	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
-
+	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 
 
 private:

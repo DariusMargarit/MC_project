@@ -28,7 +28,7 @@ void Game::MakeBridge(Position firstPosition, Position secondPosition)
 
 void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 {
-
+	m_board->RemoveBridge(firstPosition, secondPosition, m_turn);
 }
 
 IPlayer* Game::GetTurn() const 

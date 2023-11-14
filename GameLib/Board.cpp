@@ -64,6 +64,27 @@ void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 	}
 }
 
+void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
+{
+	if (!ValidBridge(firstPosition, secondPosition)) {
+		//exception
+		return;
+	}
+
+	Bridge* bridgeToRemove = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
+		m_matrix[secondPosition.GetY()][secondPosition.GetX()]);
+
+	auto it = std::find(m_bridges.begin(), m_bridges.end(), bridgeToRemove);
+	if (it != m_bridges.end()) {
+		m_bridges.erase(it);
+		delete bridgeToRemove;
+	}
+	else {
+		// Bridge not found 
+
+	}
+}
+
 Board::Board(const Board& otherBoard) {
 	for (Position* position : otherBoard.m_columns) {
 		this->m_columns.push_back(position);
