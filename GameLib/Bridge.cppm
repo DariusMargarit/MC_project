@@ -7,6 +7,7 @@ export class Bridge
 public:
 	Bridge(IColumn* firstColumn,IColumn* secondColumn);
 	Bridge(const Bridge& otherBridge);
+	Bridge(Bridge&& otherBridge) noexcept;
 	~Bridge() = default;
 
 	const IColumn* GetFirstColumn() const;
