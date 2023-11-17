@@ -25,7 +25,6 @@ private:
 	bool ValidBridge(Position firstPosition, Position secondPosition) const;
 
 private:
-	std::vector<Position*> m_columns;
 	std::vector<Bridge*> m_bridges;
 	std::vector<std::vector<IColumn*>> m_matrix;
 };

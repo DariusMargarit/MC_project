@@ -10,7 +10,7 @@ Board::Board(uint16_t size)
 
 bool Board::ValidPlaceColumn(Position position) const
 {
-	if (std::find(m_columns.begin(), m_columns.end(), &position) != m_columns.end()) 
+	if (m_matrix[position.GetY()][position.GetX()] != nullptr)
 	{
 		return false;
 	}
@@ -31,27 +31,25 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 }
 
 Board::~Board() {
-	for (int index = 0; index < m_columns.size(); index++) {
-		delete m_columns[index];
-	}
 	for (int index1 = 0; index1 < m_matrix.size(); index1++) {
 		for (int index2 = 0; index2 < m_matrix[index1].size(); index2++) {
 			delete m_matrix[index1][index2];
 		}
 	}
+	for (auto bridge : m_bridges)
+		delete bridge;
 }
 
 IColumn* Board::GetElement(Position position) const
 {
-	return m_matrix[position.GetX()][position.GetY()];
+	return m_matrix[position.GetY()][position.GetX()];
 }
 
 void Board::PlaceColumn(Position& position, IPlayer* player)
 {
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn = new Column(player);
-		m_matrix[position.GetX()][position.GetY()] = newColumn;
-		m_columns.push_back(&position);
+		m_matrix[position.GetY()][position.GetX()] = newColumn;
 	}
 }
 
@@ -74,6 +72,7 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 	Bridge* bridgeToRemove = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
 		m_matrix[secondPosition.GetY()][secondPosition.GetX()]);
 
+	//TODO modify find 
 	auto it = std::find(m_bridges.begin(), m_bridges.end(), bridgeToRemove);
 	if (it != m_bridges.end()) {
 		m_bridges.erase(it);
@@ -86,9 +85,6 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 }
 
 Board::Board(const Board& otherBoard) {
-	for (Position* position : otherBoard.m_columns) {
-		this->m_columns.push_back(position);
-	}
 	for (const auto& bridgePair : otherBoard.m_bridges) {
 		this->	m_bridges.push_back(bridgePair);
 	}
