@@ -30,6 +30,7 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 	return false;
 }
 
+
 Board::~Board() {
 	for (int index1 = 0; index1 < m_matrix.size(); index1++) {
 		for (int index2 = 0; index2 < m_matrix[index1].size(); index2++) {
@@ -62,25 +63,31 @@ void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 	}
 }
 
+
+
 void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
-	if (!ValidBridge(firstPosition, secondPosition)) {
-		//exception
+	
+	if (!ValidBridge(firstPosition, secondPosition) || player == nullptr)
+	{
+		// Handle invalid input, e.g., throw an exception or return an error code.
 		return;
 	}
 
-	Bridge* bridgeToRemove = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
-		m_matrix[secondPosition.GetY()][secondPosition.GetX()]);
-	//TODO modify find 
-	auto it = std::find(m_bridges.begin(), m_bridges.end(), bridgeToRemove);
-	if (it != m_bridges.end()) {
-		m_bridges.erase(it);
-		delete bridgeToRemove;
-	}
-	else {
-		// Bridge not found 
+	
+	auto bridgeIter = std::find_if(m_bridges.begin(), m_bridges.end(), [&](const Bridge* bridge) {
+		return bridge->HasPositions(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
+		m_matrix[secondPosition.GetY()][secondPosition.GetX()]) && bridge->GetFirstColumn()->GetPlayer() == player;
+		});
 
+	
+	if (bridgeIter != m_bridges.end())
+	{
+		m_bridges.erase(bridgeIter);
+		delete* bridgeIter; 
+		
 	}
+	
 }
 
 Board::Board(const Board& otherBoard) {

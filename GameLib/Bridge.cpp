@@ -17,6 +17,12 @@ Bridge::Bridge(IColumn* firstColumn, IColumn* secondColumn)
 	return m_secondColumn;
 }
 
+ bool Bridge::HasPositions(IColumn* pos1,  IColumn* pos2) const
+ {
+	 return (m_firstColumn == pos1 && m_secondColumn == pos2) ||
+		 (m_firstColumn == pos2 && m_secondColumn == pos1);
+ }
+
 Bridge::Bridge(const Bridge& otherBridge)
 {
 	if (otherBridge.m_firstColumn)
