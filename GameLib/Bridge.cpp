@@ -7,12 +7,12 @@ Bridge::Bridge(IColumn* firstColumn, IColumn* secondColumn)
 }
 
 
-const IColumn* Bridge::GetFirstColumn() const
+ IColumn* Bridge::GetFirstColumn() const
 {
 	return m_firstColumn;
 }
 
-const IColumn* Bridge::GetSecondColumn() const
+ IColumn* Bridge::GetSecondColumn() const
 {
 	return m_secondColumn;
 }

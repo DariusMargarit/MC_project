@@ -10,8 +10,8 @@ public:
 	Bridge(Bridge&& otherBridge) noexcept;
 	~Bridge() = default;
 
-	const IColumn* GetFirstColumn() const;
-	const IColumn* GetSecondColumn() const;
+    IColumn* GetFirstColumn() const;
+	IColumn* GetSecondColumn() const;
 
 	Bridge& operator=(const Bridge& otherBridge);
 	Bridge& operator=(Bridge&& otherBridge) noexcept;

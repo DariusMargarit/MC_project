@@ -71,7 +71,6 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 
 	Bridge* bridgeToRemove = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
 		m_matrix[secondPosition.GetY()][secondPosition.GetX()]);
-
 	//TODO modify find 
 	auto it = std::find(m_bridges.begin(), m_bridges.end(), bridgeToRemove);
 	if (it != m_bridges.end()) {
@@ -85,15 +84,23 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 }
 
 Board::Board(const Board& otherBoard) {
-	for (const auto& bridgePair : otherBoard.m_bridges) {
-		this->	m_bridges.push_back(bridgePair);
-	}
 
-	for (const std::vector<IColumn*>& row : otherBoard.m_matrix) {
-		std::vector<IColumn*> newRow;
-		for (IColumn* column : row) {
-			newRow.push_back(column);
+	/*for ( auto bridge : otherBoard.m_bridges)
+	{
+		IColumn* otherFirstColumn = new Column(*dynamic_cast<Column*>(bridge->GetFirstColumn()));
+		IColumn* otherSecondColumn = new Column(*dynamic_cast<Column*>(bridge->GetSecondColumn()));
+		Bridge* newBridge = new Bridge(otherFirstColumn,otherSecondColumn);
+		m_bridges.push_back(newBridge);
+	}*/
+
+	for (size_t i = 0; i < otherBoard.m_matrix.size(); ++i)
+	{
+		for (size_t j = 0; j < otherBoard.m_matrix[i].size(); ++j)
+		{
+			if (otherBoard.m_matrix[i][j] != nullptr)
+				m_matrix[i][j] = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[i][j]));
+			else
+				m_matrix[i][j] = nullptr;
 		}
-		this->m_matrix.push_back(newRow);
 	}
 }
