@@ -14,6 +14,7 @@ public:
 	const IColumn* GetSecondColumn() const;
 
 	Bridge& operator=(const Bridge& otherBridge);
+	Bridge& operator=(Bridge&& otherBridge) noexcept;
 
 private:
 	IColumn* m_firstColumn, * m_secondColumn;

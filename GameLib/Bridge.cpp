@@ -42,7 +42,7 @@ Bridge::Bridge(Bridge&& otherBridge) noexcept
 		this->m_secondColumn = nullptr;
 
 	otherBridge.m_firstColumn = nullptr;
-	otherBridge.m_firstColumn = nullptr;
+	otherBridge.m_secondColumn = nullptr;
 }
 
 Bridge& Bridge::operator=(const Bridge& otherBridge)
@@ -55,12 +55,35 @@ Bridge& Bridge::operator=(const Bridge& otherBridge)
 	else
 		m_firstColumn = nullptr;
 
+	if (otherBridge.m_secondColumn)
+		m_secondColumn = otherBridge.m_secondColumn;
+	else
+		m_secondColumn = nullptr;
+
+	return *this;
+}
+
+Bridge& Bridge::operator=(Bridge&& otherBridge) noexcept
+{
+	if (this == &otherBridge)
+	{
+		otherBridge.m_firstColumn = nullptr;
+		otherBridge.m_secondColumn = nullptr;
+		return *this;
+	}
+
+	if (otherBridge.m_firstColumn)
+		m_firstColumn = otherBridge.m_firstColumn;
+	else
+		m_firstColumn = nullptr;
 
 	if (otherBridge.m_secondColumn)
 		m_secondColumn = otherBridge.m_secondColumn;
 	else
 		m_secondColumn = nullptr;
 
+	otherBridge.m_firstColumn = nullptr;
+	otherBridge.m_secondColumn = nullptr;
 
 	return *this;
 }
