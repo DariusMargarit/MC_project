@@ -161,10 +161,12 @@
     <ClCompile Include="Player.cppm" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Position.h" />
+    <ClCompile Include="Twixt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IBoard.h" />
     <ClInclude Include="IPlayer.h" />
+    <ClInclude Include="Twixt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -60,12 +60,18 @@
     <ClCompile Include="Player.cppm">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Twixt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IPlayer.h">
       <Filter>Header Files\API</Filter>
     </ClInclude>
     <ClInclude Include="IBoard.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Twixt.h">
       <Filter>Header Files\API</Filter>
     </ClInclude>
   </ItemGroup>
