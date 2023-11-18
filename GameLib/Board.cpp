@@ -21,10 +21,18 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 {
 	int absValueX = abs(firstPosition.GetX() - secondPosition.GetX());
 	int absValueY = abs(firstPosition.GetY() - secondPosition.GetY());
-	if (absValueX == 0 || absValueY == 0) {
+	IColumn* firstColumn = m_matrix[firstPosition.GetY()][firstPosition.GetX()];
+	IColumn* secondColumn = m_matrix[secondPosition.GetY()][secondPosition.GetX()];
+	if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
+	{
 		return false;
 	}
-	if (absValueX + absValueY == 3) {
+	if (absValueX == 0 || absValueY == 0) 
+	{
+		return false;
+	}
+	if (absValueX + absValueY == 3) 
+	{
 		return true;
 	}
 	return false;
