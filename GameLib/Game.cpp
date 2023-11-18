@@ -4,6 +4,7 @@ Game::Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize)
 	: m_player1(player1)
 	, m_player2(player2)
 	, m_turn(player1)
+	, m_boardSize(boardSize)
 	, m_board(new Board(boardSize))
 {
 	
@@ -16,6 +17,22 @@ Game::~Game()
 
 void Game::PlaceColumn(Position position)
 {
+	if (m_turn->GetColor() == "RED") 
+	{
+		if (position.GetX() < 1 || position.GetX() > m_boardSize - 2) 
+		{
+			// exception
+			return;
+		}
+	}
+	else 
+	{
+		if (position.GetY() < 1 || position.GetY() > m_boardSize - 2)
+		{
+			// exception
+			return;
+		}
+	}
 	m_board->PlaceColumn(position, m_turn);
 
 	ChangeTurn();

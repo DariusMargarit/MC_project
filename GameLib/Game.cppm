@@ -23,7 +23,7 @@ private:
 
 private:
 	Board* m_board;
-	uint16_t m_columnSize;
+	uint16_t m_boardSize;
 	IPlayer* m_player1, *m_player2, *m_turn;
 };
 
