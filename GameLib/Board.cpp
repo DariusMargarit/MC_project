@@ -98,18 +98,9 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 	
 }
 
-Board::Board(const Board& otherBoard) {
-
-	/*for ( auto bridge : otherBoard.m_bridges)
-	{
-		IColumn* otherFirstColumn = new Column(*dynamic_cast<Column*>(bridge->GetFirstColumn()));
-		IColumn* otherSecondColumn = new Column(*dynamic_cast<Column*>(bridge->GetSecondColumn()));
-		Bridge* newBridge = new Bridge(otherFirstColumn,otherSecondColumn);
-		m_bridges.push_back(newBridge);
-	}*/
-
+Board::Board(const Board& otherBoard) 
+{
 	for (size_t i = 0; i < otherBoard.m_matrix.size(); ++i)
-	{
 		for (size_t j = 0; j < otherBoard.m_matrix[i].size(); ++j)
 		{
 			if (otherBoard.m_matrix[i][j] != nullptr)
@@ -117,5 +108,28 @@ Board::Board(const Board& otherBoard) {
 			else
 				m_matrix[i][j] = nullptr;
 		}
+
+	for (auto bridge : otherBoard.m_bridges)
+	{
+		IColumn* firstColumn = nullptr, * secondColumn = nullptr, * columnToFind = bridge->GetFirstColumn();
+		for (size_t i = 0; i < m_matrix.size() && secondColumn == nullptr; ++i)
+			for (size_t j = 0; j < m_matrix[i].size() && secondColumn == nullptr; ++j)
+			{
+				if (columnToFind == otherBoard.m_matrix[i][j])
+				{
+					if (firstColumn == nullptr)
+					{
+						firstColumn = m_matrix[i][j];
+						columnToFind = bridge->GetSecondColumn();
+					}
+					else
+					{
+						secondColumn = m_matrix[i][j];
+						Bridge* newBridge = new Bridge(firstColumn, secondColumn);
+						m_bridges.push_back(newBridge);
+					}
+				}
+			}
 	}
+
 }
