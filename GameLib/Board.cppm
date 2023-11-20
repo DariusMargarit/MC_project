@@ -14,11 +14,12 @@ public:
 	Board(const Board& otherBoard);
 	~Board();
 
-	IColumn* GetElement(Position pos) const override;
+	const IColumn* GetElement(Position pos) const override;
 	void PlaceColumn(Position& position, IPlayer* player);
 	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 
+	const IColumn* operator [](Position pos) const override;
 
 private:
 	bool ValidPlaceColumn(Position position) const;

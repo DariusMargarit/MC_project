@@ -5,7 +5,9 @@
 
 struct _declspec(dllexport) IBoard
 {
-	virtual IColumn* GetElement(Position pos) const = 0;
+	virtual const IColumn* GetElement(Position pos) const = 0;
+
+	virtual const IColumn* operator[](Position pos) const = 0;
 
 	virtual ~IBoard() = default;
 };

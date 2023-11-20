@@ -49,7 +49,7 @@ Board::~Board() {
 		delete bridge;
 }
 
-IColumn* Board::GetElement(Position position) const
+const IColumn* Board::GetElement(Position position) const
 {
 	return m_matrix[position.GetY()][position.GetX()];
 }
@@ -96,6 +96,11 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 		
 	}
 	
+}
+
+const IColumn* Board::operator[](Position pos) const
+{
+	return GetElement(pos);
 }
 
 Board::Board(const Board& otherBoard) 
