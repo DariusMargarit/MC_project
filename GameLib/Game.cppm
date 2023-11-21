@@ -2,12 +2,14 @@ export module Game;
 
 export import "IGame.h";
 export import Board;
+export import Player;
 
 
 export class Game : public IGame
 {
 public:
 	Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize);
+	Game(const Game& otherGame);
 
 	IPlayer* GetTurn() const override;
 	IBoard* GetBoard() const override;
@@ -15,6 +17,7 @@ public:
 	void PlaceColumn(Position position) override;
 	void MakeBridge(Position firstPosition, Position secondPosition) override;
 	void RemoveBridge(Position firstPosition, Position secondPosition) override;
+
 
 	~Game();
 

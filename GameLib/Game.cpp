@@ -10,6 +10,16 @@ Game::Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize)
 	// Empty
 }
 
+Game::Game(const Game& otherGame)
+	:m_boardSize{otherGame.m_boardSize}
+{
+	m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
+	m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
+	m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
+	m_board = new Board(*otherGame.m_board);
+
+}
+
 Game::~Game()
 {
 	// Empty
