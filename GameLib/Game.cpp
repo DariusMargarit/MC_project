@@ -58,6 +58,24 @@ void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 	m_board->RemoveBridge(firstPosition, secondPosition, m_turn);
 }
 
+Game& Game::operator=(const Game& otherGame)
+{
+	if (this != &otherGame) {
+		
+		delete m_player1;
+		delete m_player2;
+		delete m_board;
+
+		m_boardSize = otherGame.m_boardSize;
+		m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
+		m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
+		m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
+		m_board = new Board(*otherGame.m_board);
+
+	}
+	return *this;
+}
+
 IPlayer* Game::GetTurn() const 
 {
 	return m_turn;

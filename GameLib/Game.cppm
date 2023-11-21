@@ -10,6 +10,7 @@ export class Game : public IGame
 public:
 	Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize);
 	Game(const Game& otherGame);
+	~Game();
 
 	IPlayer* GetTurn() const override;
 	IBoard* GetBoard() const override;
@@ -18,8 +19,8 @@ public:
 	void MakeBridge(Position firstPosition, Position secondPosition) override;
 	void RemoveBridge(Position firstPosition, Position secondPosition) override;
 
-
-	~Game();
+	Game& operator=(const Game& otherGame);
+	
 
 private:
 	void ChangeTurn();
