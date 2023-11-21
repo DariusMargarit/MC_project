@@ -27,7 +27,7 @@ protected:
 
 private:
 	bool IsCorner(int row, int column);
-	//QLineF GetLineDelimiter(EDirection direction) const;
+	QLineF GetLineDelimiter(EDirection direction) const;
 
 private:
 	const IBoard& m_gameBoard;

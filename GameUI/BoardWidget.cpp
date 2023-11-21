@@ -22,15 +22,13 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 {
 	QWidget::paintEvent(event);
 	QPainter painter(this);
+	QPen pen;
 
 	painter.setRenderHints(QPainter::Antialiasing);
-
 	int boardSize = m_gameBoard.GetSize();
-
-	const auto circleWidth = (float) width() / boardSize;
-	const auto circleHeight = (float) height() / boardSize;
-
-	float radius = qMin(circleWidth, circleHeight) / 4.0f;
+	const auto circleWidth = static_cast<float>(width() / boardSize);
+	const auto circleHeight = static_cast<float>(height() / boardSize);
+	float radius = qMin(circleWidth, circleHeight) / 6.0f;
 
 	for (int row = 0; row < boardSize; ++row)
 	{
@@ -47,28 +45,27 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 				painter.setBrush(QBrush(Qt::white));
 			}
 			
-			const auto x = column * circleWidth + (circleWidth / 2.0f);
-			const auto y = row * circleHeight + (circleHeight / 2.0f);
-			painter.drawEllipse(x, y, radius, radius);
+			QRectF circleRect(column * circleWidth, row * circleHeight, circleWidth, circleHeight);
+			painter.drawEllipse(circleRect.center(), radius, radius);
 		}
 	}
 
-	//pen.setWidth(2);
-	//pen.setColor("#e0ae48");
-	//painter.setPen(pen);
+	pen.setWidth(2);
+	pen.setColor("#e0ae48");
+	painter.setPen(pen);
 
-	//QLineF topLine = GetLineDelimiter(EDirection::Top);
-	//QLineF bottomLine = GetLineDelimiter(EDirection::Bottom);
-	//painter.drawLine(topLine);
-	//painter.drawLine(bottomLine);
+	QLineF topLine = GetLineDelimiter(EDirection::Top);
+	QLineF bottomLine = GetLineDelimiter(EDirection::Bottom);
+	painter.drawLine(topLine);
+	painter.drawLine(bottomLine);
 
-	//pen.setColor("#54c49f");
-	//painter.setPen(pen);
+	pen.setColor("#54c49f");
+	painter.setPen(pen);
 
-	//QLineF leftLine = GetLineDelimiter(EDirection::Left);
-	//QLineF rightLine = GetLineDelimiter(EDirection::Right);
-	//painter.drawLine(leftLine);
-	//painter.drawLine(rightLine);
+	QLineF leftLine = GetLineDelimiter(EDirection::Left);
+	QLineF rightLine = GetLineDelimiter(EDirection::Right);
+	painter.drawLine(leftLine);
+	painter.drawLine(rightLine);
 
 	
 }
@@ -80,7 +77,7 @@ void BoardWidget::mousePressEvent(QMouseEvent* event)
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 {
-	int boardSize = m_gameBoard.GetSize();
+	const auto boardSize = m_gameBoard.GetSize();
 	const auto circleWidth = (float)width() / boardSize;
 	const auto circleHeight = (float)height() / boardSize;
 
@@ -94,38 +91,52 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 
 bool BoardWidget::IsCorner(int row, int column)
 {
-	int boardSize = m_gameBoard.GetSize();
+	const auto boardSize = m_gameBoard.GetSize();
 	return (row == 0 && column == 0) ||
 		(row == 0 && column == boardSize - 1) ||
 		(row == boardSize - 1 && column == 0) ||
 		(row == boardSize - 1 && column == boardSize - 1);
 }
 
-//QLineF Board::GetLineDelimiter(EDirection direction) const
-//{
-//	uint64_t size{ m_buttons.size() };
-//	uint64_t row, column;
-//	QPointF leftColumn, besideLeftColumn, rightColumn, besideRightColumn;
-//	if (direction == EDirection::Top || direction == EDirection::Bottom)
-//	{
-//		row = direction == EDirection::Top ? 0 : size - 2;
-//		leftColumn = m_buttons[row][1]->geometry().center();
-//		besideLeftColumn = m_buttons[row + 1][1]->geometry().center();
-//		rightColumn = m_buttons[row][size - 2]->geometry().center();
-//		besideRightColumn = m_buttons[row + 1][size - 2]->geometry().center();
-//	}
-//	else
-//	{
-//		column = direction == EDirection::Left ? 0 : size - 2;
-//		leftColumn = m_buttons[1][column]->geometry().center();
-//		besideLeftColumn = m_buttons[1][column + 1]->geometry().center();
-//		rightColumn = m_buttons[size - 2][column]->geometry().center();
-//		besideRightColumn = m_buttons[size - 2][column+1]->geometry().center();
-//	}
-//
-//	QPointF lineStart{ (leftColumn + besideLeftColumn) / 2.0f };
-//	QPointF lineStop{ (rightColumn + besideRightColumn) / 2.0f };
-//
-//	return QLineF(lineStart, lineStop);
-//}
+QLineF BoardWidget::GetLineDelimiter(EDirection direction) const
+{
+	const auto boardSize = m_gameBoard.GetSize();
+	const auto circleWidth = static_cast<float>(width() / boardSize);
+	const auto circleHeight = static_cast<float>(height() / boardSize);
+	QPointF lineStart, lineStop;
+
+	if (direction == EDirection::Top || direction == EDirection::Bottom)
+	{
+		QPointF leftCircle, besideLeftCircle, rightCircle, besideRightCircle;
+		const auto row = direction == EDirection::Top ? 0 : boardSize - 2;
+		const auto leftColumn = 1;
+		const auto rightColumn = boardSize - 2;
+
+		leftCircle = { (leftColumn + 0.5f) * circleWidth, (row + 0.5f) * circleHeight};
+		besideLeftCircle = { (leftColumn + 0.5f) * circleWidth, (row + 1.5f) * circleHeight };
+		rightCircle = { (rightColumn + 0.5f) * circleWidth, (row + 0.5f) * circleHeight };
+		besideRightCircle = { (rightColumn + 0.5f) * circleWidth, (row + 1.5f) * circleHeight };
+
+		lineStart = (leftCircle + besideLeftCircle) / 2.0f;
+		lineStop = (rightCircle + besideRightCircle) / 2.0f;
+	}
+	else
+	{
+		QPointF topCircle, besideTopCircle, bottomCircle, besideBottomCircle;
+		const auto topRow = 1;
+		const auto bottomRow = boardSize - 2;
+		const auto column = direction == EDirection::Left ? 0 : boardSize - 2;
+
+		topCircle = { (column + 0.5f) * circleWidth, (topRow + 0.5f) * circleHeight };
+		besideTopCircle = { (column + 1.5f) * circleWidth, (topRow + 0.5f) * circleHeight };
+		bottomCircle = { (column + 0.5f) * circleWidth, (bottomRow + 0.5f) * circleHeight };
+		besideBottomCircle = { (column + 1.5f) * circleWidth, (bottomRow + 0.5f) * circleHeight };
+
+		lineStart = (topCircle + besideTopCircle) / 2.0f;
+		lineStop = (bottomCircle + besideBottomCircle) / 2.0f;
+	}
+
+
+	return QLineF(lineStart, lineStop);
+}
 
