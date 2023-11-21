@@ -2,7 +2,7 @@ export module Player;
 
 export import "IPlayer.h";
 
-export class Player : public IPlayer
+export class _declspec(dllexport) Player : public IPlayer
 {
 public:
 	Player(std::string_view name, std::string_view color);

@@ -27,7 +27,7 @@ Game::~Game()
 
 void Game::PlaceColumn(Position position)
 {
-	if (m_turn->GetColor() == "RED") 
+	if (m_turn == m_player1) 
 	{
 		if (position.GetY() < 1 || position.GetY() > m_boardSize - 2) 
 		{

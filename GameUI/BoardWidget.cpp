@@ -89,6 +89,11 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 
 }
 
+void BoardWidget::leaveEvent(QEvent* event)
+{
+	m_hovered = Position(0, 0);
+}
+
 bool BoardWidget::IsCorner(int row, int column)
 {
 	const auto boardSize = m_gameBoard.GetSize();
