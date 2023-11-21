@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Board.h"
+#include "BoardWidget.h"
+#include "../GameLib/IGame.h"
 
 class GameScreen : public QWidget
 {
@@ -11,6 +12,7 @@ public:
 
 private:
 	QGridLayout* m_layout;
-	Board* m_board;
+	BoardWidget* m_board;
+	IGame* m_game;
 };
 

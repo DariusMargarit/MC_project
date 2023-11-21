@@ -49,10 +49,7 @@
     <ClCompile Include="Button.cpp">
       <Filter>Screens\Main Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Screens\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="BoardButton.cpp">
+    <ClCompile Include="BoardWidget.cpp">
       <Filter>Screens\Game</Filter>
     </ClCompile>
     <ClCompile Include="GameScreen.cpp">
@@ -77,13 +74,10 @@
     <QtMoc Include="MainMenuScreen.h">
       <Filter>Screens\Main Menu</Filter>
     </QtMoc>
-    <QtMoc Include="BoardButton.h">
-      <Filter>Screens\Game</Filter>
-    </QtMoc>
     <QtMoc Include="GameScreen.h">
       <Filter>Screens\Game</Filter>
     </QtMoc>
-    <QtMoc Include="Board.h">
+    <QtMoc Include="BoardWidget.h">
       <Filter>Screens\Game</Filter>
     </QtMoc>
     <QtMoc Include="SettingsScreen.h">

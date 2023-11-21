@@ -5,7 +5,7 @@ import Column;
 Board::Board(uint16_t size)
 	: m_matrix{size, std::vector<IColumn*>(size, nullptr)}
 {
-
+	// Empty
 }
 
 bool Board::ValidPlaceColumn(Position position) const
@@ -51,7 +51,12 @@ Board::~Board() {
 
 const IColumn* Board::GetElement(Position position) const
 {
-	return m_matrix[position.GetY()][position.GetX()];
+	return m_matrix[position.GetX()][position.GetY()];
+}
+
+const uint16_t Board::GetSize() const
+{
+	return m_matrix.size();
 }
 
 void Board::PlaceColumn(Position& position, IPlayer* player)

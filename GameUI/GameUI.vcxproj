@@ -132,16 +132,12 @@
     <ClCompile Include="SettingsScreen.cpp" />
     <QtRcc Include="GameUI.qrc" />
     <QtMoc Include="GameUI.h" />
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="BoardButton.cpp" />
+    <ClCompile Include="BoardWidget.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="BoardButton.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="Board.h" />
+    <QtMoc Include="BoardWidget.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="FileUtils.h" />
     <QtMoc Include="GameScreen.h" />

@@ -7,12 +7,12 @@ Game::Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize)
 	, m_boardSize(boardSize)
 	, m_board(new Board(boardSize))
 {
-	
+	// Empty
 }
 
 Game::~Game()
 {
-
+	// Empty
 }
 
 void Game::PlaceColumn(Position position)

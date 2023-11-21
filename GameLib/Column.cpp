@@ -3,13 +3,13 @@ module Column;
 Column::Column(IPlayer* player)
 	:m_player{ player }
 {
-
+	// Empty
 }
 
 Column::Column(const Column& other)
 	:m_player{ other.m_player }
 {
-
+	// Empty
 }
 
 Column::Column(Column&& other) noexcept

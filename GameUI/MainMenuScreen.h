@@ -27,6 +27,7 @@ private:
 
 private:
 	QGridLayout* m_layout;
+	QLabel* mainText;
 
 };
 

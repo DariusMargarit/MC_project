@@ -4,14 +4,14 @@ Player::Player(std::string_view name, std::string_view color)
 	: m_color{color}
 	, m_name{name}
 {
-
+	// Empty
 }
 
 Player::Player(const Player* other)
 	: m_color{other->m_color}
 	, m_name{other->m_name}
 {
-
+	// Empty
 }
 
 Player::Player(Player&& other) noexcept

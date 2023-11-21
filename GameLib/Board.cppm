@@ -15,6 +15,9 @@ public:
 	~Board();
 
 	const IColumn* GetElement(Position pos) const override;
+	const uint16_t GetSize() const override;
+
+
 	void PlaceColumn(Position& position, IPlayer* player);
 	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);

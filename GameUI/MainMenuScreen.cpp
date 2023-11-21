@@ -47,7 +47,7 @@ void MainMenuScreen::InitPageWidgets()
 	imageWidget->setScaledContents(true);
 
 	// Header text init
-	QLabel* mainText = new QLabel("    Play Twixt\non the #1 App!", this);
+	mainText = new QLabel("    Play Twixt\non the #1 App!", this);
 	mainText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	mainText->setObjectName("mainText");
 
