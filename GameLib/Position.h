@@ -5,6 +5,7 @@
 class _declspec(dllexport) Position
 {
 public:
+	Position();
 	Position(uint16_t x, uint16_t y);
 
 	const uint16_t GetX() const;
@@ -14,5 +15,6 @@ public:
 
 private:
 	uint16_t m_x, m_y;
+
 };
 
