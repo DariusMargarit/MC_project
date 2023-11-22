@@ -52,7 +52,7 @@ std::string& Board::MakeKey(const Position& firstPosition, const Position& secon
 const std::pair<Position, Position>& Board::ExtractPositionFromKey(std::string key)
 {
 	std::istringstream in(key);
-	size_t row, column;
+	uint16_t row, column;
 	in >> row >> column;
 	Position firstPosition(row, column);
 
@@ -64,8 +64,8 @@ const std::pair<Position, Position>& Board::ExtractPositionFromKey(std::string k
 
 
 Board::~Board() {
-	for (int index1 = 0; index1 < m_matrix.size(); index1++) {
-		for (int index2 = 0; index2 < m_matrix[index1].size(); index2++) {
+	for (uint16_t index1 = 0; index1 < m_matrix.size(); index1++) {
+		for (uint16_t index2 = 0; index2 < m_matrix[index1].size(); index2++) {
 			delete m_matrix[index1][index2];
 		}
 	}
@@ -78,7 +78,7 @@ const IColumn* Board::GetElement(Position position) const
 	return m_matrix[position.GetRow()][position.GetColumn()];
 }
 
-const IColumn* Board::GetElement(int row, int column) const
+const IColumn* Board::GetElement(uint16_t row, uint16_t column) const
 {
 	return m_matrix[row][column];
 }
@@ -116,7 +116,8 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 	}
 
 	if (std::string key = MakeKey(firstPosition, secondPosition); 
-		m_bridges.find(key) != m_bridges.end())
+		m_bridges.find(key) != m_bridges.end() &&
+		m_bridges[key]->GetFirstColumn()->GetPlayer() == player)
 	{
 		delete m_bridges[key];
 		m_bridges.erase(key);
@@ -131,8 +132,8 @@ const IColumn* Board::operator[](Position pos) const
 
 Board::Board(const Board& otherBoard) 
 {
-	for (size_t line = 0; line < otherBoard.m_matrix.size(); ++line)
-		for (size_t column = 0; column < otherBoard.m_matrix[line].size(); ++column)
+	for (uint16_t line = 0; line < otherBoard.m_matrix.size(); ++line)
+		for (uint16_t column = 0; column < otherBoard.m_matrix[line].size(); ++column)
 		{
 			if (otherBoard.m_matrix[line][column] != nullptr)
 				m_matrix[line][column] = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[line][column]));

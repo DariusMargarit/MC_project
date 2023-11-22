@@ -19,7 +19,7 @@ public:
 	static const Position& EmptyPosition();
 
 private:
-	size_t m_row, m_column;
+	uint16_t m_row, m_column;
 
 };
 
