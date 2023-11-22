@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <sstream>
 
 #include "Position.h"
 #include "IColumn.h"
@@ -31,6 +32,7 @@ private:
 	bool ValidPlaceColumn(Position position) const;
 	bool ValidBridge(Position firstPosition, Position secondPosition) const;
 	std::string& MakeKey(const Position& firstPosition, const Position& secondPosition);
+	const std::pair<Position, Position>& ExtractPositionFromKey(std::string key);
 
 private:
 	std::unordered_map<std::string,Bridge*> m_bridges;

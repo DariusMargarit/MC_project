@@ -49,6 +49,19 @@ std::string& Board::MakeKey(const Position& firstPosition, const Position& secon
 	return key;
 }
 
+const std::pair<Position, Position>& Board::ExtractPositionFromKey(std::string key)
+{
+	std::istringstream in(key);
+	size_t row, column;
+	in >> row >> column;
+	Position firstPosition(row, column);
+
+	in >> row >> column;
+	Position secondPosition(row, column);
+
+	return std::make_pair(firstPosition, secondPosition);
+}
+
 
 Board::~Board() {
 	for (int index1 = 0; index1 < m_matrix.size(); index1++) {
@@ -93,8 +106,6 @@ void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 	}
 }
 
-
-
 void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
 	
@@ -129,28 +140,16 @@ Board::Board(const Board& otherBoard)
 				m_matrix[line][column] = nullptr;
 		}
 
-	/*for (auto bridge : otherBoard.m_bridges)
+	for (auto bridge : otherBoard.m_bridges)
 	{
-		IColumn* firstColumn = nullptr, * secondColumn = nullptr;
-		IColumn* columnToFind = bridge->GetFirstColumn();
-		for (size_t line = 0; line < m_matrix.size() && secondColumn == nullptr; ++line)
-			for (size_t column = 0; column < m_matrix[line].size() && secondColumn == nullptr; ++column)
-			{
-				if (columnToFind == otherBoard.m_matrix[line][column])
-				{
-					if (firstColumn == nullptr)
-					{
-						firstColumn = m_matrix[line][column];
-						columnToFind = bridge->GetSecondColumn();
-					}
-					else
-					{
-						secondColumn = m_matrix[line][column];
-						Bridge* newBridge = new Bridge(firstColumn, secondColumn);
-						m_bridges.push_back(newBridge);
-					}
-				}
-			}
-	}*/
+		const auto& [firstPosition,secondPosition] = ExtractPositionFromKey(bridge.first);
+		IColumn* firstColumn = nullptr, *secondColumn = nullptr;
+
+		firstColumn = m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()];
+		secondColumn = m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()];
+		
+		Bridge* newBridge = new Bridge(firstColumn, secondColumn);
+		m_bridges.emplace(bridge.first,newBridge);
+	}
 
 }
