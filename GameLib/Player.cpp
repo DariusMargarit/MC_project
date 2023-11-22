@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(std::string_view name, std::string_view color)
+Player::Player(std::string_view name, EColor color)
 	: m_color{color}
 	, m_name{name}
 {
@@ -18,7 +18,7 @@ Player::Player(Player&& other) noexcept
 	: m_color{other.m_color}
 	, m_name{other.m_name}
 {
-	other.m_color = nullptr;
+	other.m_color = EColor::NoColor;
 	other.m_name = nullptr;
 }
 
@@ -40,13 +40,13 @@ Player& Player::operator=(Player&& other) noexcept
 	m_name = other.m_name;
 	m_color = other.m_color;
 
-	other.m_color = nullptr;
+	other.m_color = EColor::NoColor;
 	other.m_name = nullptr;
 
 	return *this;
 }
 
-std::string_view Player::GetColor() const
+EColor Player::GetColor() const 
 {
 	return m_color;
 }
@@ -56,7 +56,7 @@ std::string_view Player::GetName() const
 	return m_name;
 }
 
-IPlayer* IPlayer ::Produce(std::string_view name, std::string_view color)
+IPlayer* IPlayer ::Produce(std::string_view name, EColor color)
 {
 	return new Player(name, color);
 }

@@ -4,9 +4,10 @@
 #include "BoardWidget.h"
 #include "FileUtils.h"
 
-BoardWidget::BoardWidget(const IBoard& gameBoard, QWidget* parent)
-	: QWidget(parent)
+BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) : QWidget(parent)
 	, m_gameBoard(gameBoard)
+	, m_firstPlayerColor(firstPlayerColor)
+	, m_secondPlayerColor(secondPlayerColor)
 
 {
 	setObjectName("board");
@@ -14,6 +15,20 @@ BoardWidget::BoardWidget(const IBoard& gameBoard, QWidget* parent)
 
 	QString stylesheet = FileUtils::StylesheetFileToString("./stylesheets/game.qss");
 	setStyleSheet(stylesheet);
+}
+
+const QColor BoardWidget::TwixtColorToQColor(EColor color)
+{
+	switch (color)
+	{
+	case EColor::Red:
+		return std::move(QColor("#E2001B"));
+	case EColor::Blue:
+		return std::move(QColor("#4798CE"));
+	default:
+		return Qt::transparent;
+
+	}
 }
 
 void BoardWidget::paintEvent(QPaintEvent* event)
@@ -33,23 +48,26 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 		{
 			if (IsCorner(row, column)) continue;
 
-			if (m_gameBoard.GetElement(row, column))
+			if (auto element{ m_gameBoard.GetElement(row, column) }; element)
 			{
-				radius = qMin(circleWidth, circleHeight) / 5.0f;
-				painter.setPen(Qt::green);
-				painter.setBrush(QBrush(Qt::green));
+				QColor color = TwixtColorToQColor(element->GetPlayer()->GetColor());
+				radius = static_cast<float>(qMin(circleWidth, circleHeight) / largeCircleMagnification);
+				painter.setPen(color);
+				painter.setBrush(std::move(QBrush(color)));
 			}
 			else if (m_hovered.IsEqual(row, column))
 			{
-				radius = qMin(circleWidth, circleHeight) / 5.0f;
-				painter.setPen(Qt::red);
-				painter.setBrush(QBrush(Qt::red));
+				QColor color = Qt::black;
+				radius = static_cast<float>(qMin(circleWidth, circleHeight) / largeCircleMagnification);
+				painter.setPen(color);
+				painter.setBrush(std::move(QBrush(std::move(color))));
 			}
 			else
 			{
-				radius = qMin(circleWidth, circleHeight) / 8.0f;
-				painter.setPen(Qt::white);
-				painter.setBrush(QBrush(Qt::white));
+				QColor color = Qt::white;
+				radius = static_cast<float>(qMin(circleWidth, circleHeight) / smallCircleMagnification);
+				painter.setPen(color);
+				painter.setBrush(std::move(color));
 			}
 			
 			QRectF circleRect(column * circleWidth, row * circleHeight, circleWidth, circleHeight);
@@ -58,8 +76,9 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	}
 
 	QPen pen;
+	QColor firstPlayerColor = TwixtColorToQColor(m_firstPlayerColor);
 	pen.setWidth(2);
-	pen.setColor("#e0ae48");
+	pen.setColor(std::move(firstPlayerColor));
 	painter.setPen(pen);
 
 	QLineF topLine = GetLineDelimiter(EDirection::Top);
@@ -67,7 +86,8 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	painter.drawLine(topLine);
 	painter.drawLine(bottomLine);
 
-	pen.setColor("#54c49f");
+	QColor secondPlayerColor = TwixtColorToQColor(m_secondPlayerColor);
+	pen.setColor(std::move(secondPlayerColor));
 	painter.setPen(pen);
 
 	QLineF leftLine = GetLineDelimiter(EDirection::Left);
@@ -84,6 +104,7 @@ void BoardWidget::mousePressEvent(QMouseEvent* event)
 	if (IsCorner(pos.GetRow(), pos.GetColumn())) return;
 
 	emit(BoardClicked(std::move(pos)));
+	update();
 }
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event)

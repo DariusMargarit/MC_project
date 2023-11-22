@@ -18,7 +18,9 @@ class BoardWidget : public QWidget
 	Q_OBJECT
 
 public:
-	BoardWidget(const IBoard& gameBoard, QWidget* parent = nullptr);
+	BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
+
+	static const QColor TwixtColorToQColor(EColor color);
 
 signals:
 	void BoardClicked(const Position& position);
@@ -36,6 +38,11 @@ private:
 
 private:
 	const IBoard& m_gameBoard;
+	EColor m_firstPlayerColor, m_secondPlayerColor;
+
+	static const size_t smallCircleMagnification = 8;
+	static const size_t largeCircleMagnification = 5;
+
 	Position m_hovered;
 
 };

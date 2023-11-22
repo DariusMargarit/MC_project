@@ -2,11 +2,18 @@
 
 #include <string_view>
 
+enum class EColor 
+{
+	Red,
+	Blue,
+	NoColor,
+};
+
 struct _declspec(dllexport) IPlayer
 {
-	static IPlayer* Produce(std::string_view name, std::string_view color);
+	static IPlayer* Produce(std::string_view name, EColor color);
 
-	virtual std::string_view GetColor() const = 0;
+	virtual EColor GetColor() const = 0;
 	virtual std::string_view GetName() const = 0;
 
 	virtual ~IPlayer() = default;

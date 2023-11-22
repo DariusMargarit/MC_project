@@ -5,8 +5,8 @@
 #include "Game.h"
 
 void Twixt::Run() {
-	IPlayer* firstPlayer = new Player("Player1", "RED");
-	IPlayer* secondPlayer = new Player("Player2", "BLACK");
+	IPlayer* firstPlayer = new Player("Player1", EColor::Blue);
+	IPlayer* secondPlayer = new Player("Player2", EColor::Red);
 	uint16_t boardSize = 24;
 	IGame* game = new Game(firstPlayer, secondPlayer, boardSize);
 

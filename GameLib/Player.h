@@ -5,15 +5,16 @@
 class _declspec(dllexport) Player : public IPlayer
 {
 public:
-	Player(std::string_view name, std::string_view color);
+	Player(std::string_view name, EColor color);
 	Player(const Player* other);
 	Player(Player&& other) noexcept;
 	Player& operator= (const Player* other);
 	Player& operator= (Player&& other) noexcept;
 
-	std::string_view GetColor() const override;
+	EColor GetColor() const override;
 	std::string_view GetName() const override;
 
 private:
-	std::string m_name, m_color;
+	std::string m_name;
+	EColor m_color;
 };
