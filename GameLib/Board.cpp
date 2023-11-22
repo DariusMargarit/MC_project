@@ -37,6 +37,16 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 	return false;
 }
 
+std::string& Board::MakeKey(const Position& firstPosition, const Position& secondPosition)
+{
+	const auto& raw1 = firstPosition.GetRow(), & raw2 = secondPosition.GetRow();
+	const auto& column1 = firstPosition.GetColumn(), & column2 = secondPosition.GetColumn();
+
+	std::string key = std::to_string(raw1) + " " + std::to_string(column1) +
+		" " + std::to_string(raw2) + " " + std::to_string(column2);
+	return key;
+}
+
 
 Board::~Board() {
 	for (int index1 = 0; index1 < m_matrix.size(); index1++) {
@@ -45,7 +55,7 @@ Board::~Board() {
 		}
 	}
 	for (auto bridge : m_bridges)
-		delete bridge;
+		delete bridge.second;
 }
 
 const IColumn* Board::GetElement(Position position) const
@@ -76,7 +86,7 @@ void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 	if (ValidBridge(firstPosition, secondPosition)) {
 		Bridge *bridge = new Bridge(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
 			m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]);
-		m_bridges.push_back(bridge);
+		//m_bridges.push_back(bridge);
 	}
 }
 
@@ -101,7 +111,7 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 	if (bridgeIter != m_bridges.end())
 	{
 		m_bridges.erase(bridgeIter);
-		delete* bridgeIter; 
+		//delete* bridgeIter; 
 		
 	}
 	
@@ -123,9 +133,10 @@ Board::Board(const Board& otherBoard)
 				m_matrix[line][column] = nullptr;
 		}
 
-	for (auto bridge : otherBoard.m_bridges)
+	/*for (auto bridge : otherBoard.m_bridges)
 	{
-		IColumn* firstColumn = nullptr, * secondColumn = nullptr, * columnToFind = bridge->GetFirstColumn();
+		IColumn* firstColumn = nullptr, * secondColumn = nullptr;
+		IColumn* columnToFind = bridge->GetFirstColumn();
 		for (size_t line = 0; line < m_matrix.size() && secondColumn == nullptr; ++line)
 			for (size_t column = 0; column < m_matrix[line].size() && secondColumn == nullptr; ++column)
 			{
@@ -144,6 +155,6 @@ Board::Board(const Board& otherBoard)
 					}
 				}
 			}
-	}
+	}*/
 
 }

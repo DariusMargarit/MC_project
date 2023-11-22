@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
+#include <string>
 
 #include "Position.h"
 #include "IColumn.h"
@@ -28,8 +30,9 @@ public:
 private:
 	bool ValidPlaceColumn(Position position) const;
 	bool ValidBridge(Position firstPosition, Position secondPosition) const;
+	std::string& MakeKey(const Position& firstPosition, const Position& secondPosition);
 
 private:
-	std::vector<Bridge*> m_bridges;
+	std::unordered_map<std::string,Bridge*> m_bridges;
 	std::vector<std::vector<IColumn*>> m_matrix;
 };
