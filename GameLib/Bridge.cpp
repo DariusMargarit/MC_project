@@ -1,4 +1,4 @@
-module Bridge;
+#include "Bridge.h"
 
 Bridge::Bridge(IColumn* firstColumn, IColumn* secondColumn)
 	: m_firstColumn{firstColumn}

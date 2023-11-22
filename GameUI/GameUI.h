@@ -3,9 +3,9 @@
 #include <QStackedWidget>
 #include <QMainWindow>
 
-#include "MainMenuScreen.h";
-#include "SettingsScreen.h";
-#include "GameScreen.h";
+#include "MainMenuScreen.h"
+#include "SettingsScreen.h"
+#include "GameScreen.h"
 
 #include "../GameLib/IGame.h"
 

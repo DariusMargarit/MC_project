@@ -1,4 +1,4 @@
-module Column;
+#include "Column.h"
 
 Column::Column(IPlayer* player)
 	:m_player{ player }

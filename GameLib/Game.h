@@ -1,11 +1,11 @@
-export module Game;
+#pragma once
 
-export import "IGame.h";
-export import Board;
-export import Player;
+#include "IGame.h"
+#include "Board.h"
+#include "Player.h"
 
 
-export class Game : public IGame
+class Game : public IGame
 {
 public:
 	Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize);

@@ -1,8 +1,8 @@
-export module Column;
+#pragma once
 
-export import "IColumn.h";
+#include "IColumn.h"
 
-export class Column : public IColumn
+class Column : public IColumn
 {
 public:
 	Column(IPlayer* player);

@@ -14,8 +14,6 @@ BoardWidget::BoardWidget(const IBoard& gameBoard, QWidget* parent)
 
 	QString stylesheet = FileUtils::StylesheetFileToString("./stylesheets/game.qss");
 	setStyleSheet(stylesheet);
-
-
 }
 
 void BoardWidget::paintEvent(QPaintEvent* event)
@@ -28,7 +26,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	int boardSize = m_gameBoard.GetSize();
 	const auto circleWidth = static_cast<float>(width() / boardSize);
 	const auto circleHeight = static_cast<float>(height() / boardSize);
-	float radius = qMin(circleWidth, circleHeight) / 6.0f;
+	float radius = qMin(circleWidth, circleHeight) / 8.0f;
 
 	for (int row = 0; row < boardSize; ++row)
 	{
@@ -36,7 +34,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 		{
 			if (IsCorner(row, column)) continue;
 
-			if (m_hovered.GetX() == row && m_hovered.GetY() == column)
+			if (m_hovered.GetRow() == row && m_hovered.GetColumn() == column)
 			{
 				painter.setBrush(QBrush(Qt::red));
 			}
@@ -72,19 +70,17 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 
 void BoardWidget::mousePressEvent(QMouseEvent* event)
 {
+	Position pos = CoordinatesToPosition(event->position());
+	if (IsCorner(pos.GetRow(), pos.GetColumn())) return;
 
+	emit(BoardClicked(std::move(pos)));
 }
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 {
-	const auto boardSize = m_gameBoard.GetSize();
-	const auto circleWidth = (float)width() / boardSize;
-	const auto circleHeight = (float)height() / boardSize;
 
-	std::size_t line = event->position().y() / circleHeight;
-	std::size_t col = event->position().x() / circleWidth;
 
-	m_hovered = Position(line, col);
+	m_hovered = CoordinatesToPosition(event->position());
 	update();
 
 }
@@ -94,7 +90,20 @@ void BoardWidget::leaveEvent(QEvent* event)
 	m_hovered = Position(0, 0);
 }
 
-bool BoardWidget::IsCorner(int row, int column)
+Position BoardWidget::CoordinatesToPosition(QPointF pos) const
+{
+	const auto boardSize = m_gameBoard.GetSize();
+	const auto circleWidth = (float)width() / boardSize;
+	const auto circleHeight = (float)height() / boardSize;
+
+	std::size_t line = pos.y() / circleHeight;
+	std::size_t col = pos.x() / circleWidth;
+
+	return std::move(Position(line, col));
+
+}
+
+bool BoardWidget::IsCorner(int row, int column) const
 {
 	const auto boardSize = m_gameBoard.GetSize();
 	return (row == 0 && column == 0) ||

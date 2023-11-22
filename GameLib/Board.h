@@ -1,13 +1,13 @@
-export module Board;
+#pragma once
 
-import <vector>;
+#include <vector>
 
-export import "Position.h";
-export import "IColumn.h";
-export import "IBoard.h";
-export import Bridge;
+#include "Position.h"
+#include "IColumn.h"
+#include "IBoard.h"
+#include "Bridge.h"
 
-export class Board : public IBoard
+class Board : public IBoard
 {
 public:
 	Board(uint16_t size);

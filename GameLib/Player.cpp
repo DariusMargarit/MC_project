@@ -1,4 +1,4 @@
-module Player;
+#include "Player.h"
 
 Player::Player(std::string_view name, std::string_view color)
 	: m_color{color}

@@ -1,8 +1,8 @@
-export module Bridge;
+#pragma once
 
-export import "IColumn.h";
+#include "IColumn.h"
 
-export class Bridge
+class Bridge
 {
 public:
 	Bridge(IColumn* firstColumn,IColumn* secondColumn);

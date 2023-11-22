@@ -6,15 +6,15 @@ class _declspec(dllexport) Position
 {
 public:
 	Position();
-	Position(uint16_t x, uint16_t y);
+	Position(uint16_t row, uint16_t column);
 
-	const uint16_t GetX() const;
-	const uint16_t GetY() const;
+	const uint16_t GetRow() const;
+	const uint16_t GetColumn() const;
 
 	bool operator==(Position position);
 
 private:
-	uint16_t m_x, m_y;
+	uint16_t m_row, m_column;
 
 };
 

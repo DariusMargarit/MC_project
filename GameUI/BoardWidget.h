@@ -20,6 +20,9 @@ class BoardWidget : public QWidget
 public:
 	BoardWidget(const IBoard& gameBoard, QWidget* parent = nullptr);
 
+signals:
+	void BoardClicked(const Position& position);
+
 protected:
 	void paintEvent(QPaintEvent* event) override;
 	void mousePressEvent(QMouseEvent* event) override;
@@ -27,7 +30,8 @@ protected:
 	void leaveEvent(QEvent* event) override;
 
 private:
-	bool IsCorner(int row, int column);
+	Position CoordinatesToPosition(QPointF pos) const;
+	bool IsCorner(int row, int column) const;
 	QLineF GetLineDelimiter(EDirection direction) const;
 
 private:

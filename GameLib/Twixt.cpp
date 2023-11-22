@@ -1,4 +1,8 @@
+#include <memory>
+
 #include "Twixt.h"
+#include "Player.h"
+#include "Game.h"
 
 void Twixt::Run() {
 	IPlayer* firstPlayer = new Player("Player1", "RED");

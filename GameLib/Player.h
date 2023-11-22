@@ -1,8 +1,8 @@
-export module Player;
+#pragma once
 
-export import "IPlayer.h";
+#include "IPlayer.h"
 
-export class _declspec(dllexport) Player : public IPlayer
+class _declspec(dllexport) Player : public IPlayer
 {
 public:
 	Player(std::string_view name, std::string_view color);

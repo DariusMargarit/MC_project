@@ -1,6 +1,5 @@
-module Board;
-
-import Column;
+#include "Board.h"
+#include "Column.h"
 
 Board::Board(uint16_t size)
 	: m_matrix{size, std::vector<IColumn*>(size, nullptr)}
@@ -10,7 +9,7 @@ Board::Board(uint16_t size)
 
 bool Board::ValidPlaceColumn(Position position) const
 {
-	if (m_matrix[position.GetY()][position.GetX()] != nullptr)
+	if (m_matrix[position.GetRow()][position.GetColumn()] != nullptr)
 	{
 		return false;
 	}
@@ -19,19 +18,19 @@ bool Board::ValidPlaceColumn(Position position) const
 
 bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 {
-	int absValueX = abs(firstPosition.GetX() - secondPosition.GetX());
-	int absValueY = abs(firstPosition.GetY() - secondPosition.GetY());
-	IColumn* firstColumn = m_matrix[firstPosition.GetY()][firstPosition.GetX()];
-	IColumn* secondColumn = m_matrix[secondPosition.GetY()][secondPosition.GetX()];
+	int absValueRow = abs(firstPosition.GetRow() - secondPosition.GetRow());
+	int absValueColumn = abs(firstPosition.GetColumn() - secondPosition.GetColumn());
+	IColumn* firstColumn = m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()];
+	IColumn* secondColumn = m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()];
 	if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
 	{
 		return false;
 	}
-	if (absValueX == 0 || absValueY == 0) 
+	if (absValueRow == 0 || absValueColumn == 0) 
 	{
 		return false;
 	}
-	if (absValueX + absValueY == 3) 
+	if (absValueRow + absValueColumn == 3) 
 	{
 		return true;
 	}
@@ -51,7 +50,7 @@ Board::~Board() {
 
 const IColumn* Board::GetElement(Position position) const
 {
-	return m_matrix[position.GetX()][position.GetY()];
+	return m_matrix[position.GetRow()][position.GetColumn()];
 }
 
 const uint16_t Board::GetSize() const
@@ -63,15 +62,15 @@ void Board::PlaceColumn(Position& position, IPlayer* player)
 {
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn = new Column(player);
-		m_matrix[position.GetY()][position.GetX()] = newColumn;
+		m_matrix[position.GetRow()][position.GetColumn()] = newColumn;
 	}
 }
 
 void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
 	if (ValidBridge(firstPosition, secondPosition)) {
-		Bridge *bridge = new Bridge(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
-			m_matrix[secondPosition.GetY()][secondPosition.GetX()]);
+		Bridge *bridge = new Bridge(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
+			m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]);
 		m_bridges.push_back(bridge);
 	}
 }
@@ -89,8 +88,8 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 
 	
 	auto bridgeIter = std::find_if(m_bridges.begin(), m_bridges.end(), [&](const Bridge* bridge) {
-		return bridge->HasPositions(m_matrix[firstPosition.GetY()][firstPosition.GetX()],
-		m_matrix[secondPosition.GetY()][secondPosition.GetX()]) && bridge->GetFirstColumn()->GetPlayer() == player;
+		return bridge->HasPositions(m_matrix[firstPosition.GetColumn()][firstPosition.GetRow()],
+		m_matrix[secondPosition.GetColumn()][secondPosition.GetRow()]) && bridge->GetFirstColumn()->GetPlayer() == player;
 		});
 
 	

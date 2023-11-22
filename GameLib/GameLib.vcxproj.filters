@@ -27,25 +27,25 @@
     <ClCompile Include="Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Column.cppm">
+    <ClCompile Include="Column.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Column.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bridge.cppm">
+    <ClCompile Include="Bridge.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Bridge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cppm">
+    <ClCompile Include="Board.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cppm">
+    <ClCompile Include="Game.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -57,7 +57,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cppm">
+    <ClCompile Include="Player.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="Twixt.cpp">

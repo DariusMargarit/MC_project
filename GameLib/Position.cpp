@@ -1,30 +1,30 @@
 #include "Position.h"
 
-Position::Position(uint16_t x, uint16_t y)
-	: m_x(x)
-	, m_y(y)
+Position::Position(uint16_t row, uint16_t column)
+	: m_row(row)
+	, m_column(column)
 {
 	// Empty
 }
 
 Position::Position()
-	: m_x(0)
-	, m_y(0)
+	: m_row(UINT16_MAX)
+	, m_column(UINT16_MAX)
 {
 	// Empty
 }
 
-const uint16_t Position::GetX() const
+const uint16_t Position::GetRow() const
 {
-	return m_x;
+	return m_row;
 }
 
-const uint16_t Position::GetY() const
+const uint16_t Position::GetColumn() const
 {
-	return m_y;
+	return m_column;
 }
 
 bool Position::operator==(Position position)
 {
-	return this->m_x == position.m_x && this->m_y == position.m_y;
+	return this->m_row == position.m_row && this->m_column == position.m_column;
 }

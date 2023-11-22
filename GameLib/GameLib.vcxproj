@@ -151,17 +151,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Board.cppm" />
+    <ClCompile Include="Board.h" />
     <ClCompile Include="Bridge.cpp" />
-    <ClCompile Include="Bridge.cppm" />
+    <ClCompile Include="Bridge.h" />
     <ClCompile Include="Column.cpp" />
-    <ClCompile Include="Column.cppm" />
+    <ClCompile Include="Column.h" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Game.cppm" />
+    <ClCompile Include="Game.h" />
     <ClCompile Include="IColumn.h" />
     <ClCompile Include="IGame.h" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Player.cppm" />
+    <ClCompile Include="Player.h" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Position.h" />
     <ClCompile Include="Twixt.cpp" />

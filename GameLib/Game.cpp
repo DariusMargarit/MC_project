@@ -1,4 +1,4 @@
-module Game;
+#include "Game.h"
 
 Game::Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize)
 	: m_player1(player1)
@@ -27,22 +27,26 @@ Game::~Game()
 
 void Game::PlaceColumn(Position position)
 {
-	if (m_turn == m_player1) 
-	{
-		if (position.GetY() < 1 || position.GetY() > m_boardSize - 2) 
-		{
-			// exception
-			return;
-		}
-	}
-	else 
-	{
-		if (position.GetX() < 1 || position.GetX() > m_boardSize - 2)
-		{
-			// exception
-			return;
-		}
-	}
+	// Code needs review and to be placed in a validation function
+	
+	//if (m_turn == m_player1) 
+	//{
+	//	if (position.GetY() < 1 || position.GetY() > m_boardSize - 2) 
+	//	{
+	//		// exception
+	//		return;
+	//	}
+	//}
+	//else 
+	//{
+	//	if (position.GetX() < 1 || position.GetX() > m_boardSize - 2)
+	//	{
+	//		// exception
+	//		return;
+	//	}
+	//}
+
+
 	m_board->PlaceColumn(position, m_turn);
 
 	ChangeTurn();
