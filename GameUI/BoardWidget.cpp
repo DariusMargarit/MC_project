@@ -20,13 +20,12 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 {
 	QWidget::paintEvent(event);
 	QPainter painter(this);
-	QPen pen;
 
 	painter.setRenderHints(QPainter::Antialiasing);
 	int boardSize = m_gameBoard.GetSize();
 	const auto circleWidth = static_cast<float>(width() / boardSize);
 	const auto circleHeight = static_cast<float>(height() / boardSize);
-	float radius = qMin(circleWidth, circleHeight) / 8.0f;
+	float radius;
 
 	for (int row = 0; row < boardSize; ++row)
 	{
@@ -34,12 +33,22 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 		{
 			if (IsCorner(row, column)) continue;
 
-			if (m_hovered.GetRow() == row && m_hovered.GetColumn() == column)
+			if (m_gameBoard.GetElement(row, column))
 			{
+				radius = qMin(circleWidth, circleHeight) / 5.0f;
+				painter.setPen(Qt::green);
+				painter.setBrush(QBrush(Qt::green));
+			}
+			else if (m_hovered.IsEqual(row, column))
+			{
+				radius = qMin(circleWidth, circleHeight) / 5.0f;
+				painter.setPen(Qt::red);
 				painter.setBrush(QBrush(Qt::red));
 			}
 			else
 			{
+				radius = qMin(circleWidth, circleHeight) / 8.0f;
+				painter.setPen(Qt::white);
 				painter.setBrush(QBrush(Qt::white));
 			}
 			
@@ -48,6 +57,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 		}
 	}
 
+	QPen pen;
 	pen.setWidth(2);
 	pen.setColor("#e0ae48");
 	painter.setPen(pen);
@@ -70,7 +80,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 
 void BoardWidget::mousePressEvent(QMouseEvent* event)
 {
-	Position pos = CoordinatesToPosition(event->position());
+	Position pos{ CoordinatesToPosition(event->position()) };
 	if (IsCorner(pos.GetRow(), pos.GetColumn())) return;
 
 	emit(BoardClicked(std::move(pos)));
@@ -78,16 +88,13 @@ void BoardWidget::mousePressEvent(QMouseEvent* event)
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 {
-
-
 	m_hovered = CoordinatesToPosition(event->position());
 	update();
-
 }
 
 void BoardWidget::leaveEvent(QEvent* event)
 {
-	m_hovered = Position(0, 0);
+	m_hovered = Position::EmptyPosition();
 }
 
 Position BoardWidget::CoordinatesToPosition(QPointF pos) const

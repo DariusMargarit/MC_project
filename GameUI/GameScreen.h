@@ -9,6 +9,10 @@ class GameScreen : public QWidget
 
 public:
 	GameScreen(QWidget* parent = nullptr);
+	
+public slots:
+	void OnBoardClicked(const Position& position);
+
 
 private:
 	QGridLayout* m_layout;

@@ -53,6 +53,11 @@ const IColumn* Board::GetElement(Position position) const
 	return m_matrix[position.GetRow()][position.GetColumn()];
 }
 
+const IColumn* Board::GetElement(int row, int column) const
+{
+	return m_matrix[row][column];
+}
+
 const uint16_t Board::GetSize() const
 {
 	return m_matrix.size();
@@ -88,8 +93,8 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 
 	
 	auto bridgeIter = std::find_if(m_bridges.begin(), m_bridges.end(), [&](const Bridge* bridge) {
-		return bridge->HasPositions(m_matrix[firstPosition.GetColumn()][firstPosition.GetRow()],
-		m_matrix[secondPosition.GetColumn()][secondPosition.GetRow()]) && bridge->GetFirstColumn()->GetPlayer() == player;
+		return bridge->HasPositions(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
+		m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]) && bridge->GetFirstColumn()->GetPlayer() == player;
 		});
 
 	

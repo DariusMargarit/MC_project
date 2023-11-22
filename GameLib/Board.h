@@ -15,6 +15,7 @@ public:
 	~Board();
 
 	const IColumn* GetElement(Position pos) const override;
+	const IColumn* GetElement(int row, int column) const override;
 	const uint16_t GetSize() const override;
 
 
