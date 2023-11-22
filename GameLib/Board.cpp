@@ -39,8 +39,10 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 
 std::string& Board::MakeKey(const Position& firstPosition, const Position& secondPosition)
 {
-	const auto& raw1 = firstPosition.GetRow(), & raw2 = secondPosition.GetRow();
-	const auto& column1 = firstPosition.GetColumn(), & column2 = secondPosition.GetColumn();
+	const auto& raw1 = firstPosition.GetRow(), 
+		      & raw2 = secondPosition.GetRow();
+	const auto& column1 = firstPosition.GetColumn(), 
+			  & column2 = secondPosition.GetColumn();
 
 	std::string key = std::to_string(raw1) + " " + std::to_string(column1) +
 		" " + std::to_string(raw2) + " " + std::to_string(column2);
@@ -86,7 +88,8 @@ void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 	if (ValidBridge(firstPosition, secondPosition)) {
 		Bridge *bridge = new Bridge(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
 			m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]);
-		//m_bridges.push_back(bridge);
+		std::string key = MakeKey(firstPosition, secondPosition);
+		m_bridges.emplace(key, bridge);
 	}
 }
 
@@ -101,18 +104,11 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 		return;
 	}
 
-	
-	auto bridgeIter = std::find_if(m_bridges.begin(), m_bridges.end(), [&](const Bridge* bridge) {
-		return bridge->HasPositions(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
-		m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]) && bridge->GetFirstColumn()->GetPlayer() == player;
-		});
-
-	
-	if (bridgeIter != m_bridges.end())
+	if (std::string key = MakeKey(firstPosition, secondPosition); 
+		m_bridges.find(key) != m_bridges.end())
 	{
-		m_bridges.erase(bridgeIter);
-		//delete* bridgeIter; 
-		
+		delete m_bridges[key];
+		m_bridges.erase(key);
 	}
 	
 }
