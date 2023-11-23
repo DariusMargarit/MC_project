@@ -16,21 +16,58 @@ bool Board::ValidPlaceColumn(Position position) const
 	return true;
 }
 
+std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firstPosition, Position& secondPosition) const
+{
+	std::vector<std::vector<IColumn*>>surroundingMatrix;
+	uint16_t lowerRowIndex = std::min(firstPosition.GetRow(), secondPosition.GetRow());
+	uint16_t lowerColumnIndex = std::min(firstPosition.GetColumn(), secondPosition.GetColumn());
+	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow());
+	lowerRowIndex = std::max<uint16_t>(--lowerRowIndex, 0);
+	lowerColumnIndex = std::max<uint16_t>(--lowerColumnIndex, 0);
+
+	std::vector<IColumn*>row;
+	uint16_t higherRowIndex, higherColumnIndex;
+	if (absRowValue == 1) 
+	{
+		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 3, m_matrix.size() - 1);
+		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 4, m_matrix[0].size() - 1);
+	} else 
+	{
+		uint16_t higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, m_matrix.size() - 1);
+		uint16_t higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, m_matrix[0].size() - 1);
+	}
+	for (uint16_t rowIndex = lowerRowIndex; rowIndex < higherRowIndex; ++rowIndex)
+	{
+		for (uint16_t columnIndex = lowerColumnIndex; columnIndex < higherColumnIndex; ++columnIndex)
+		{
+			row.push_back(m_matrix[rowIndex][columnIndex]);
+		}
+		surroundingMatrix.push_back(row);
+		row.clear();
+	}
+	surroundingMatrix[0][0] = nullptr;
+	surroundingMatrix[0][surroundingMatrix[0].size() - 1] = nullptr;
+	surroundingMatrix[surroundingMatrix.size() - 1][0] = nullptr;
+	surroundingMatrix[surroundingMatrix.size() - 1][surroundingMatrix[0].size() - 1] = nullptr;
+
+	return surroundingMatrix;
+}
+
 bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 {
-	int absValueRow = abs(firstPosition.GetRow() - secondPosition.GetRow());
-	int absValueColumn = abs(firstPosition.GetColumn() - secondPosition.GetColumn());
+	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow());
+	uint16_t absColumnValue = abs(firstPosition.GetColumn() - secondPosition.GetColumn());
 	IColumn* firstColumn = m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()];
 	IColumn* secondColumn = m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()];
 	if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
 	{
 		return false;
 	}
-	if (absValueRow == 0 || absValueColumn == 0) 
+	if (absRowValue == 0 || absColumnValue == 0) 
 	{
 		return false;
 	}
-	if (absValueRow + absValueColumn == 3) 
+	if (absRowValue + absColumnValue == 3) 
 	{
 		return true;
 	}

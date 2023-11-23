@@ -30,6 +30,7 @@ public:
 
 private:
 	bool ValidPlaceColumn(Position position) const;
+	std::vector<std::vector<IColumn*>> BridgeSurroundingMatrix(Position& firstPosition, Position& secondPosition) const;
 	bool ValidBridge(Position firstPosition, Position secondPosition) const;
 	std::string& MakeKey(const Position& firstPosition, const Position& secondPosition);
 	const std::pair<Position, Position>& ExtractPositionFromKey(std::string key);
