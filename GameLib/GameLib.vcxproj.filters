@@ -60,9 +60,6 @@
     <ClCompile Include="Player.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Twixt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
       <Filter>Header Files\API</Filter>
     </ClInclude>
     <ClInclude Include="IBoard.h">
-      <Filter>Header Files\API</Filter>
-    </ClInclude>
-    <ClInclude Include="Twixt.h">
       <Filter>Header Files\API</Filter>
     </ClInclude>
     <ClInclude Include="IGameSettings.h">

@@ -40,8 +40,8 @@ private:
 	const IBoard& m_gameBoard;
 	EColor m_firstPlayerColor, m_secondPlayerColor;
 
-	static const size_t smallCircleMagnification = 8;
-	static const size_t largeCircleMagnification = 5;
+	static const size_t smallCircleMagnification{8};
+	static const size_t largeCircleMagnification{5};
 
 	Position m_hovered;
 

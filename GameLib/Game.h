@@ -8,7 +8,7 @@
 class Game : public IGame
 {
 public:
-	Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize);
+	Game(const IGameSettings& settings);
 	Game(const Game& otherGame);
 	~Game();
 

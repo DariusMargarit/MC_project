@@ -8,7 +8,7 @@ struct _declspec(dllexport) IGameSettings
 {
 
 // Make a new instance of GameSettings with singleton
-	static IGameSettings* GetInstance();
+	static IGameSettings* Produce();
 
 // Board settings
 

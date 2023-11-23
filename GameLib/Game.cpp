@@ -1,13 +1,12 @@
 #include "Game.h"
 
-Game::Game(IPlayer* player1, IPlayer* player2, uint16_t boardSize)
-	: m_player1(player1)
-	, m_player2(player2)
-	, m_turn(player1)
-	, m_boardSize(boardSize)
-	, m_board(new Board(boardSize))
+Game::Game(const IGameSettings& settings)
+	: m_player1(new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()))
+	, m_player2(new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor()))
+	, m_boardSize(settings.GetTableSize())
 {
-	// Empty
+	m_board = new Board(m_boardSize);
+	m_turn = m_player1;
 }
 
 Game::Game(const Game& otherGame)
@@ -17,7 +16,6 @@ Game::Game(const Game& otherGame)
 	m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
 	m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
 	m_board = new Board(*otherGame.m_board);
-
 }
 
 Game::~Game()
@@ -95,7 +93,7 @@ void Game::ChangeTurn()
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
 }
 
-IGame* IGame::Produce(IPlayer* player1, IPlayer* player2, uint16_t boardSize)
+IGame* IGame::Produce(const IGameSettings& settings)
 {
-	return new Game(player1, player2, boardSize);
+	return new Game(settings);
 }

@@ -1,11 +1,27 @@
 #include "GameSettings.h"
 
-GameSettings* instance = nullptr;
+const size_t GameSettings::defaultTableSize{24};
+const size_t GameSettings::defaultColumnLimit{50};
+const size_t GameSettings::defaultBridgeLimit{50};
+const std::string GameSettings::defaultFirstPlayerName{"Player1"};
+const EColor GameSettings::defaultFirstPlayerColor{EColor::Blue};
+const std::string GameSettings::defaultSecondPlayerName{"Player2"};
+const EColor GameSettings::defaultSecondPlayerColor{EColor::Red};
+GameSettings* GameSettings::instance{nullptr};
 
-IGameSettings* IGameSettings::GetInstance()
+IGameSettings* IGameSettings::Produce()
 {
 
 	return GameSettings::GetInstance();
+}
+
+GameSettings* GameSettings::GetInstance()
+{
+	if (!instance)
+	{
+		instance = new GameSettings();
+	}
+	return instance;
 }
 
 GameSettings::GameSettings()
@@ -53,15 +69,6 @@ void GameSettings::SetSecondPlayerName(std::string_view name)
 void GameSettings::SetSecondPlayerColor(EColor color)
 {
 	m_secondPlayerColor = color;
-}
-
-GameSettings* GameSettings::GetInstance()
-{
-	if (!instance)
-	{
-		instance = new GameSettings();
-	}
-	return instance;
 }
 
 const uint16_t GameSettings::GetTableSize() const noexcept

@@ -1,12 +1,13 @@
 #pragma once
 
+#include "IGameSettings.h"
 #include "Position.h"
 #include "IPlayer.h"
 #include "IBoard.h"
 
 struct _declspec(dllexport) IGame
 {
-	static IGame* Produce(IPlayer* player1, IPlayer* player2, uint16_t boardSize = 24);
+	static IGame* Produce(const IGameSettings& settings);
 
 	virtual IPlayer* GetTurn() const = 0;
 	virtual IBoard* GetBoard() const = 0;

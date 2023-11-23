@@ -1,16 +1,16 @@
 #include "GameScreen.h"
 
+#include "../GameLib/IGameSettings.h"
+
 GameScreen::GameScreen(QWidget* parent)
 	: QWidget(parent)
 	, m_layout(new QGridLayout(this))
 {
 
-	IPlayer* firstPlayer = IPlayer::Produce("Player1", EColor::Red);
-	IPlayer* secondPlayer = IPlayer::Produce("Player2", EColor::Blue);
-	uint16_t boardSize = 24;
-	m_game = IGame::Produce(firstPlayer, secondPlayer, boardSize);
+	IGameSettings* settings = IGameSettings::Produce();
+	m_game = IGame::Produce(*settings);
 
-	m_board = new BoardWidget(*m_game->GetBoard(), firstPlayer->GetColor(), secondPlayer->GetColor(), this);
+	m_board = new BoardWidget(*m_game->GetBoard(), settings->GetFirstPlayerColor(), settings->GetSecondPlayerColor(), this);
 
 	m_layout->addWidget(m_board);
 	setLayout(m_layout);
