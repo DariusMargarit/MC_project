@@ -1,5 +1,5 @@
 #pragma once
-#include <QWidget>
+#include <QDialog>
 class SettingsScreen : public QWidget
 {
 	Q_OBJECT

@@ -63,6 +63,9 @@
     <ClCompile Include="Twixt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IPlayer.h">
@@ -73,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="Twixt.h">
       <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameSettings.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
