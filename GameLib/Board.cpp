@@ -83,6 +83,11 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 						{
 							Position bridge2FirstPosition(rowIndex, columnIndex);
 							Position bridge2SecondPosition(secondRowIndex, secondColumnIndex);
+							if (bridge2FirstPosition == bridge1FirstPosition || bridge2FirstPosition == bridge1SecondPosition ||
+								bridge2SecondPosition == bridge1FirstPosition || bridge2SecondPosition == bridge1SecondPosition)
+							{
+								continue;
+							}
 							std::string key1 = MakeKey(bridge2FirstPosition, bridge2SecondPosition);
 							std::string key2 = MakeKey(bridge2SecondPosition, bridge2FirstPosition);
 							if (m_bridges.find(key1) != m_bridges.end() || m_bridges.find(key2) != m_bridges.end())
@@ -104,37 +109,23 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 	return false;
 }
 
-bool Board::onSegment(Position& A, Position& B, Position& C) const
-{
-	return (B.GetRow() <= std::max(A.GetRow(), C.GetRow()) && 
-		B.GetRow() >= std::min(A.GetRow(), C.GetRow()) &&
-		B.GetColumn() <= std::max(A.GetColumn(), C.GetColumn()) && 
-		B.GetColumn() >= std::min(A.GetColumn(), C.GetColumn()));
-}
-
-uint8_t Board::orientation(Position& A, Position& B, Position& C) const
+bool Board::orientation(Position& A, Position& B, Position& C) const
 {
 	int16_t val = (B.GetColumn() - A.GetColumn()) * (C.GetRow() - B.GetRow()) -
 		(B.GetRow() - A.GetRow()) * (C.GetColumn() - B.GetColumn());
-	if (val == 0) return 0;
 
-	return (val > 0) ? 1 : 2;
+	return (val > 0) ? 0 : 1; // 0 - left, 1 - right
 }
 
 bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const
 {
-	uint8_t o1 = orientation(A1, B1, A2);
-	uint8_t o2 = orientation(A1, B1, B2);
-	uint8_t o3 = orientation(A2, B2, A1);
-	uint8_t o4 = orientation(A2, B2, B1);
+	bool o1 = orientation(A1, B1, A2);
+	bool o2 = orientation(A1, B1, B2);
+	bool o3 = orientation(A2, B2, A1);
+	bool o4 = orientation(A2, B2, B1);
 
 	if (o1 != o2 && o3 != o4)
 		return true;
-
-	if (o1 == 0 && onSegment(A1, A2, B1)) return true;
-	if (o2 == 0 && onSegment(A1, B2, B1)) return true;
-	if (o3 == 0 && onSegment(A2, A1, B2)) return true;
-	if (o4 == 0 && onSegment(A2, B1, B2)) return true;
 
 	return false;
 }
