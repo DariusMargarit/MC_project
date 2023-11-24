@@ -34,6 +34,12 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
         m_screens->addWidget(m_gameScreen);
         m_screens->setCurrentWidget(m_gameScreen);
     }
+    else if (button == EButtonPressed::settingsButton)
+    {
+		IGameSettings* settings = IGameSettings::Produce();
+		m_settingsScreen = new SettingsScreen(*settings);
+        m_settingsScreen->show();
+    }
 }
 
 void GameUI::mousePressEvent(QMouseEvent* event)
@@ -43,9 +49,10 @@ void GameUI::mousePressEvent(QMouseEvent* event)
 
 void GameUI::InitializeMainMenu()
 {
+
     // Initialize StackedWidget and the main menu screen
 	m_screens = new QStackedWidget(this);
-	m_mainMenuScreen = new MainMenuScreen(this);
+	m_mainMenuScreen = new MainMenuScreen(m_screens);
 
     // Add main menu screen to screen list
 	m_screens->addWidget(m_mainMenuScreen);
