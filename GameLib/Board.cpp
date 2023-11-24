@@ -53,6 +53,92 @@ std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firs
 	return surroundingMatrix;
 }
 
+bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const
+{
+	std::vector<std::vector<IColumn*>>bridgeSurroundingMatrix = BridgeSurroundingMatrix(bridge1FirstPosition, bridge1SecondPosition);
+	std::vector<int16_t> rowDirection = { -2,-1,1,2,2,1,-1,-2 };
+	std::vector<int16_t> columnDirection = { 1,2,2,1,-1,-2,-2,-1 };
+	for (uint16_t rowIndex = 0; rowIndex < bridgeSurroundingMatrix.size(); ++rowIndex) 
+	{
+		for (uint16_t columnIndex = 0; columnIndex < bridgeSurroundingMatrix[0].size(); ++columnIndex)
+		{
+			if (bridgeSurroundingMatrix[rowIndex][columnIndex] != nullptr)
+			{
+				for (uint8_t directionIndex = 0; directionIndex < rowDirection.size(); ++directionIndex)
+				{
+					int16_t secondRowIndex = rowIndex + rowDirection[directionIndex];
+					int16_t secondColumnIndex = columnIndex + columnDirection[directionIndex];
+					if (secondRowIndex < 0 || secondRowIndex > bridgeSurroundingMatrix.size() - 1)
+					{
+						continue;
+					}
+					if (secondColumnIndex < 0 || secondColumnIndex > bridgeSurroundingMatrix[0].size() - 1)
+					{
+						continue;
+					}
+					if (bridgeSurroundingMatrix[secondRowIndex][secondColumnIndex] != nullptr)
+					{
+						if (bridgeSurroundingMatrix[secondRowIndex][secondColumnIndex]->GetPlayer() ==
+							bridgeSurroundingMatrix[rowIndex][columnIndex]->GetPlayer())
+						{
+							Position bridge2FirstPosition(rowIndex, columnIndex);
+							Position bridge2SecondPosition(secondRowIndex, secondColumnIndex);
+							std::string key1 = MakeKey(bridge2FirstPosition, bridge2SecondPosition);
+							std::string key2 = MakeKey(bridge2SecondPosition, bridge2FirstPosition);
+							if (m_bridges.find(key1) != m_bridges.end() || m_bridges.find(key2) != m_bridges.end())
+							{
+								if (doIntersect(bridge1FirstPosition, bridge1SecondPosition,
+									bridge2FirstPosition, bridge2SecondPosition))
+								{
+									return true;
+								}
+							}
+						}
+					}
+				}
+				bridgeSurroundingMatrix[rowIndex][columnIndex] = nullptr;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool Board::onSegment(Position& A, Position& B, Position& C) const
+{
+	return (B.GetRow() <= std::max(A.GetRow(), C.GetRow()) && 
+		B.GetRow() >= std::min(A.GetRow(), C.GetRow()) &&
+		B.GetColumn() <= std::max(A.GetColumn(), C.GetColumn()) && 
+		B.GetColumn() >= std::min(A.GetColumn(), C.GetColumn()));
+}
+
+uint8_t Board::orientation(Position& A, Position& B, Position& C) const
+{
+	int16_t val = (B.GetColumn() - A.GetColumn()) * (C.GetRow() - B.GetRow()) -
+		(B.GetRow() - A.GetRow()) * (C.GetColumn() - B.GetColumn());
+	if (val == 0) return 0;
+
+	return (val > 0) ? 1 : 2;
+}
+
+bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const
+{
+	uint8_t o1 = orientation(A1, B1, A2);
+	uint8_t o2 = orientation(A1, B1, B2);
+	uint8_t o3 = orientation(A2, B2, A1);
+	uint8_t o4 = orientation(A2, B2, B1);
+
+	if (o1 != o2 && o3 != o4)
+		return true;
+
+	if (o1 == 0 && onSegment(A1, A2, B1)) return true;
+	if (o2 == 0 && onSegment(A1, B2, B1)) return true;
+	if (o3 == 0 && onSegment(A2, A1, B2)) return true;
+	if (o4 == 0 && onSegment(A2, B1, B2)) return true;
+
+	return false;
+}
+
 bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 {
 	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow());
@@ -69,12 +155,16 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 	}
 	if (absRowValue + absColumnValue == 3) 
 	{
+		if (FindObstacleBridge(firstPosition, secondPosition))
+		{
+			return false;
+		}
 		return true;
 	}
 	return false;
 }
 
-std::string& Board::MakeKey(const Position& firstPosition, const Position& secondPosition)
+std::string& Board::MakeKey(const Position& firstPosition, const Position& secondPosition) const
 {
 	const auto& raw1 = firstPosition.GetRow(), 
 		      & raw2 = secondPosition.GetRow();
