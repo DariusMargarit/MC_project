@@ -24,7 +24,10 @@
     <Filter Include="Screens\Game">
       <UniqueIdentifier>{cf1111eb-77fa-4655-b097-b452ac333d6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main Files\Utils">
+    <Filter Include="Resource Files\Custom Widgets">
+      <UniqueIdentifier>{01c13fa6-a2c9-44b7-9d0b-30b1dcac141b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Utils">
       <UniqueIdentifier>{9a90bf90-f92d-45b0-9dc2-e1bf68378819}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -41,7 +44,7 @@
       <Filter>Main Files</Filter>
     </ClCompile>
     <ClCompile Include="FileUtils.cpp">
-      <Filter>Main Files\Utils</Filter>
+      <Filter>Resource Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="SettingsScreen.cpp">
       <Filter>Screens\Settings</Filter>
@@ -58,10 +61,13 @@
     <ClCompile Include="MainMenuScreen.cpp">
       <Filter>Screens\Main Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Slider.cpp">
+      <Filter>Resource Files\Custom Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileUtils.h">
-      <Filter>Main Files\Utils</Filter>
+      <Filter>Resource Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Screens\Main Menu</Filter>
@@ -82,6 +88,9 @@
     </QtMoc>
     <QtMoc Include="SettingsScreen.h">
       <Filter>Screens\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="Slider.h">
+      <Filter>Resource Files\Custom Widgets</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

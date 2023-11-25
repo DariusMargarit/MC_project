@@ -1,0 +1,57 @@
+* {
+	color: #dedcd9;
+	background-color: #262522;
+	font-family: "Montserrat Medium";
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	font-size: 16px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+QSlider::groove:horizontal { 
+	background-color: #3C3A38;
+	height: 10px; 
+	border-radius: 4px;
+}
+
+QSlider::handle:horizontal { 
+	background-color: #5D9948; 
+	border: 2px solid #5D9948; 
+	width: 16px; 
+	height: 20px; 
+	line-height: 20px; 
+	margin-top: -5px; 
+	margin-bottom: -5px; 
+	border-radius: 10px; 
+}
+
+QSlider::handle:horizontal:hover { 
+	border-color: #80c269;
+	background-color: #80c269;
+}
+
+QLineEdit {
+	padding: 3px;
+	background-color: #3C3A38;
+	border-radius: 7px;
+	border: 1px solid #504E4C;
+}
+
+QLineEdit:hover {
+	border: 1px solid #C3C2C1;
+}
+
+QComboBox {
+	font-size: 16px;
+}
+
+QLabel#HeaderFieldText {
+	font-size: 20px;
+	font-family: "Montserrat SemiBold";
+	color: white;
+}
+
+QLabel#Empty {
+	font-size: 5px;
+}
