@@ -18,6 +18,20 @@ Game::Game(const Game& otherGame)
 	m_board = new Board(*otherGame.m_board);
 }
 
+Game::Game(Game&& otherGame) noexcept
+	: m_boardSize{ otherGame.m_boardSize }
+ {
+	m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
+	m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
+	m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
+	m_board = new Board(*otherGame.m_board);
+
+	otherGame.m_board = nullptr;
+	otherGame.m_boardSize = 0;
+	otherGame.m_player1 = nullptr;
+	otherGame.m_player2 = nullptr;
+	otherGame.m_turn = nullptr;
+}
 Game::~Game()
 {
 	// Empty
