@@ -10,6 +10,7 @@ class Game : public IGame
 public:
 	Game(const IGameSettings& settings);
 	Game(const Game& otherGame);
+	Game& operator=(Game&& otherGame) noexcept;
 	~Game();
 
 	IPlayer* GetTurn() const override;
