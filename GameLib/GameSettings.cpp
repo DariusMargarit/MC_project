@@ -9,13 +9,13 @@ const std::string GameSettings::defaultSecondPlayerName{"Player2"};
 const EColor GameSettings::defaultSecondPlayerColor{EColor::Red};
 GameSettings* GameSettings::instance{nullptr};
 
-IGameSettings* IGameSettings::Produce()
+IGameSettings* IGameSettings::GetInstance()
 {
 
-	return GameSettings::GetInstance();
+	return GameSettings::ObtainInstance();
 }
 
-GameSettings* GameSettings::GetInstance()
+GameSettings* GameSettings::ObtainInstance()
 {
 	if (!instance)
 	{

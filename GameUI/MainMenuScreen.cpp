@@ -52,12 +52,18 @@ void MainMenuScreen::InitPageWidgets()
 	mainText->setObjectName("mainText");
 
 	// Play button init
-	Button* playButton = new Button("Play", "Play local with your friends", "#466b3a", QPixmap(":/GameUI/images/controller.png"), false, this);
+	auto playButtonIcon = new QPixmap(":/GameUI/images/controller.png");
+	Button* playButton = new Button("Play", this, "Play local with your friends", playButtonIcon);
 	playButton->setObjectName("playButton");
+	playButton->SetShadowColor("#466b3a");
 
 	// Settings button init
-	Button* settingsButton = new Button("Settings", "Change the game settings", "#333230", QPixmap(":/GameUI/images/settings.png"), true, this);
+	auto settingsButtonIcon = new QPixmap(":/GameUI/images/settings.png");
+	Button* settingsButton = new Button("Settings", this, "Change the game settings", settingsButtonIcon);
 	settingsButton->setObjectName("settingsButton");
+	settingsButton->SetShadowColor("#333230");
+	settingsButton->SetTextColor("#C4C4C3");
+	settingsButton->SetTextShadowColor("#242423");
 	
 	// Add widgets for the screen layout
 	m_layout->addWidget(imageWidget, 0, 0, 4, 1);

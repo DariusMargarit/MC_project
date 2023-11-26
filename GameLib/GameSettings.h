@@ -6,7 +6,7 @@ class GameSettings : public IGameSettings
 {
 public:
 // Make a new instance of GameSettings with singleton
-	static GameSettings* GetInstance();
+	static GameSettings* ObtainInstance();
 
 // Board settings
 
