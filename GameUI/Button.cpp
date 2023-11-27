@@ -1,5 +1,7 @@
 
 #include <QGraphicsDropShadowEffect>
+#include <QStyleOption>
+#include <QPainter>
 
 #include "Button.h"
 
@@ -117,5 +119,20 @@ void Button::SetShadowYOffset(int offset)
 {
 	auto shadow = qobject_cast<QGraphicsDropShadowEffect*>(graphicsEffect());
 	shadow->setYOffset(offset);
+}
+
+void Button::mousePressEvent(QMouseEvent* event)
+{
+	emit(ButtonClicked());
+}
+
+// Forced to override paintEvent with this code becouse subclassing a QWidget and using stylesheets
+// Source here: https://doc.qt.io/Qt-5/stylesheet-reference.html
+void Button::paintEvent(QPaintEvent* event)
+{
+	QStyleOption opt;
+	opt.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 

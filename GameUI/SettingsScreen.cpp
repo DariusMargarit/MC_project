@@ -31,6 +31,26 @@ SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
 
 	auto stylesheet = FileUtils::StylesheetFileToString("stylesheets/settings.qss");
 	setStyleSheet(stylesheet);
+
+	connect(m_updateButton, SIGNAL(ButtonClicked()), SLOT(OnUpdateButtonClicked()));
+	connect(m_discardButton, SIGNAL(ButtonClicked()), SLOT(OnDiscardButtonClicked()));
+}
+
+void SettingsScreen::OnUpdateButtonClicked()
+{
+	m_gameSettings.SetTableSize(m_tableSizeSlider->GetValue());
+	m_gameSettings.SetColumnLimit(m_columnLimitSlider->GetValue());
+	m_gameSettings.SetBridgeLimit(m_bridgeLimitSlider->GetValue());
+	m_gameSettings.SetFirstPlayerName(m_firstPlayerName->text().toStdString());
+	m_gameSettings.SetFirstPlayerColor(ColorUtils::StringToTwixtColor(m_firstPlayerColor->currentText()));
+	m_gameSettings.SetSecondPlayerName(m_secondPlayerName->text().toStdString());
+	m_gameSettings.SetSecondPlayerColor(ColorUtils::StringToTwixtColor(m_secondPlayerColor->currentText()));
+	close();
+}
+
+void SettingsScreen::OnDiscardButtonClicked()
+{
+	close();
 }
 
 void SettingsScreen::AddFieldToLayout(QString fieldName, QWidget* widget)

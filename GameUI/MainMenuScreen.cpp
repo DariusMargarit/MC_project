@@ -21,20 +21,20 @@ MainMenuScreen::MainMenuScreen(QWidget* parent)
 	// import the stylesheet for design
 	auto stylesheet = FileUtils::StylesheetFileToString("stylesheets/mainmenu.qss");
 	setStyleSheet(stylesheet);
+
+	connect(m_playButton, SIGNAL(ButtonClicked()), SLOT(OnPlayButtonClicked()));
+	connect(m_settingsButton, SIGNAL(ButtonClicked()), SLOT(OnSettingsButtonClicked()));
+
 }
 
-void MainMenuScreen::mousePressEvent(QMouseEvent* event)
+void MainMenuScreen::OnSettingsButtonClicked()
 {
-	QWidget* selectedWidget = childAt(event->pos());
+	emit(MenuClicked(EButtonPressed::settingsButton));
+}
 
-	if (!selectedWidget) return;
-
-	// Emit click on play button widget clicked
-	if (WidgetIs(selectedWidget, "playButton"))
-		emit(Clicked(EButtonPressed::playButton));
-	// Emit click on settings button clicked
-	else if (WidgetIs(selectedWidget, "settingsButton"))
-		emit(Clicked(EButtonPressed::settingsButton));
+void MainMenuScreen::OnPlayButtonClicked()
+{
+	emit(MenuClicked(EButtonPressed::playButton));
 }
 
 void MainMenuScreen::InitPageWidgets()
@@ -47,33 +47,27 @@ void MainMenuScreen::InitPageWidgets()
 	imageWidget->setScaledContents(true);
 
 	// Header text init
-	mainText = new QLabel("    Play Twixt\non the #1 App!", this);
-	mainText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	mainText->setObjectName("mainText");
+	m_mainText = new QLabel("    Play Twixt\non the #1 App!", this);
+	m_mainText->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	m_mainText->setObjectName("mainText");
 
 	// Play button init
 	auto playButtonIcon = new QPixmap(":/GameUI/images/controller.png");
-	Button* playButton = new Button("Play", this, "Play local with your friends", playButtonIcon);
-	playButton->setObjectName("playButton");
-	playButton->SetShadowColor("#466b3a");
+	m_playButton = new Button("Play", this, "Play local with your friends", playButtonIcon);
+	m_playButton->setObjectName("playButton");
+	m_playButton->SetShadowColor("#466b3a");
 
 	// Settings button init
 	auto settingsButtonIcon = new QPixmap(":/GameUI/images/settings.png");
-	Button* settingsButton = new Button("Settings", this, "Change the game settings", settingsButtonIcon);
-	settingsButton->setObjectName("settingsButton");
-	settingsButton->SetShadowColor("#333230");
-	settingsButton->SetTextColor("#C4C4C3");
-	settingsButton->SetTextShadowColor("#242423");
+	m_settingsButton = new Button("Settings", this, "Change the game settings", settingsButtonIcon);
+	m_settingsButton->setObjectName("settingsButton");
+	m_settingsButton->SetShadowColor("#333230");
+	m_settingsButton->SetTextColor("#C4C4C3");
+	m_settingsButton->SetTextShadowColor("#242423");
 	
 	// Add widgets for the screen layout
 	m_layout->addWidget(imageWidget, 0, 0, 4, 1);
-	m_layout->addWidget(mainText, 0, 1, 2, 1, Qt::AlignCenter);
-	m_layout->addWidget(playButton, 2, 1, Qt::AlignCenter);
-	m_layout->addWidget(settingsButton, 3, 1, Qt::AlignCenter);
+	m_layout->addWidget(m_mainText, 0, 1, 2, 1, Qt::AlignCenter);
+	m_layout->addWidget(m_playButton, 2, 1, Qt::AlignCenter);
+	m_layout->addWidget(m_settingsButton, 3, 1, Qt::AlignCenter);
 }
-
-bool MainMenuScreen::WidgetIs(QWidget* widget, QString objectName)
-{
-	return widget->parentWidget()->objectName() == objectName || widget->objectName() == objectName;
-}
-

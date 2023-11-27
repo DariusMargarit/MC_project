@@ -146,7 +146,7 @@
   <ItemGroup>
     <QtMoc Include="Slider.h" />
     <QtMoc Include="BoardWidget.h" />
-    <ClInclude Include="Button.h" />
+    <QtMoc Include="Button.h" />
     <ClInclude Include="ColorUtils.h" />
     <ClInclude Include="FileUtils.h" />
     <QtMoc Include="GameScreen.h" />

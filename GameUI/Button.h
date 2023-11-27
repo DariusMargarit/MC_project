@@ -5,6 +5,7 @@
 
 class Button : public QWidget
 {
+	Q_OBJECT
 
 public:
 	Button(QString headerText, QWidget* parent = nullptr, QString descriptionText = "", QPixmap* icon = nullptr);
@@ -14,8 +15,15 @@ public:
 	void SetShadowColor(QColor color);
 	void SetShadowYOffset(int offset);
 
+signals:
+	void ButtonClicked();
+
+protected:
+	void mousePressEvent(QMouseEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
+
 private:
 	QGridLayout* m_layout;
-	QLabel* m_headerLabel, * m_descriptionLabel, *m_iconLabel;
+	QLabel* m_headerLabel, * m_descriptionLabel, * m_iconLabel;
 };
 

@@ -5,7 +5,8 @@
 #include "FileUtils.h"
 #include "ColorUtils.h"
 
-BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) : QWidget(parent)
+BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) 
+	: QWidget(parent)
 	, m_gameBoard(gameBoard)
 	, m_firstPlayerColor(firstPlayerColor)
 	, m_secondPlayerColor(secondPlayerColor)

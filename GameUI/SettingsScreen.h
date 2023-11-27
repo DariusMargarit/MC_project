@@ -16,12 +16,18 @@ class SettingsScreen : public QDialog
 public:
 	SettingsScreen(IGameSettings& settings, QWidget* parent = nullptr);
 
+private slots:
+	void OnUpdateButtonClicked();
+	void OnDiscardButtonClicked();
+
 private:
+
 	void AddFieldToLayout(QString fieldName, QWidget* widget = nullptr);
 	void InitializeButtons();
 	void InitializeValues();
 	void InitializeComboBox(bool isFirstPlayerBox);
 	void InitializeLayout();
+	
 
 private:
 	IGameSettings& m_gameSettings;

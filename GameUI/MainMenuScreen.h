@@ -15,19 +15,20 @@ class MainMenuScreen : public QWidget
 public:
 	MainMenuScreen(QWidget* parent = nullptr);
 
-signals:
-	void Clicked(const EButtonPressed& button);
+public slots:
+	void OnSettingsButtonClicked();
+	void OnPlayButtonClicked();
 
-protected:
-	void mousePressEvent(QMouseEvent* event) override;
+signals:
+	void MenuClicked(const EButtonPressed& button);
 
 private:
 	void InitPageWidgets();
-	bool WidgetIs(QWidget* widget, QString objectName);
 
 private:
 	QGridLayout* m_layout;
-	QLabel* mainText;
+	QLabel* m_mainText, *m_imageWidget;
+	Button* m_settingsButton, * m_playButton;
 
 };
 

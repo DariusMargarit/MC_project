@@ -6,7 +6,8 @@
 #include "FileUtils.h"
 
 GameUI::GameUI(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow{parent}
+    , m_screens{new QStackedWidget{this}}
 {
     resize(1100, 600);
     LoadFonts();
@@ -15,6 +16,9 @@ GameUI::GameUI(QWidget *parent)
     // Set the stylesheet from file
 	QString stylesheet = FileUtils::StylesheetFileToString("stylesheets/default.qss");
 	setStyleSheet(stylesheet);
+
+    // Connect buttons
+	connect(m_mainMenuScreen, SIGNAL(MenuClicked(const EButtonPressed&)), SLOT(OnMainMenuButtonClicked(const EButtonPressed&)));
 
 }
 
@@ -43,24 +47,15 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     }
 }
 
-void GameUI::mousePressEvent(QMouseEvent* event)
-{
-  
-}
-
 void GameUI::InitializeMainMenu()
 {
 
-    // Initialize StackedWidget and the main menu screen
-	m_screens = new QStackedWidget(this);
+    // Initialize the main menu screen
 	m_mainMenuScreen = new MainMenuScreen(m_screens);
 
     // Add main menu screen to screen list
 	m_screens->addWidget(m_mainMenuScreen);
 	m_screens->setCurrentWidget(m_mainMenuScreen);
-
-    // Make a connection between 
-	connect(m_mainMenuScreen, SIGNAL(Clicked(const EButtonPressed&)), SLOT(OnMainMenuButtonClicked(const EButtonPressed&)));
 
     // Display the screen
 	setCentralWidget(m_screens);
