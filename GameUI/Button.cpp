@@ -9,11 +9,14 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 {
 	// Header
 	m_headerLabel = new QLabel(headerText, this);
-	m_headerLabel->setObjectName("titleLabel");
+	m_headerLabel->setObjectName("headerLabel");
 
-	// Description
-	m_descriptionLabel = new QLabel(descriptionText, this);
-	m_descriptionLabel->setObjectName("descriptionLabel");
+	// Add description if exists
+	if (!descriptionText.isEmpty())
+	{
+		m_descriptionLabel = new QLabel(descriptionText, this);
+		m_descriptionLabel->setObjectName("descriptionLabel");
+	}
 
 	// Add icon if exists
 	if (icon)
@@ -28,10 +31,15 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 	titleEffect->setXOffset(0);
 	titleEffect->setYOffset(1);
 
-	// Add drop shadow to description
-	auto descriptionEffect = new QGraphicsDropShadowEffect(m_descriptionLabel);
-	descriptionEffect->setXOffset(0);
-	descriptionEffect->setYOffset(1);
+	if (!descriptionText.isEmpty())
+	{
+		// Add drop shadow to description
+		auto descriptionEffect = new QGraphicsDropShadowEffect(m_descriptionLabel);
+		descriptionEffect->setXOffset(0);
+		descriptionEffect->setYOffset(1);
+
+		m_descriptionLabel->setGraphicsEffect(descriptionEffect);
+	}
 
 	if (icon)
 	{
@@ -46,7 +54,6 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 
 	// Add the created effects to labels
 	m_headerLabel->setGraphicsEffect(titleEffect);
-	m_descriptionLabel->setGraphicsEffect(descriptionEffect);
 
 	// Add a shadow to widget
 	auto buttonEffect = new QGraphicsDropShadowEffect(this);
@@ -94,9 +101,9 @@ void Button::SetTextColor(QColor color)
 void Button::SetTextShadowColor(QColor color)
 {
 	auto headerShadow = qobject_cast<QGraphicsDropShadowEffect*>(m_headerLabel->graphicsEffect());
-	auto descriptionShadow = qobject_cast<QGraphicsDropShadowEffect*>(m_descriptionLabel->graphicsEffect());
-
 	headerShadow->setColor(color);
+
+	auto descriptionShadow = qobject_cast<QGraphicsDropShadowEffect*>(m_descriptionLabel->graphicsEffect());
 	descriptionShadow->setColor(color);
 }
 
@@ -104,5 +111,11 @@ void Button::SetShadowColor(QColor color)
 {
 	auto shadow = qobject_cast<QGraphicsDropShadowEffect*>(graphicsEffect());
 	shadow->setColor(color);
+}
+
+void Button::SetShadowYOffset(int offset)
+{
+	auto shadow = qobject_cast<QGraphicsDropShadowEffect*>(graphicsEffect());
+	shadow->setYOffset(offset);
 }
 

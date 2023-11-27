@@ -3,6 +3,7 @@
 
 #include "BoardWidget.h"
 #include "FileUtils.h"
+#include "ColorUtils.h"
 
 BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) : QWidget(parent)
 	, m_gameBoard(gameBoard)
@@ -15,20 +16,6 @@ BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColo
 
 	QString stylesheet = FileUtils::StylesheetFileToString("./stylesheets/game.qss");
 	setStyleSheet(stylesheet);
-}
-
-const QColor BoardWidget::TwixtColorToQColor(EColor color)
-{
-	switch (color)
-	{
-	case EColor::Red:
-		return std::move(QColor("#E2001B"));
-	case EColor::Blue:
-		return std::move(QColor("#4798CE"));
-	default:
-		return Qt::transparent;
-
-	}
 }
 
 void BoardWidget::paintEvent(QPaintEvent* event)
@@ -50,7 +37,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 
 			if (auto element{ m_gameBoard.GetElement(row, column) }; element)
 			{
-				QColor color = TwixtColorToQColor(element->GetPlayer()->GetColor());
+				QColor color = ColorUtils::TwixtColorToQColor(element->GetPlayer()->GetColor());
 				radius = static_cast<float>(qMin(circleWidth, circleHeight) / largeCircleMagnification);
 				painter.setPen(color);
 				painter.setBrush(std::move(QBrush(color)));
@@ -76,7 +63,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	}
 
 	QPen pen;
-	QColor firstPlayerColor = TwixtColorToQColor(m_firstPlayerColor);
+	QColor firstPlayerColor = ColorUtils::TwixtColorToQColor(m_firstPlayerColor);
 	pen.setWidth(2);
 	pen.setColor(std::move(firstPlayerColor));
 	painter.setPen(pen);
@@ -86,7 +73,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	painter.drawLine(topLine);
 	painter.drawLine(bottomLine);
 
-	QColor secondPlayerColor = TwixtColorToQColor(m_secondPlayerColor);
+	QColor secondPlayerColor = ColorUtils::TwixtColorToQColor(m_secondPlayerColor);
 	pen.setColor(std::move(secondPlayerColor));
 	painter.setPen(pen);
 

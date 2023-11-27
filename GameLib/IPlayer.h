@@ -6,6 +6,10 @@ enum class EColor
 {
 	Red,
 	Blue,
+	Pink,
+	Purple,
+	Yellow,
+	Orange,
 	NoColor,
 };
 

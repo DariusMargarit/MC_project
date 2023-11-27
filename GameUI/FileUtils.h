@@ -1,9 +1,8 @@
 #pragma once
 #include <QString>
 
-class FileUtils
+struct FileUtils
 {
-public:
 	static QString StylesheetFileToString(const QString& path);
 };
 

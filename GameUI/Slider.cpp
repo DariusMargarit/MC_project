@@ -10,7 +10,7 @@ Slider::Slider(uint16_t minValue, uint16_t maxValue, QWidget* parent)
 	m_slider->setMinimum(minValue);
 	m_slider->setMaximum(maxValue);
 
-	connect(m_slider, SIGNAL(valueChanged(int)), SLOT(OnSliderValueChanged()));
+	connect(m_slider, SIGNAL(valueChanged(int)), SLOT(OnSliderValueChanged(int)));
 
 	m_label->setMinimumWidth(50);
 
@@ -31,7 +31,7 @@ uint16_t Slider::GetValue() const noexcept
 	return m_slider->value();
 }
 
-void Slider::OnSliderValueChanged()
+void Slider::OnSliderValueChanged(int value)
 {
-	m_label->setText(QString::number(m_slider->value()));
+	m_label->setText(QString::number(value));
 }

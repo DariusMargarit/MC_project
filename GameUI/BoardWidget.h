@@ -20,8 +20,6 @@ class BoardWidget : public QWidget
 public:
 	BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
 
-	static const QColor TwixtColorToQColor(EColor color);
-
 signals:
 	void BoardClicked(const Position& position);
 

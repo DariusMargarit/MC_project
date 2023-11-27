@@ -26,7 +26,7 @@ QWidget#settingsButton:hover {
 	background-color: #4f4d4a;
 }
 
-QLabel#titleLabel {
+QLabel#headerLabel {
 	background-color: transparent;
 	font-size: 35px;
 	padding-top: 5px;
@@ -42,6 +42,6 @@ QLabel#descriptionLabel {
 	padding-right: 15px;
 }
 
-QLabel#buttonIcon {
+QLabel#iconLabel{
 	background-color: transparent;
 }

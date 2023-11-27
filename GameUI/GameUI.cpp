@@ -36,9 +36,10 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     }
     else if (button == EButtonPressed::settingsButton)
     {
-		IGameSettings* settings = IGameSettings::Produce();
+		IGameSettings* settings = IGameSettings::GetInstance();
 		m_settingsScreen = new SettingsScreen(*settings);
-        m_settingsScreen->show();
+        m_settingsScreen->exec();
+            
     }
 }
 
@@ -59,7 +60,7 @@ void GameUI::InitializeMainMenu()
 	m_screens->setCurrentWidget(m_mainMenuScreen);
 
     // Make a connection between 
-	connect(m_mainMenuScreen, &MainMenuScreen::Clicked, this, &GameUI::OnMainMenuButtonClicked);
+	connect(m_mainMenuScreen, SIGNAL(Clicked(const EButtonPressed&)), SLOT(OnMainMenuButtonClicked(const EButtonPressed&)));
 
     // Display the screen
 	setCentralWidget(m_screens);

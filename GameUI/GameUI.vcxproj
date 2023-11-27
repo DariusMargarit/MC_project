@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ColorUtils.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
@@ -146,6 +147,7 @@
     <QtMoc Include="Slider.h" />
     <QtMoc Include="BoardWidget.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ColorUtils.h" />
     <ClInclude Include="FileUtils.h" />
     <QtMoc Include="GameScreen.h" />
     <QtMoc Include="MainMenuScreen.h" />

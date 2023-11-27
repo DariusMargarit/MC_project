@@ -12,6 +12,7 @@ public:
 	void SetTextColor(QColor color);
 	void SetTextShadowColor(QColor color);
 	void SetShadowColor(QColor color);
+	void SetShadowYOffset(int offset);
 
 private:
 	QGridLayout* m_layout;

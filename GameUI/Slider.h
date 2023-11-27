@@ -16,7 +16,7 @@ public:
 	uint16_t GetValue() const noexcept;
 
 private slots:
-	void OnSliderValueChanged();
+	void OnSliderValueChanged(int value);
 
 private: 
 	QGridLayout* m_layout;

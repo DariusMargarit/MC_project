@@ -1,13 +1,14 @@
 
 #include "SettingsScreen.h"
 #include "FileUtils.h"
+#include "ColorUtils.h"
 
 const uint16_t SettingsScreen::minTableSize{5}, SettingsScreen::maxTableSize{50};
 const uint16_t SettingsScreen::minColumnLimit{20}, SettingsScreen::maxColumnLimit{100};
 const uint16_t SettingsScreen::minBridgeLimit{20}, SettingsScreen::maxBridgeLimit{100};
 
 SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
-	: QWidget{parent}
+	: QDialog{parent}
 	, m_gameSettings{settings}
 	, m_layout{new QGridLayout{this}}
 	, m_tableSizeSlider{new Slider{minTableSize, maxTableSize, this}}
@@ -15,9 +16,16 @@ SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
 	, m_bridgeLimitSlider{new Slider{minBridgeLimit, maxBridgeLimit, this}}
 	, m_firstPlayerName{new QLineEdit{this}}
 	, m_secondPlayerName{new QLineEdit{this}}
-	, m_firstPlayerColor{ new QComboBox{this} }
-	, m_secondPlayerColor{ new QComboBox{this} }
+	, m_firstPlayerColor{new QComboBox{this}}
+	, m_secondPlayerColor{new QComboBox{this}}
+	, m_updateButton{new Button{"Update"}}
+	, m_discardButton{new Button{"Discard"}}
 {
+	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	
+	ColorUtils::GenerateColorVector(m_colors);
+
+	InitializeButtons();
 	InitializeValues();
 	InitializeLayout();
 
@@ -44,6 +52,19 @@ void SettingsScreen::AddFieldToLayout(QString fieldName, QWidget* widget)
 	}
 }
 
+void SettingsScreen::InitializeButtons()
+{
+	m_updateButton->setObjectName("updateButton");
+	m_updateButton->SetShadowColor("#466b3a");
+	m_updateButton->SetShadowYOffset(3);
+
+	m_discardButton->setObjectName("discardButton");
+	m_discardButton->SetShadowColor("#781c1c");
+	m_discardButton->SetShadowYOffset(3);
+
+
+}
+
 void SettingsScreen::InitializeValues()
 {
 	m_tableSizeSlider->SetValue(m_gameSettings.GetTableSize());
@@ -52,6 +73,40 @@ void SettingsScreen::InitializeValues()
 
 	m_firstPlayerName->setText(QString::fromStdString(m_gameSettings.GetFirstPlayerName().data()));
 	m_secondPlayerName->setText(QString::fromStdString(m_gameSettings.GetSecondPlayerName().data()));
+
+	InitializeComboBox(true);
+	InitializeComboBox(false);
+
+}
+
+void SettingsScreen::InitializeComboBox(bool isFirstPlayerBox)
+{
+	QComboBox* currentBox;
+	EColor initialColor;
+	if (isFirstPlayerBox)
+	{
+		currentBox = m_firstPlayerColor;
+		initialColor = m_gameSettings.GetFirstPlayerColor();
+	}
+	else
+	{
+		currentBox = m_secondPlayerColor;
+		initialColor = m_gameSettings.GetSecondPlayerColor();
+	}
+
+	for (auto color : m_colors)
+	{
+		const auto hexColor = ColorUtils::TwixtColorToQColor(color);
+		const auto colorString = ColorUtils::TwixtColorToString(color);
+
+		QPixmap pixmap(12, 12);
+		pixmap.fill(hexColor);
+		const auto icon = QIcon(pixmap);
+
+		currentBox->addItem(icon, colorString);
+		if (color == initialColor)
+			currentBox->setCurrentIndex(currentBox->count() - 1);
+	}
 }
 
 void SettingsScreen::InitializeLayout()
@@ -74,8 +129,15 @@ void SettingsScreen::InitializeLayout()
 	AddFieldToLayout("Bridges Number", m_bridgeLimitSlider);
 	AddFieldToLayout("");
 
+	m_layout->addWidget(m_updateButton, m_layout->rowCount(), 0, Qt::AlignLeft);
+	m_layout->addWidget(m_discardButton, m_layout->rowCount()-1, 1, Qt::AlignRight);
+
+	AddFieldToLayout("");
+	
+
 	setLayout(m_layout);
 
 
 
 }
+
