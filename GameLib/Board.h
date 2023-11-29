@@ -34,9 +34,9 @@ private:
 	bool FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const;
 	bool orientation(Position& A, Position& B, Position& C) const;
 	bool doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const;
-	bool ValidBridge(Position firstPosition, Position secondPosition) const;
-	std::string& MakeKey(const Position& firstPosition, const Position& secondPosition) const;
-	const std::pair<Position, Position>& ExtractPositionFromKey(std::string key);
+	bool ValidBridge(Position& firstPosition, Position& secondPosition) const;
+	const std::string MakeKey(const Position& firstPosition, const Position& secondPosition) const;
+	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key);
 
 private:
 	std::unordered_map<std::string,Bridge*> m_bridges;

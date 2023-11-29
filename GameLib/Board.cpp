@@ -33,8 +33,8 @@ std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firs
 		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 4, m_matrix[0].size() - 1);
 	} else 
 	{
-		uint16_t higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, m_matrix.size() - 1);
-		uint16_t higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, m_matrix[0].size() - 1);
+		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, m_matrix.size() - 1);
+		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, m_matrix[0].size() - 1);
 	}
 	for (uint16_t rowIndex = lowerRowIndex; rowIndex < higherRowIndex; ++rowIndex)
 	{
@@ -130,7 +130,7 @@ bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) 
 	return false;
 }
 
-bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
+bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
 {
 	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow());
 	uint16_t absColumnValue = abs(firstPosition.GetColumn() - secondPosition.GetColumn());
@@ -155,7 +155,7 @@ bool Board::ValidBridge(Position firstPosition, Position secondPosition) const
 	return false;
 }
 
-std::string& Board::MakeKey(const Position& firstPosition, const Position& secondPosition) const
+const std::string Board::MakeKey(const Position& firstPosition, const Position& secondPosition) const
 {
 	const auto& raw1 = firstPosition.GetRow(), 
 		      & raw2 = secondPosition.GetRow();
@@ -167,7 +167,7 @@ std::string& Board::MakeKey(const Position& firstPosition, const Position& secon
 	return key;
 }
 
-const std::pair<Position, Position>& Board::ExtractPositionFromKey(std::string key)
+const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::string& key)
 {
 	std::istringstream in(key);
 	uint16_t row, column;
@@ -187,7 +187,7 @@ Board::~Board() {
 			delete m_matrix[index1][index2];
 		}
 	}
-	for (auto bridge : m_bridges)
+	for (auto& bridge : m_bridges)
 		delete bridge.second;
 }
 
@@ -259,7 +259,7 @@ Board::Board(const Board& otherBoard)
 				m_matrix[line][column] = nullptr;
 		}
 
-	for (auto bridge : otherBoard.m_bridges)
+	for (const auto& bridge : otherBoard.m_bridges)
 	{
 		const auto& [firstPosition,secondPosition] = ExtractPositionFromKey(bridge.first);
 		IColumn* firstColumn = nullptr, *secondColumn = nullptr;
