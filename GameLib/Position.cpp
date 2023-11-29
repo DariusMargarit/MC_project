@@ -30,9 +30,14 @@ bool Position::IsEqual(const uint16_t& row, const uint16_t& column)
 	return row == m_row && column == m_column;
 }
 
-bool Position::operator==(Position& position)
+bool Position::operator==(const Position& position)
 {
 	return IsEqual(position.m_row,position.m_column);
+}
+
+bool Position::operator!=(const Position& position)
+{
+	return !IsEqual(position.m_row, position.m_column);
 }
 
 const Position& Position::EmptyPosition()

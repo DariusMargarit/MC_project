@@ -153,11 +153,8 @@ void SettingsScreen::InitializeLayout()
 	m_layout->addWidget(m_discardButton, m_layout->rowCount()-1, 1, Qt::AlignRight);
 
 	AddFieldToLayout("");
-	
 
 	setLayout(m_layout);
-
-
 
 }
 

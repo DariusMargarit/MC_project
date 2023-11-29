@@ -1,3 +1,6 @@
+
+#include <regex>
+
 #include "Board.h"
 #include "Column.h"
 
@@ -22,8 +25,9 @@ std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firs
 	uint16_t lowerRowIndex = std::min(firstPosition.GetRow(), secondPosition.GetRow());
 	uint16_t lowerColumnIndex = std::min(firstPosition.GetColumn(), secondPosition.GetColumn());
 	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow());
-	lowerRowIndex = std::max<uint16_t>(--lowerRowIndex, 0);
-	lowerColumnIndex = std::max<uint16_t>(--lowerColumnIndex, 0);
+
+	if (lowerRowIndex > 0) --lowerRowIndex;
+	if (lowerColumnIndex > 0) --lowerColumnIndex;
 
 	std::vector<IColumn*>row;
 	uint16_t higherRowIndex, higherColumnIndex;
@@ -36,9 +40,9 @@ std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firs
 		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, m_matrix.size() - 1);
 		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, m_matrix[0].size() - 1);
 	}
-	for (uint16_t rowIndex = lowerRowIndex; rowIndex < higherRowIndex; ++rowIndex)
+	for (uint16_t rowIndex = lowerRowIndex; rowIndex <= higherRowIndex; ++rowIndex)
 	{
-		for (uint16_t columnIndex = lowerColumnIndex; columnIndex < higherColumnIndex; ++columnIndex)
+		for (uint16_t columnIndex = lowerColumnIndex; columnIndex <= higherColumnIndex; ++columnIndex)
 		{
 			row.push_back(m_matrix[rowIndex][columnIndex]);
 		}
@@ -199,6 +203,26 @@ const IColumn* Board::GetElement(const Position& position) const
 const IColumn* Board::GetElement(const uint16_t& row, const uint16_t& column) const
 {
 	return m_matrix[row][column];
+}
+
+const BridgeVector Board::GetBridgesPositions() const
+{
+	std::regex pattern(R"(\b\d+)");
+	BridgeVector bridgesPositions;
+	for (auto& bridge : m_bridges)
+	{
+		std::vector<uint16_t> positions;
+		auto string = bridge.first;
+		auto it = std::sregex_iterator(string.begin(), string.end(), pattern);
+		for (&it; it != std::sregex_iterator(); ++it)
+		{
+			positions.push_back(std::stoi((*it).str()));
+		}
+		Position firstColumn(positions[0], positions[1]);
+		Position secondColumn(positions[2], positions[3]);
+		bridgesPositions.emplace_back(std::move(firstColumn), std::move(secondColumn));
+	}
+	return std::move(bridgesPositions);
 }
 
 const uint16_t Board::GetSize() const

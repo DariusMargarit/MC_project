@@ -13,7 +13,8 @@ public:
 
 	bool IsEqual(const uint16_t& row, const uint16_t& column);
 
-	bool operator==(Position& position);
+	bool operator==(const Position& position);
+	bool operator!=(const Position& position);
 
 public:
 	static const Position& EmptyPosition();

@@ -10,13 +10,13 @@ class GameScreen : public QWidget
 public:
 	GameScreen(QWidget* parent = nullptr);
 	
-public slots:
-	void OnBoardClicked(const Position& position);
-
+private slots:
+	void OnBoardClicked(const Position& position, const Qt::MouseButton& button);
 
 private:
 	QGridLayout* m_layout;
 	BoardWidget* m_board;
 	IGame* m_game;
+	Position m_selectedColumnPos;
 };
 

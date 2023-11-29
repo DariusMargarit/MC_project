@@ -19,14 +19,16 @@ public:
 
 	const IColumn* GetElement(const Position& pos) const override;
 	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
+	const BridgeVector GetBridgesPositions() const override;
 	const uint16_t GetSize() const override;
-
 
 	void PlaceColumn(Position& position, IPlayer* player);
 	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 
 	const IColumn* operator [](Position pos) const override;
+
+
 
 private:
 	bool ValidPlaceColumn(Position position) const;
