@@ -32,7 +32,6 @@ public:
 
 private:
 	bool ValidPlaceColumn(const Position& position) const;
-	std::vector<std::vector<IColumn*>> BridgeSurroundingMatrix(const Position& firstPosition, const Position& secondPosition) const;
 	bool FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const;
 	bool orientation(Position& A, Position& B, Position& C) const;
 	bool doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const;

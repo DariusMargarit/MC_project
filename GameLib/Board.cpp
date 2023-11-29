@@ -19,76 +19,53 @@ bool Board::ValidPlaceColumn(const Position& position) const
 	return true;
 }
 
-std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(const Position& firstPosition, const Position& secondPosition) const
-{
-	std::vector<std::vector<IColumn*>>surroundingMatrix;
-	uint16_t lowerRowIndex = std::min(firstPosition.GetRow(), secondPosition.GetRow());
-	uint16_t lowerColumnIndex = std::min(firstPosition.GetColumn(), secondPosition.GetColumn());
-	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow());
-
-	if (lowerRowIndex > 0) --lowerRowIndex;
-	if (lowerColumnIndex > 0) --lowerColumnIndex;
-
-	std::vector<IColumn*>row;
-	uint16_t higherRowIndex, higherColumnIndex;
-	if (absRowValue == 1) 
-	{
-		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 3, (uint16_t)m_matrix.size() - 1);
-		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 4, (uint16_t)m_matrix[0].size() - 1);
-	} else 
-	{
-		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, (uint16_t)m_matrix.size() - 1);
-		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, (uint16_t)m_matrix[0].size() - 1);
-	}
-	for (uint16_t rowIndex = lowerRowIndex; rowIndex <= higherRowIndex; ++rowIndex)
-	{
-		for (uint16_t columnIndex = lowerColumnIndex; columnIndex <= higherColumnIndex; ++columnIndex)
-		{
-			row.push_back(m_matrix[rowIndex][columnIndex]);
-		}
-		surroundingMatrix.push_back(row);
-		row.clear();
-	}
-	surroundingMatrix[0][0] = nullptr;
-	surroundingMatrix[0][surroundingMatrix[0].size() - 1] = nullptr;
-	surroundingMatrix[surroundingMatrix.size() - 1][0] = nullptr;
-	surroundingMatrix[surroundingMatrix.size() - 1][surroundingMatrix[0].size() - 1] = nullptr;
-
-	return surroundingMatrix;
-}
-
 bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const
 {
-	std::vector<std::vector<IColumn*>>bridgeSurroundingMatrix = BridgeSurroundingMatrix(bridge1FirstPosition, bridge1SecondPosition);
+	uint16_t lowerRowIndex = std::min(bridge1FirstPosition.GetRow(), bridge1SecondPosition.GetRow());
+	uint16_t lowerColumnIndex = std::min(bridge1FirstPosition.GetColumn(), bridge1SecondPosition.GetColumn());
+	uint16_t absRowValue = abs(bridge1FirstPosition.GetRow() - bridge1SecondPosition.GetRow());
 	std::vector<int16_t> rowDirection = { -2,-1,1,2,2,1,-1,-2 };
 	std::vector<int16_t> columnDirection = { 1,2,2,1,-1,-2,-2,-1 };
-	for (uint16_t rowIndex = 0; rowIndex < bridgeSurroundingMatrix.size(); ++rowIndex) 
+	uint8_t rowAddition, columnAddition;
+	if (absRowValue == 1)
 	{
-		for (uint16_t columnIndex = 0; columnIndex < bridgeSurroundingMatrix[0].size(); ++columnIndex)
+		rowAddition = 1, columnAddition = 2;
+	}
+	else
+	{
+		rowAddition = 2, columnAddition = 1;
+	}
+	for (uint16_t rowIndex = lowerRowIndex; rowIndex <= lowerRowIndex + rowAddition; ++rowIndex)
+	{
+		for (uint16_t columnIndex = lowerColumnIndex; columnIndex <= lowerColumnIndex + columnAddition; ++columnIndex)
 		{
-			if (bridgeSurroundingMatrix[rowIndex][columnIndex] != nullptr)
+			if (m_matrix[rowIndex][columnIndex] != nullptr)
 			{
 				for (uint8_t directionIndex = 0; directionIndex < rowDirection.size(); ++directionIndex)
 				{
 					int16_t secondRowIndex = rowIndex + rowDirection[directionIndex];
 					int16_t secondColumnIndex = columnIndex + columnDirection[directionIndex];
-					if (secondRowIndex < 0 || secondRowIndex > bridgeSurroundingMatrix.size() - 1)
+					if (secondRowIndex < 0 || secondRowIndex > m_matrix.size() - 1)
 					{
 						continue;
 					}
-					if (secondColumnIndex < 0 || secondColumnIndex > bridgeSurroundingMatrix[0].size() - 1)
+					if (secondColumnIndex < 0 || secondColumnIndex > m_matrix[0].size() - 1)
 					{
 						continue;
 					}
-					if (bridgeSurroundingMatrix[secondRowIndex][secondColumnIndex] != nullptr)
+					if (m_matrix[secondRowIndex][secondColumnIndex] != nullptr)
 					{
-						if (bridgeSurroundingMatrix[secondRowIndex][secondColumnIndex]->GetPlayer() ==
-							bridgeSurroundingMatrix[rowIndex][columnIndex]->GetPlayer())
+						if (m_matrix[secondRowIndex][secondColumnIndex]->GetPlayer() ==
+							m_matrix[rowIndex][columnIndex]->GetPlayer())
 						{
 							Position bridge2FirstPosition(rowIndex, columnIndex);
 							Position bridge2SecondPosition(secondRowIndex, secondColumnIndex);
-							if (bridge2FirstPosition == bridge1FirstPosition || bridge2FirstPosition == bridge1SecondPosition ||
-								bridge2SecondPosition == bridge1FirstPosition || bridge2SecondPosition == bridge1SecondPosition)
+							IColumn* bridge1FirstColumn = m_matrix[bridge1FirstPosition.GetRow()][bridge1FirstPosition.GetColumn()];
+							IColumn* bridge1SecondColumn = m_matrix[bridge1SecondPosition.GetRow()][bridge1SecondPosition.GetColumn()];
+							IColumn* bridge2FirstColumn = m_matrix[rowIndex][columnIndex];
+							IColumn* bridge2SecondColumn = m_matrix[secondRowIndex][secondColumnIndex];
+							if (bridge1FirstColumn == bridge2FirstColumn || bridge1FirstColumn == bridge2SecondColumn ||
+								bridge1SecondColumn == bridge2FirstColumn || bridge1SecondColumn == bridge2SecondColumn)
 							{
 								continue;
 							}
@@ -105,7 +82,6 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 						}
 					}
 				}
-				bridgeSurroundingMatrix[rowIndex][columnIndex] = nullptr;
 			}
 		}
 	}
