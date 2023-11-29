@@ -5,17 +5,15 @@
 class Bridge
 {
 public:
-	Bridge(IColumn* firstColumn,IColumn* secondColumn);
+	Bridge(IColumn* firstColumn, IColumn* secondColumn);
 	Bridge(const Bridge& otherBridge);
 	Bridge(Bridge&& otherBridge) noexcept;
 	~Bridge() = default;
 
-    IColumn* GetFirstColumn() const;
-	IColumn* GetSecondColumn() const;
+    IColumn* GetFirstColumn() const noexcept;
+	IColumn* GetSecondColumn() const noexcept;
 
-	bool HasPositions( IColumn* pos1,IColumn* pos2) const;
-
-	Bridge& operator=(const Bridge& otherBridge);
+	Bridge& operator=(const Bridge& otherBridge) noexcept;
 	Bridge& operator=(Bridge&& otherBridge) noexcept;
 
 private:

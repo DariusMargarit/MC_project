@@ -17,8 +17,8 @@ struct _declspec(dllexport) IPlayer
 {
 	static IPlayer* Produce(std::string_view name, EColor color);
 
-	virtual EColor GetColor() const = 0;
-	virtual std::string_view GetName() const = 0;
+	virtual EColor GetColor() const noexcept = 0;
+	virtual std::string_view GetName() const noexcept = 0;
 
 	virtual ~IPlayer() = default;
 };

@@ -13,7 +13,7 @@
 class Board : public IBoard
 {
 public:
-	Board(uint16_t size);
+	Board(const uint16_t& size);
 	Board(const Board& otherBoard);
 	~Board();
 
@@ -29,8 +29,8 @@ public:
 	const IColumn* operator [](Position pos) const override;
 
 private:
-	bool ValidPlaceColumn(Position position) const;
-	std::vector<std::vector<IColumn*>> BridgeSurroundingMatrix(Position& firstPosition, Position& secondPosition) const;
+	bool ValidPlaceColumn(const Position& position) const;
+	std::vector<std::vector<IColumn*>> BridgeSurroundingMatrix(const Position& firstPosition, const Position& secondPosition) const;
 	bool FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const;
 	bool orientation(Position& A, Position& B, Position& C) const;
 	bool doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const;

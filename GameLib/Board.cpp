@@ -1,13 +1,13 @@
 #include "Board.h"
 #include "Column.h"
 
-Board::Board(uint16_t size)
-	: m_matrix{size, std::vector<IColumn*>(size, nullptr)}
+Board::Board(const uint16_t& size)
+	: m_matrix{ size, std::vector<IColumn*>{size, nullptr}}
 {
 	// Empty
 }
 
-bool Board::ValidPlaceColumn(Position position) const
+bool Board::ValidPlaceColumn(const Position& position) const
 {
 	if (m_matrix[position.GetRow()][position.GetColumn()] != nullptr)
 	{
@@ -16,7 +16,7 @@ bool Board::ValidPlaceColumn(Position position) const
 	return true;
 }
 
-std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firstPosition, Position& secondPosition) const
+std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(const Position& firstPosition, const Position& secondPosition) const
 {
 	std::vector<std::vector<IColumn*>>surroundingMatrix;
 	uint16_t lowerRowIndex = std::min(firstPosition.GetRow(), secondPosition.GetRow());
@@ -29,12 +29,12 @@ std::vector<std::vector<IColumn*>> Board::BridgeSurroundingMatrix(Position& firs
 	uint16_t higherRowIndex, higherColumnIndex;
 	if (absRowValue == 1) 
 	{
-		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 3, m_matrix.size() - 1);
-		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 4, m_matrix[0].size() - 1);
+		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 3, (uint16_t)m_matrix.size() - 1);
+		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 4, (uint16_t)m_matrix[0].size() - 1);
 	} else 
 	{
-		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, m_matrix.size() - 1);
-		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, m_matrix[0].size() - 1);
+		higherRowIndex = std::min<uint16_t>(lowerRowIndex + 4, (uint16_t)m_matrix.size() - 1);
+		higherColumnIndex = std::min<uint16_t>(lowerColumnIndex + 3, (uint16_t)m_matrix[0].size() - 1);
 	}
 	for (uint16_t rowIndex = lowerRowIndex; rowIndex < higherRowIndex; ++rowIndex)
 	{
@@ -203,7 +203,7 @@ const IColumn* Board::GetElement(const uint16_t& row, const uint16_t& column) co
 
 const uint16_t Board::GetSize() const
 {
-	return m_matrix.size();
+	return (uint16_t)m_matrix.size();
 }
 
 void Board::PlaceColumn(Position& position, IPlayer* player)

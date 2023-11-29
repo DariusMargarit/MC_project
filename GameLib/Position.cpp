@@ -1,16 +1,16 @@
 #include "Position.h"
 
 
-Position::Position(uint16_t row, uint16_t column)
-	: m_row(row)
-	, m_column(column)
+Position::Position(const uint16_t& row, const uint16_t& column)
+	: m_row{row}
+	, m_column{column}
 {
 	// Empty
 }
 
 
 Position::Position()
-	: Position(EmptyPosition())
+	: Position{ EmptyPosition() }
 {
 	// Empty
 }
