@@ -8,21 +8,16 @@ Bridge::Bridge(IColumn* firstColumn, IColumn* secondColumn)
 }
 
 
- IColumn* Bridge::GetFirstColumn() const
+ IColumn* Bridge::GetFirstColumn() const noexcept
 {
 	return m_firstColumn;
 }
 
- IColumn* Bridge::GetSecondColumn() const
+ IColumn* Bridge::GetSecondColumn() const noexcept
 {
 	return m_secondColumn;
 }
 
- bool Bridge::HasPositions(IColumn* pos1,  IColumn* pos2) const
- {
-	 return (m_firstColumn == pos1 && m_secondColumn == pos2) ||
-		 (m_firstColumn == pos2 && m_secondColumn == pos1);
- }
 
 Bridge::Bridge(const Bridge& otherBridge)
 {
@@ -52,7 +47,7 @@ Bridge::Bridge(Bridge&& otherBridge) noexcept
 	otherBridge.m_secondColumn = nullptr;
 }
 
-Bridge& Bridge::operator=(const Bridge& otherBridge)
+Bridge& Bridge::operator=(const Bridge& otherBridge) noexcept
 {
 	if (this == &otherBridge)
 		return *this;
