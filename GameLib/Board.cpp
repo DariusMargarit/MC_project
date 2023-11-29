@@ -191,12 +191,12 @@ Board::~Board() {
 		delete bridge.second;
 }
 
-const IColumn* Board::GetElement(Position position) const
+const IColumn* Board::GetElement(const Position& position) const
 {
 	return m_matrix[position.GetRow()][position.GetColumn()];
 }
 
-const IColumn* Board::GetElement(uint16_t row, uint16_t column) const
+const IColumn* Board::GetElement(const uint16_t& row, const uint16_t& column) const
 {
 	return m_matrix[row][column];
 }

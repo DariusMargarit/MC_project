@@ -17,8 +17,8 @@ public:
 	Board(const Board& otherBoard);
 	~Board();
 
-	const IColumn* GetElement(Position pos) const override;
-	const IColumn* GetElement(uint16_t row, uint16_t column) const override;
+	const IColumn* GetElement(const Position& pos) const override;
+	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
 	const uint16_t GetSize() const override;
 
 

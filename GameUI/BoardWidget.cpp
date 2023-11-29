@@ -30,9 +30,9 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	const auto circleHeight = static_cast<float>(height() / boardSize);
 	float radius;
 
-	for (int row = 0; row < boardSize; ++row)
+	for (uint16_t row = 0; row < boardSize; ++row)
 	{
-		for (int column = 0; column < boardSize; ++column)
+		for (uint16_t column = 0; column < boardSize; ++column)
 		{
 			if (IsCorner(row, column)) continue;
 

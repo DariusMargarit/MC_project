@@ -15,24 +15,24 @@ Position::Position()
 	// Empty
 }
 
-const uint16_t Position::GetRow() const
+const uint16_t Position::GetRow() const noexcept
 {
 	return m_row;
 }
 
-const uint16_t Position::GetColumn() const
+const uint16_t Position::GetColumn() const noexcept
 {
 	return m_column;
 }
 
-bool Position::IsEqual(uint16_t row, uint16_t column)
+bool Position::IsEqual(const uint16_t& row, const uint16_t& column)
 {
 	return row == m_row && column == m_column;
 }
 
-bool Position::operator==(Position position)
+bool Position::operator==(Position& position)
 {
-	return this->m_row == position.m_row && this->m_column == position.m_column;
+	return IsEqual(position.m_row,position.m_column);
 }
 
 const Position& Position::EmptyPosition()

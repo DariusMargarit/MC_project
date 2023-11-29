@@ -18,12 +18,12 @@ Column::Column(Column&& other) noexcept
 	other.m_player = nullptr;
 }
 
-IPlayer* Column::GetPlayer() const
+IPlayer* Column::GetPlayer() const noexcept
 {
 	return m_player;
 }
 
-Column& Column::operator=(const Column& other)
+Column& Column::operator=(const Column& other) noexcept
 {
 	if (m_player != other.m_player)
 		m_player = other.m_player;
