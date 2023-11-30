@@ -12,10 +12,19 @@ Board::Board(const uint16_t& size)
 
 bool Board::ValidPlaceColumn(const Position& position) const
 {
+	if (position.GetRow() < 0 || position.GetRow() >= m_matrix.size())
+	{
+		return false;
+	}
+	if (position.GetColumn() < 0 || position.GetColumn() >= m_matrix.size())
+	{
+		return false;
+	}
 	if (m_matrix[position.GetRow()][position.GetColumn()] != nullptr)
 	{
 		return false;
 	}
+
 	return true;
 }
 
@@ -206,12 +215,14 @@ const uint16_t Board::GetSize() const
 	return (uint16_t)m_matrix.size();
 }
 
-void Board::PlaceColumn(Position& position, IPlayer* player)
+bool Board::PlaceColumn(Position& position, IPlayer* player)
 {
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn = new Column(player);
 		m_matrix[position.GetRow()][position.GetColumn()] = newColumn;
+		return true;
 	}
+	return false;
 }
 
 void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)

@@ -39,9 +39,29 @@ Game::~Game()
 
 void Game::PlaceColumn(Position position)
 {
-	m_board->PlaceColumn(position, m_turn);
+	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1))
+	{
+		if (m_turn == m_player2)
+		{
+			if (m_board->PlaceColumn(position, m_turn))
+				ChangeTurn();
+		}
+		   
+	}
+	else if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) )
+	{
+		if (m_turn == m_player1)
+		{
+			if (m_board->PlaceColumn(position, m_turn))
+				ChangeTurn();
+		}
+	}
+	else
+	{
+		if (m_board->PlaceColumn(position, m_turn))
+			ChangeTurn();
+	}
 
-	ChangeTurn();
 }
 
 void Game::MakeBridge(Position firstPosition, Position secondPosition)
