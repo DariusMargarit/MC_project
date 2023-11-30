@@ -29,7 +29,7 @@ SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
 	InitializeValues();
 	InitializeLayout();
 
-	auto stylesheet = FileUtils::StylesheetFileToString("stylesheets/settings.qss");
+	auto stylesheet{ FileUtils::StylesheetFileToString("stylesheets/settings.qss") };
 	setStyleSheet(stylesheet);
 
 	connect(m_updateButton, SIGNAL(ButtonClicked()), SLOT(OnUpdateButtonClicked()));
@@ -55,7 +55,7 @@ void SettingsScreen::OnDiscardButtonClicked()
 
 void SettingsScreen::AddFieldToLayout(QString fieldName, QWidget* widget)
 {
-	QLabel* fieldLabel = new QLabel(fieldName, this);
+	QLabel* fieldLabel{ new QLabel{fieldName, this} };
 
 	if (widget)
 	{
@@ -66,7 +66,7 @@ void SettingsScreen::AddFieldToLayout(QString fieldName, QWidget* widget)
 	}
 	else
 	{
-		QString objectName = fieldName.isEmpty() ? "Empty" : "HeaderFieldText";
+		QString objectName{ fieldName.isEmpty() ? "Empty" : "HeaderFieldText" };
 		fieldLabel->setObjectName(objectName);
 		m_layout->addWidget(fieldLabel, m_layout->rowCount(), 0, Qt::AlignLeft);
 	}
@@ -121,7 +121,7 @@ void SettingsScreen::InitializeComboBox(bool isFirstPlayerBox)
 
 		QPixmap pixmap(12, 12);
 		pixmap.fill(hexColor);
-		const auto icon = QIcon(pixmap);
+		const auto icon{ QIcon(pixmap) };
 
 		currentBox->addItem(icon, colorString);
 		if (color == initialColor)

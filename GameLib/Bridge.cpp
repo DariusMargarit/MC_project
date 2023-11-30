@@ -29,7 +29,7 @@ Bridge::Bridge(const Bridge& otherBridge)
 		this->m_secondColumn = otherBridge.m_secondColumn;
 	else
 		this->m_secondColumn = nullptr;
-
+	
 }
 
 Bridge::Bridge(Bridge&& otherBridge) noexcept

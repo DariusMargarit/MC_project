@@ -6,8 +6,8 @@
 #include "FileUtils.h"
 
 MainMenuScreen::MainMenuScreen(QWidget* parent)
-	: QWidget(parent)
-	, m_layout(new QGridLayout(this))
+	: QWidget{ parent }
+	, m_layout{ new QGridLayout{this} }
 {
 	// Init the page content
 	InitPageWidgets();
@@ -19,7 +19,7 @@ MainMenuScreen::MainMenuScreen(QWidget* parent)
 	setLayout(m_layout);
 
 	// import the stylesheet for design
-	auto stylesheet = FileUtils::StylesheetFileToString("stylesheets/mainmenu.qss");
+	auto stylesheet{ FileUtils::StylesheetFileToString("stylesheets/mainmenu.qss") };
 	setStyleSheet(stylesheet);
 
 	connect(m_playButton, SIGNAL(ButtonClicked()), SLOT(OnPlayButtonClicked()));
@@ -40,7 +40,7 @@ void MainMenuScreen::OnPlayButtonClicked()
 void MainMenuScreen::InitPageWidgets()
 {
 	// Image init
-	QLabel* imageWidget = new QLabel(this);
+	QLabel* imageWidget{ new QLabel(this) };
 	imageWidget->setObjectName("imageWidget");
 	QPixmap presentationImage(":/GameUI/images/presentation.png");
 	imageWidget->setPixmap(presentationImage);

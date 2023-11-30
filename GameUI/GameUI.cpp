@@ -14,7 +14,7 @@ GameUI::GameUI(QWidget *parent)
     InitializeMainMenu();
 
     // Set the stylesheet from file
-	QString stylesheet = FileUtils::StylesheetFileToString("stylesheets/default.qss");
+    QString stylesheet{ FileUtils::StylesheetFileToString("stylesheets/default.qss") };
 	setStyleSheet(stylesheet);
 
     // Connect buttons
@@ -40,7 +40,7 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     }
     else if (button == EButtonPressed::settingsButton)
     {
-		IGameSettings* settings = IGameSettings::GetInstance();
+        IGameSettings* settings{ IGameSettings::GetInstance() };
 		m_settingsScreen = new SettingsScreen(*settings);
         m_settingsScreen->exec();
             
@@ -63,7 +63,7 @@ void GameUI::InitializeMainMenu()
 
 void GameUI::LoadFonts()
 {
-    QString path = ":/GameUI/fonts/";
+    QString path{ ":/GameUI/fonts/" };
     QFontDatabase::addApplicationFont(path + "Montserrat-Black.ttf");
     QFontDatabase::addApplicationFont(path + "Montserrat-Bold.ttf");
     QFontDatabase::addApplicationFont(path + "Montserrat-Light.ttf");
