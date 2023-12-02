@@ -47,7 +47,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 
 			if (m_selected.IsEqual(row, column))
 			{
-				color = Qt::green;
+				color = Qt::white;
 				radius = CalculateRadius(false);
 			}
 			else if (auto element{ m_gameBoard.GetElement(row, column) }; element)
@@ -57,7 +57,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 			}
 			else if (m_hovered.IsEqual(row, column))
 			{
-				color = Qt::black;
+				color = Qt::white;
 				radius = CalculateRadius(false);
 			}
 			else
@@ -107,8 +107,6 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	QLineF rightLine{ GetLineDelimiter(EDirection::Right) };
 	painter.drawLine(leftLine);
 	painter.drawLine(rightLine);
-
-	
 }
 
 void BoardWidget::mousePressEvent(QMouseEvent* event)
@@ -130,6 +128,13 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 void BoardWidget::leaveEvent(QEvent* event)
 {
 	m_hovered = Position::EmptyPosition();
+}
+
+void BoardWidget::resizeEvent(QResizeEvent* event)
+{
+	const auto size = qMin(width(), height());
+	resize(size, size);
+	QWidget::resizeEvent(event);
 }
 
 Position BoardWidget::CoordinatesToPosition(QPointF pos) const
@@ -215,7 +220,7 @@ float BoardWidget::CalculateRadius(bool isSmallCircle) const
 	float radius{ static_cast<float>(qMin(circleWidth, circleHeight)) };
 	radius /= isSmallCircle ? smallCircleScalingFactor : largeCircleScalingFactor;
 
-	return std::move(radius);
+	return radius;
 
 
 

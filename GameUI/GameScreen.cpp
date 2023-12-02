@@ -7,7 +7,6 @@ GameScreen::GameScreen(QWidget* parent)
 	, m_layout{new QGridLayout{this}}
 	, m_selectedColumnPos{Position::EmptyPosition()}
 {
-
 	IGameSettings* settings{ IGameSettings::GetInstance() };
 	m_game = IGame::Produce(*settings);
 

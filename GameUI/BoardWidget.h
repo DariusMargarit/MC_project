@@ -31,6 +31,7 @@ protected:
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
 	void leaveEvent(QEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
 
 private:
 	Position CoordinatesToPosition(QPointF pos) const;
