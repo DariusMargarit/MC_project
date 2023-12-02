@@ -76,17 +76,17 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	pen.setWidth(3);
 	for (auto bridge : m_gameBoard.GetBridgesPositions())
 	{
-		auto& [pos1, pos2] { bridge};
+		auto& [pos1, pos2] {bridge};
 		QPointF firstPoint{ PositionToCoordinates(pos1.GetRow(), pos1.GetColumn()) };
 		QPointF secondPoint{ PositionToCoordinates(pos2.GetRow(), pos2.GetColumn()) };
+		QPointF firstPointOffset{ PointTranslation(firstPoint, secondPoint) };
 		const auto playerColor {m_gameBoard.GetElement(pos1)->GetPlayer()->GetColor()};
 		color = ColorUtils::TwixtColorToQColor(playerColor);
-
 
 		pen.setColor(color);
 		painter.setPen(pen);
 
-		painter.drawLine(firstPoint, secondPoint);
+		painter.drawLine(firstPoint + firstPointOffset, secondPoint - firstPointOffset);
 	}
 
 	color = ColorUtils::TwixtColorToQColor(m_firstPlayerColor);
@@ -111,7 +111,6 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 
 void BoardWidget::mousePressEvent(QMouseEvent* event)
 {
-
 	Position pos{ CoordinatesToPosition(event->position()) };
 	if (IsCorner(pos.GetRow(), pos.GetColumn())) return;
 
@@ -221,9 +220,20 @@ float BoardWidget::CalculateRadius(bool isSmallCircle) const
 	radius /= isSmallCircle ? smallCircleScalingFactor : largeCircleScalingFactor;
 
 	return radius;
+}
 
+QPointF BoardWidget::PointTranslation(QPointF firstPoint, QPointF secondPoint)
+{
+	const auto slope{ CalculateSlope(firstPoint, secondPoint) };
+	const auto radius{ CalculateRadius(false) };
 
+	return firstPoint.x() < secondPoint.x()
+		? QPointF{ radius * cos(atan(slope)), -radius * sin(atan(slope)) }
+		: QPointF{ -radius * cos(atan(slope)), radius * sin(atan(slope)) };
+}
 
-
+float BoardWidget::CalculateSlope(QPointF firstNode, QPointF secondNode)
+{
+	return -static_cast<float>((firstNode.y() - secondNode.y())) / (firstNode.x() - secondNode.x());
 }
 
