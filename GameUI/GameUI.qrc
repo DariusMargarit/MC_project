@@ -11,5 +11,6 @@
         <file>images/controller.png</file>
         <file>images/settings.png</file>
         <file>images/drop-down-arrow.png</file>
+        <file>images/profile.png</file>
     </qresource>
 </RCC>

@@ -74,6 +74,16 @@ void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 	m_board->RemoveBridge(firstPosition, secondPosition, m_turn);
 }
 
+IPlayer* Game::GetFirstPlayer() const
+{
+	return m_player1;
+}
+
+IPlayer* Game::GetSecondPlayer() const
+{
+	return m_player2;
+}
+
 Game& Game::operator=(const Game& otherGame)
 {
 	if (this != &otherGame) {

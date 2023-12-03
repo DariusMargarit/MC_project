@@ -2,7 +2,6 @@
 #include <QMouseEvent>
 
 #include "BoardWidget.h"
-#include "FileUtils.h"
 #include "ColorUtils.h"
 
 BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) 
@@ -12,12 +11,7 @@ BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColo
 	, m_secondPlayerColor{ secondPlayerColor }
 
 {
-	setObjectName("board");
 	setMouseTracking(true);
-
-	QString stylesheet{ FileUtils::StylesheetFileToString("./stylesheets/game.qss") };
-	setStyleSheet(stylesheet);
-
 }
 
 
@@ -127,6 +121,7 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 void BoardWidget::leaveEvent(QEvent* event)
 {
 	m_hovered = Position::EmptyPosition();
+	update();
 }
 
 void BoardWidget::resizeEvent(QResizeEvent* event)

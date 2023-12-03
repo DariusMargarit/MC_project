@@ -130,6 +130,7 @@
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
+    <ClCompile Include="PlayerBar.cpp" />
     <ClCompile Include="SettingsScreen.cpp" />
     <ClCompile Include="Slider.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -145,6 +146,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PlayerBar.h" />
     <ClInclude Include="WidgetUtils.h" />
     <QtMoc Include="Slider.h" />
     <QtMoc Include="BoardWidget.h" />

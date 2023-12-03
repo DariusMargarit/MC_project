@@ -1,6 +1,8 @@
 #pragma once
 
 #include "BoardWidget.h"
+#include "PlayerBar.h"
+
 #include "../GameLib/IGame.h"
 
 class GameScreen : public QWidget
@@ -16,6 +18,7 @@ private slots:
 private:
 	QGridLayout* m_layout;
 	BoardWidget* m_board;
+	PlayerBar* m_firstPlayerBar, * m_secondPlayerBar;
 	IGame* m_game;
 	Position m_selectedColumnPos;
 };

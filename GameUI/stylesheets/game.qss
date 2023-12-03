@@ -1,4 +1,7 @@
 QWidget#board {
-	background-color: #21201e;
-	border-radius: 10px;
+
+}
+
+QLabel#playerName {
+	font-size: 18px;
 }

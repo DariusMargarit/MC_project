@@ -19,7 +19,6 @@ class BoardWidget : public QWidget
 
 public:
 	BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
-
 	void ChangeSelectedColumn(const Position& selectedColumn);
 
 signals:

@@ -70,6 +70,9 @@
     <ClCompile Include="WidgetUtils.cpp">
       <Filter>Resource Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerBar.cpp">
+      <Filter>Screens\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileUtils.h">
@@ -80,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="WidgetUtils.h">
       <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBar.h">
+      <Filter>Screens\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

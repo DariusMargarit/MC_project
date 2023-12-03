@@ -27,6 +27,7 @@ private:
     void InitializeMainMenu();
     void LoadFonts();
 
+    QWidget* centralWidget;
     QStackedWidget* m_screens;
     MainMenuScreen* m_mainMenuScreen;
     SettingsScreen* m_settingsScreen;

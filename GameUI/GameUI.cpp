@@ -35,6 +35,7 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     if (button == EButtonPressed::playButton)
     {
         m_gameScreen = new GameScreen(this);
+        resize(1050, 900);
         m_screens->addWidget(m_gameScreen);
         m_screens->setCurrentWidget(m_gameScreen);
         WidgetUtils::CenterWidget(this);
@@ -56,7 +57,6 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
 
 void GameUI::InitializeMainMenu()
 {
-
     // Initialize the main menu screen
 	m_mainMenuScreen = new MainMenuScreen(m_screens);
 
