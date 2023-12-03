@@ -37,13 +37,20 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
         m_gameScreen = new GameScreen(this);
         m_screens->addWidget(m_gameScreen);
         m_screens->setCurrentWidget(m_gameScreen);
+        WidgetUtils::CenterWidget(this);
     }
     else if (button == EButtonPressed::settingsButton)
     {
         IGameSettings* settings{ IGameSettings::GetInstance() };
 		m_settingsScreen = new SettingsScreen(*settings);
+
+        // Call show function to resize properly for centering on main menu and then hide
+        m_settingsScreen->show();
+        WidgetUtils::CenterWidget(m_settingsScreen, this);
+        m_settingsScreen->hide();
+
+        // And then execute the dialog to prevent user press other menu buttons
         m_settingsScreen->exec();
-            
     }
 }
 

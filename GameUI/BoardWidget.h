@@ -39,8 +39,8 @@ private:
 	bool IsCorner(int row, int column) const;
 	QLineF GetLineDelimiter(EDirection direction) const;
 	float CalculateRadius(bool isSmallCircle) const;
-	QPointF pointTranslation(QPointF firstPoint, QPointF secondPoint);
-	float calculateSlope(QPointF firstNode, QPointF secondNode);
+	QPointF PointTranslation(QPointF firstPoint, QPointF secondPoint);
+	float CalculateSlope(QPointF firstNode, QPointF secondNode);
 
 private:
 	const IBoard& m_gameBoard;

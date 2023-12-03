@@ -137,6 +137,7 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="WidgetUtils.cpp" />
     <QtRcc Include="GameUI.qrc" />
     <QtMoc Include="GameUI.h" />
     <ClCompile Include="BoardWidget.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WidgetUtils.h" />
     <QtMoc Include="Slider.h" />
     <QtMoc Include="BoardWidget.h" />
     <QtMoc Include="Button.h" />

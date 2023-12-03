@@ -6,8 +6,10 @@
 #include "MainMenuScreen.h"
 #include "SettingsScreen.h"
 #include "GameScreen.h"
+#include "WidgetUtils.h"
 
 #include "../GameLib/IGame.h"
+
 
 
 class GameUI : public QMainWindow

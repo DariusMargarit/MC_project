@@ -67,12 +67,18 @@
     <ClCompile Include="ColorUtils.cpp">
       <Filter>Resource Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="WidgetUtils.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileUtils.h">
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="ColorUtils.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="WidgetUtils.h">
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
