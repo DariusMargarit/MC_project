@@ -10,6 +10,9 @@ class Button : public QWidget
 public:
 	Button(QString headerText, QWidget* parent = nullptr, QString descriptionText = "", QPixmap* icon = nullptr);
 
+	QLabel* GetHeaderLabel() const;
+	QLabel* GetDescriptionLabel() const;
+
 	void SetTextColor(QColor color);
 	void SetTextShadowColor(QColor color);
 	void SetShadowColor(QColor color);

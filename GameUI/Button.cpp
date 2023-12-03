@@ -94,6 +94,16 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 	setLayout(m_layout);
 }
 
+QLabel* Button::GetHeaderLabel() const
+{
+	return m_headerLabel;
+}
+
+QLabel* Button::GetDescriptionLabel() const
+{
+	return m_descriptionLabel;
+}
+
 void Button::SetTextColor(QColor color)
 {
 	m_headerLabel->setStyleSheet("color: " + color.name());
