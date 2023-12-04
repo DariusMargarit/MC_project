@@ -3,7 +3,7 @@
 #include "BoardWidget.h"
 #include "PlayerBar.h"
 
-#include "../GameLib/IGame.h"
+#include "IGame.h"
 
 class GameScreen : public QWidget
 {

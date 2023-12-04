@@ -9,7 +9,7 @@
 using BridgePositions = std::pair<Position, Position>;
 using BridgeVector = std::vector<BridgePositions>;
 
-struct _declspec(dllexport) IBoard
+struct IBoard
 {
 	virtual const uint16_t GetSize() const = 0;
 

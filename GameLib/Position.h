@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-class _declspec(dllexport) Position
+class Position
 {
 public:
 	Position();

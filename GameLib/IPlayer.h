@@ -13,7 +13,7 @@ enum class EColor
 	NoColor,
 };
 
-struct _declspec(dllexport) IPlayer
+struct IPlayer
 {
 	static IPlayer* Produce(std::string_view name, EColor color);
 

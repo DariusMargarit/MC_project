@@ -1,7 +1,7 @@
 #include "GameScreen.h"
 #include "FileUtils.h"
 
-#include "../GameLib/IGameSettings.h"
+#include "IGameSettings.h"
 
 
 GameScreen::GameScreen(QWidget* parent)

@@ -2,7 +2,7 @@
 
 #include "IPlayer.h"
 
-class _declspec(dllexport) Player : public IPlayer
+class Player : public IPlayer
 {
 public:
 	Player(const std::string_view& name, const EColor& color);

@@ -5,7 +5,7 @@
 #include "IPlayer.h"
 #include "IBoard.h"
 
-struct _declspec(dllexport) IGame
+struct IGame
 {
 	static IGame* Produce(const IGameSettings& settings);
 

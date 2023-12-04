@@ -7,7 +7,7 @@
 
 #include "Slider.h"
 #include "Button.h"
-#include "../GameLib/IGameSettings.h"
+#include "IGameSettings.h"
 
 class SettingsScreen : public QDialog
 {

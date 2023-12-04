@@ -3,7 +3,7 @@
 #include <QGridLayout>
 #include <QWidget>
 
-#include "../GameLib/IBoard.h"
+#include "IBoard.h"
 
 enum class EDirection
 {

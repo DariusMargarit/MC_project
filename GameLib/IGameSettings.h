@@ -4,7 +4,7 @@
 
 #include "IPlayer.h"
 
-struct _declspec(dllexport) IGameSettings
+struct IGameSettings
 {
 
 // Make a new instance of GameSettings with singleton

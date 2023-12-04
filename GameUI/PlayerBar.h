@@ -4,7 +4,7 @@
 #include <QGridLayout>
 #include <QLabel>
 
-#include "../GameLib/IPlayer.h"
+#include "IPlayer.h"
 
 class PlayerBar : public QWidget
 {
