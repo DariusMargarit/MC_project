@@ -121,6 +121,8 @@ bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) 
 
 bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
 {
+	if (BridgeExists(firstPosition, secondPosition)) return false;
+
 	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow()) ;
 	uint16_t absColumnValue = abs(firstPosition.GetColumn() - secondPosition.GetColumn()) ;
 	IColumn* firstColumn{ m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()] };
@@ -146,13 +148,13 @@ bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
 
 const std::string Board::MakeKey(const Position& firstPosition, const Position& secondPosition) const
 {
-	const auto& raw1{ firstPosition.GetRow() },
-		      & raw2{ secondPosition.GetRow() };
+	const auto& row1{ firstPosition.GetRow() },
+		      & row2{ secondPosition.GetRow() };
 	const auto& column1{ firstPosition.GetColumn() },
 		      & column2{ secondPosition.GetColumn() };
 
-	std::string key{ std::to_string(raw1) + " " + std::to_string(column1) +
-		" " + std::to_string(raw2) + " " + std::to_string(column2) };
+	std::string key{ std::to_string(row1) + " " + std::to_string(column1) +
+		" " + std::to_string(row2) + " " + std::to_string(column2) };
 	return key;
 }
 
@@ -192,7 +194,7 @@ const IColumn* Board::GetElement(const uint16_t& row, const uint16_t& column) co
 
 const BridgeVector Board::GetBridgesPositions() const
 {
-	std::regex pattern(R"(\b\d+)");
+	std::regex pattern{R"(\b\d+)"};
 	BridgeVector bridgesPositions;
 	for (auto& bridge : m_bridges)
 	{
@@ -203,8 +205,8 @@ const BridgeVector Board::GetBridgesPositions() const
 		{
 			positions.push_back(std::stoi((*it).str()));
 		}
-		Position firstColumn(positions[0], positions[1]);
-		Position secondColumn(positions[2], positions[3]);
+		Position firstColumn{positions[0], positions[1]};
+		Position secondColumn{positions[2], positions[3]};
 		bridgesPositions.emplace_back(std::move(firstColumn), std::move(secondColumn));
 	}
 	return std::move(bridgesPositions);
@@ -237,21 +239,31 @@ void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 
 void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
-	
-	if (!ValidBridge(firstPosition, secondPosition) || player == nullptr)
-	{
-		// Handle invalid input, e.g., throw an exception or return an error code.
-		return;
-	}
+	if (!BridgeExists(firstPosition, secondPosition)) return;
 
-	if (std::string key{ MakeKey(firstPosition, secondPosition) };
-		m_bridges.find(key) != m_bridges.end() &&
-		m_bridges[key]->GetFirstColumn()->GetPlayer() == player)
+	const auto firstKey{ MakeKey(firstPosition, secondPosition) };
+	const auto secondKey{ MakeKey(secondPosition, firstPosition) };
+	if (m_bridges.find(firstKey) != m_bridges.end())
 	{
-		delete m_bridges[key];
-		m_bridges.erase(key);
+		delete m_bridges[firstKey];
+		m_bridges.erase(firstKey);
+	}
+	else
+	{
+		delete m_bridges[secondKey];
+		m_bridges.erase(secondKey);
+
 	}
 	
+}
+
+bool Board::BridgeExists(const Position& firstPosition, const Position& secondPosition) const
+{
+	const auto firstKey{  MakeKey(firstPosition, secondPosition) };
+	const auto secondKey{ MakeKey(secondPosition, firstPosition) };
+	if (m_bridges.find(firstKey)  != m_bridges.end() ||
+		m_bridges.find(secondKey) != m_bridges.end()) return true;
+	return false;
 }
 
 const IColumn* Board::operator[](Position pos) const

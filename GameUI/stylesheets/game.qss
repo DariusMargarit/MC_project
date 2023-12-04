@@ -1,7 +1,3 @@
-QWidget#board {
-
-}
-
 QLabel#playerName {
 	font-size: 18px;
 }

@@ -12,7 +12,6 @@ GameScreen::GameScreen(QWidget* parent)
 	IGameSettings* settings{ IGameSettings::GetInstance() };
 	m_game = IGame::Produce(*settings);
 	m_board = new BoardWidget(*m_game->GetBoard(), settings->GetFirstPlayerColor(), settings->GetSecondPlayerColor(), this);
-	m_board->setObjectName("board");
 
 	m_firstPlayerBar = new PlayerBar(*m_game->GetFirstPlayer(), this);
 	m_secondPlayerBar = new PlayerBar(*m_game->GetSecondPlayer(), this);
@@ -28,7 +27,6 @@ GameScreen::GameScreen(QWidget* parent)
 
 	QString stylesheet{ FileUtils::StylesheetFileToString("./stylesheets/game.qss") };
 	setStyleSheet(stylesheet);
-
 }
 
 void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton& button)
@@ -53,7 +51,14 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 		{
 			if (m_selectedColumnPos != position)
 			{
-				m_game->MakeBridge(m_selectedColumnPos, position);
+				if (m_game->GetBoard()->BridgeExists(m_selectedColumnPos, position))
+				{
+					m_game->RemoveBridge(m_selectedColumnPos, position);
+				}
+				else
+				{
+					m_game->MakeBridge(m_selectedColumnPos, position);
+				}
 			}
 
 			m_selectedColumnPos = Position::EmptyPosition();
