@@ -8,9 +8,9 @@
         <file>fonts/Montserrat-Regular.ttf</file>
         <file>fonts/Montserrat-SemiBold.ttf</file>
         <file>fonts/Montserrat-Thin.ttf</file>
-        <file>images/controller.png</file>
-        <file>images/settings.png</file>
         <file>images/drop-down-arrow.png</file>
         <file>images/profile.png</file>
+        <file>images/controller.svg</file>
+        <file>images/settings.svg</file>
     </qresource>
 </RCC>

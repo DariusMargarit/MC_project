@@ -51,17 +51,17 @@ const QColor ColorUtils::TwixtColorToQColor(EColor color)
 	switch (color)
 	{
 	case EColor::Red:
-		return std::move(QColor("#E2001B"));
+		return std::move(QColor("#fa594d"));
 	case EColor::Blue:
-		return std::move(QColor("#4798CE"));
+		return std::move(QColor("#75c5fa"));
 	case EColor::Pink:
-		return std::move(QColor("#de27e8"));
+		return std::move(QColor("#ee40f7"));
 	case EColor::Purple:
 		return std::move(QColor("#9e67f0"));
 	case EColor::Yellow:
-		return std::move(QColor("#c9b465"));
+		return std::move(QColor("#e8d17b"));
 	case EColor::Orange:
-		return std::move(QColor("#d97f30"));
+		return std::move(QColor("#f29544"));
 	default:
 		return Qt::transparent;
 

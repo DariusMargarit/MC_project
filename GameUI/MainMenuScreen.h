@@ -27,7 +27,8 @@ protected:
 
 private:
 	void InitPageWidgets();
-	void AdjustFontSize(QLabel* label, float textRatio);
+	const QFont GetResizedFont(const QFont& font, float textRatio);
+	int GetResizedIcon(int size, float sizeRatio);
 
 private:
 	QGridLayout* m_layout;
@@ -37,6 +38,7 @@ private:
 	static const uint16_t mainTextSize = 55;
 	static const uint16_t headerLabelSize = 35;
 	static const uint16_t descriptionLabelSize = 20;
+	static const uint16_t svgIconSize = 70;
 
 };
 

@@ -7,13 +7,13 @@ QLabel#imageWidget {
 QWidget#playButton {
 	background-color: #6e9451;
 	border-radius: 20px;
-	margin: 25px;
+	margin: 20px;
 }
 
 QWidget#settingsButton {
 	background-color: #403E3C;
 	border-radius: 20px;
-	margin: 25px;
+	margin: 20px;
 }
 
 QWidget#playButton:hover {
@@ -38,7 +38,6 @@ QLabel#descriptionLabel {
 	padding-right: 15px;
 }
 
-QLabel#iconLabel{
+QSvgWidget#icon{
 	background-color: transparent;
-	margin-left: 25px;
 }

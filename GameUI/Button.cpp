@@ -3,12 +3,15 @@
 #include <QStyleOption>
 #include <QPainter>
 
+
 #include "Button.h"
 
-Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPixmap* icon)
+Button::Button(QString headerText, QWidget* parent, QString descriptionText, QSvgWidget* icon)
 	: QWidget(parent)
 	, m_layout(new QGridLayout(this))
 {
+
+
 	// Header
 	m_headerLabel = new QLabel(headerText, this);
 	m_headerLabel->setObjectName("headerLabel");
@@ -23,9 +26,9 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 	// Add icon if exists
 	if (icon)
 	{
-		m_iconLabel = new QLabel(this);
-		m_iconLabel->setPixmap(*icon);
-		m_iconLabel->setObjectName("iconLabel");
+		m_icon = icon;
+		m_icon->setParent(this);
+		m_icon->setObjectName("icon");
 	}
 
 	// Add drop shadow to title
@@ -46,12 +49,12 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 	if (icon)
 	{
 		// Add drop shadow to button icon
-		auto iconEffect = new QGraphicsDropShadowEffect(m_iconLabel);
+		auto iconEffect = new QGraphicsDropShadowEffect(m_icon);
 		iconEffect->setColor("#171716");
 		iconEffect->setOffset(1);
 		iconEffect->setBlurRadius(2);
 
-		m_iconLabel->setGraphicsEffect(iconEffect);
+		m_icon->setGraphicsEffect(iconEffect);
 	}
 
 	// Add the created effects to labels
@@ -68,14 +71,14 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 	{
 	
 		// add all widgets if exists
-		m_layout->addWidget(m_iconLabel, 0, 0, 2, 1, Qt::AlignLeft);
+		m_layout->addWidget(m_icon, 0, 0, 2, 1, Qt::AlignCenter);
 		m_layout->addWidget(m_headerLabel, 0, 1, 1, 3, Qt::AlignLeft);
 		m_layout->addWidget(m_descriptionLabel, 1, 1, 1, 3, Qt::AlignLeft);
 	}
 	else if (icon && descriptionText.isEmpty())
 	{
 		// add only the header and description label
-		m_layout->addWidget(m_iconLabel, 0, 0, Qt::AlignLeft);
+		m_layout->addWidget(m_icon, 0, 0, Qt::AlignRight);
 		m_layout->addWidget(m_headerLabel, 0, 1, 1, 3, Qt::AlignLeft);
 	}
 	else if (!icon && !descriptionText.isEmpty())
@@ -94,14 +97,34 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QPi
 	setLayout(m_layout);
 }
 
-QLabel* Button::GetHeaderLabel() const
+const QFont& Button::GetHeaderFont() const
 {
-	return m_headerLabel;
+	return m_headerLabel->font();
 }
 
-QLabel* Button::GetDescriptionLabel() const
+const QFont& Button::GetDescriptionFont() const
 {
-	return m_descriptionLabel;
+	return m_descriptionLabel->font();
+}
+
+int Button::GetIconSize() const
+{
+	return m_icon->width();
+}
+
+void Button::SetHeaderFont(const QFont& font)
+{
+	m_headerLabel->setFont(font);
+}
+
+void Button::SetDescriptionFont(const QFont& font)
+{
+	m_descriptionLabel->setFont(font);
+}
+
+void Button::SetIconSize(int size)
+{
+	m_icon->setMaximumSize(size, size);
 }
 
 void Button::SetTextColor(QColor color)

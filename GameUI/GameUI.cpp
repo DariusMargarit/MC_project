@@ -35,10 +35,11 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     if (button == EButtonPressed::playButton)
     {
         m_gameScreen = new GameScreen(this);
-        resize(1050, 900);
+        resize(1050, 800);
         m_screens->addWidget(m_gameScreen);
         m_screens->setCurrentWidget(m_gameScreen);
         WidgetUtils::CenterWidget(this);
+        qDebug() << m_gameScreen->size();
     }
     else if (button == EButtonPressed::settingsButton)
     {
