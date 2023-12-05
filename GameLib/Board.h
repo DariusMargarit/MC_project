@@ -28,6 +28,7 @@ public:
 	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPosition, Position& secondPosition);
+	bool CheckWinner(bool player);
 
 	const IColumn* operator [](Position pos) const override;
 

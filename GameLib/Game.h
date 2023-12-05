@@ -15,6 +15,7 @@ public:
 
 	IPlayer* GetTurn() const override;
 	IBoard* GetBoard() const override;
+	IPlayer* CheckWinner() const override;
 
 	IPlayer* GetFirstPlayer() const override;
 	IPlayer* GetSecondPlayer() const override;

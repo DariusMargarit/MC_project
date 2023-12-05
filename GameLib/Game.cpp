@@ -138,6 +138,25 @@ IBoard* Game::GetBoard() const
 	return m_board;
 }
 
+IPlayer* Game::CheckWinner() const
+{
+	if (m_turn == m_player1)
+	{
+		if (m_board->CheckWinner(0))
+		{
+			return m_player1;
+		}
+	}
+	else
+	{
+		if (m_board->CheckWinner(1))
+		{
+			return m_player2;
+		}
+	}
+	return nullptr;
+}
+
 void Game::ChangeTurn()
 {
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;

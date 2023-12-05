@@ -11,6 +11,7 @@ struct IGame
 
 	virtual IPlayer* GetTurn() const = 0;
 	virtual IBoard* GetBoard() const = 0;
+	virtual IPlayer* CheckWinner() const = 0;
 
 	virtual IPlayer* GetFirstPlayer() const = 0;
 	virtual IPlayer* GetSecondPlayer() const = 0;

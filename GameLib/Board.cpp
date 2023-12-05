@@ -226,6 +226,31 @@ void Board::ComputePathToWin(bool player, bool action, Position& firstPosition, 
 	}
 }
 
+bool Board::CheckWinner(bool player)
+{
+	if (player == 0)
+	{
+		for (uint16_t columnIndex{ 0 }; columnIndex < m_matrix.size(); ++columnIndex)
+		{
+			if (m_firstPlayerPath[m_matrix.size() - 1][columnIndex] == 1)
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		for (uint16_t rowIndex{ 0 }; rowIndex < m_matrix.size(); ++rowIndex)
+		{
+			if (m_firstPlayerPath[rowIndex][m_matrix.size() - 1] == 1)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 Board::~Board() {
 	for (uint16_t index1{ 0 }; index1 < m_matrix.size(); index1++) {
