@@ -27,6 +27,7 @@ public:
 	bool PlaceColumn(Position& position, IPlayer* player);
 	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
+	void ComputePathToWin(bool player, bool action, Position& firstPosition, Position& secondPosition);
 
 	const IColumn* operator [](Position pos) const override;
 
@@ -46,4 +47,6 @@ private:
 private:
 	std::unordered_map<std::string,Bridge*> m_bridges;
 	std::vector<std::vector<IColumn*>> m_matrix;
+	std::vector<std::vector<bool>> m_firstPlayerPath;
+	std::vector<std::vector<bool>> m_secondPlayerPath;
 };

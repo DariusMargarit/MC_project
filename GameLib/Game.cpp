@@ -67,11 +67,13 @@ void Game::PlaceColumn(Position position)
 void Game::MakeBridge(Position firstPosition, Position secondPosition)
 {
 	m_board->MakeBridge(firstPosition, secondPosition, m_turn);
+	ComputePathToWin(0, firstPosition, secondPosition);
 }
 
 void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 {
 	m_board->RemoveBridge(firstPosition, secondPosition, m_turn);
+	ComputePathToWin(1, firstPosition, secondPosition);
 }
 
 IPlayer* Game::GetFirstPlayer() const
@@ -139,6 +141,18 @@ IBoard* Game::GetBoard() const
 void Game::ChangeTurn()
 {
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
+}
+
+void Game::ComputePathToWin(bool action, Position& firstPosition, Position& secondPosition) const
+{
+	if (m_turn == m_player1)
+	{
+		m_board->ComputePathToWin(0, action, firstPosition, secondPosition);
+	}
+	else
+	{
+		m_board->ComputePathToWin(1, action, firstPosition, secondPosition);
+	}
 }
 
 IGame* IGame::Produce(const IGameSettings& settings)

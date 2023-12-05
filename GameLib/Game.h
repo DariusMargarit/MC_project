@@ -31,6 +31,7 @@ public:
 
 private:
 	void ChangeTurn();
+	void ComputePathToWin(bool action, Position& firstPosition, Position& secondPosition) const; // action = 0 - make, 1 - remove
 
 private:
 	Board* m_board;
