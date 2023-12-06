@@ -3,7 +3,7 @@
 #include "FileUtils.h"
 #include "ColorUtils.h"
 
-const uint16_t SettingsScreen::minTableSize{5}, SettingsScreen::maxTableSize{50};
+const uint16_t SettingsScreen::minTableSize{12}, SettingsScreen::maxTableSize{50};
 const uint16_t SettingsScreen::minColumnLimit{20}, SettingsScreen::maxColumnLimit{100};
 const uint16_t SettingsScreen::minBridgeLimit{20}, SettingsScreen::maxBridgeLimit{100};
 

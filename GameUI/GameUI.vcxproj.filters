@@ -30,6 +30,9 @@
     <Filter Include="Resource Files\Utils">
       <UniqueIdentifier>{9a90bf90-f92d-45b0-9dc2-e1bf68378819}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Screens\Game\Widgets">
+      <UniqueIdentifier>{ef0fdea8-9f24-4071-a351-29dfe8998954}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GameUI.qrc">
@@ -49,9 +52,6 @@
     <ClCompile Include="SettingsScreen.cpp">
       <Filter>Screens\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="BoardWidget.cpp">
-      <Filter>Screens\Game</Filter>
-    </ClCompile>
     <ClCompile Include="GameScreen.cpp">
       <Filter>Screens\Game</Filter>
     </ClCompile>
@@ -70,8 +70,14 @@
     <ClCompile Include="WidgetUtils.cpp">
       <Filter>Resource Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="BoardWidget.cpp">
+      <Filter>Screens\Game\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryWidget.cpp">
+      <Filter>Screens\Game\Widgets</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerBar.cpp">
-      <Filter>Screens\Game</Filter>
+      <Filter>Screens\Game\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,8 +90,11 @@
     <ClInclude Include="WidgetUtils.h">
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="HistoryWidget.h">
+      <Filter>Screens\Game\Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerBar.h">
-      <Filter>Screens\Game</Filter>
+      <Filter>Screens\Game\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -98,9 +107,6 @@
     <QtMoc Include="GameScreen.h">
       <Filter>Screens\Game</Filter>
     </QtMoc>
-    <QtMoc Include="BoardWidget.h">
-      <Filter>Screens\Game</Filter>
-    </QtMoc>
     <QtMoc Include="SettingsScreen.h">
       <Filter>Screens\Settings</Filter>
     </QtMoc>
@@ -109,6 +115,9 @@
     </QtMoc>
     <QtMoc Include="Button.h">
       <Filter>Resource Files\Custom Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="BoardWidget.h">
+      <Filter>Screens\Game\Widgets</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

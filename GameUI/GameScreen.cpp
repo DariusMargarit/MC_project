@@ -8,18 +8,22 @@ GameScreen::GameScreen(QWidget* parent)
 	: QWidget{parent}
 	, m_layout{new QGridLayout{this}}
 	, m_selectedColumnPos{Position::EmptyPosition()}
+	, m_history{new HistoryWidget{this}}
 {
 	IGameSettings* settings{ IGameSettings::GetInstance() };
 	m_game = IGame::Produce(*settings);
-	m_board = new BoardWidget(*m_game->GetBoard(), settings->GetFirstPlayerColor(), settings->GetSecondPlayerColor(), this);
+	m_board = new BoardWidget(*m_game->GetBoard(), m_game->GetTurn(),
+		settings->GetFirstPlayerColor(), settings->GetSecondPlayerColor(), this);
 
 	m_firstPlayerBar = new PlayerBar(*m_game->GetFirstPlayer(), this);
 	m_secondPlayerBar = new PlayerBar(*m_game->GetSecondPlayer(), this);
 
-	m_layout->addWidget(m_firstPlayerBar);
-	m_layout->addWidget(m_board);
-	m_layout->addWidget(m_secondPlayerBar);
+	m_layout->addWidget(m_firstPlayerBar, 0, 0, 1, 4);
+	m_layout->addWidget(m_board, 1, 0, 1, 3);
+	m_layout->addWidget(m_history, 1, 3);
+	m_layout->addWidget(m_secondPlayerBar, 2, 0, 1, 4);
 	setLayout(m_layout);
+	m_history->setMaximumWidth(350);
 
 	connect(m_board,
 	SIGNAL(BoardClicked(const Position&, const Qt::MouseButton&)),
@@ -37,19 +41,20 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 	}
 	else if (button == Qt::RightButton)
 	{
+
 		auto currentColumn{ m_game->GetBoard()->GetElement(position) };
-		if (!currentColumn)
-		{
-			return;
-		}
+		bool currentPlayerTurn = currentColumn->GetPlayer() == m_game->GetTurn();
+
+		if (!currentColumn) return;
 		else if (m_selectedColumnPos == Position::EmptyPosition())
 		{
+			if (!currentPlayerTurn) return;
 			m_selectedColumnPos = position;
 			m_board->ChangeSelectedColumn(position);
 		}
 		else
 		{
-			if (m_selectedColumnPos != position)
+			if (m_selectedColumnPos != position && currentPlayerTurn)
 			{
 				if (m_game->GetBoard()->BridgeExists(m_selectedColumnPos, position))
 				{

@@ -18,7 +18,7 @@ class BoardWidget : public QWidget
 	Q_OBJECT
 
 public:
-	BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
+	BoardWidget(const IBoard& gameBoard, IPlayer* currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
 	void ChangeSelectedColumn(const Position& selectedColumn);
 
 signals:
@@ -43,6 +43,7 @@ private:
 
 private:
 	const IBoard& m_gameBoard;
+	IPlayer* m_currentPlayer;
 	EColor m_firstPlayerColor, m_secondPlayerColor;
 
 	static const size_t smallCircleScalingFactor{12};

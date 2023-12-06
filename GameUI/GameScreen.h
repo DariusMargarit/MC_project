@@ -2,6 +2,7 @@
 
 #include "BoardWidget.h"
 #include "PlayerBar.h"
+#include "HistoryWidget.h"
 
 #include "IGame.h"
 
@@ -18,6 +19,7 @@ private slots:
 private:
 	QGridLayout* m_layout;
 	BoardWidget* m_board;
+	HistoryWidget* m_history;
 	PlayerBar* m_firstPlayerBar, * m_secondPlayerBar;
 	IGame* m_game;
 	Position m_selectedColumnPos;

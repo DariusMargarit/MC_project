@@ -4,9 +4,10 @@
 #include "BoardWidget.h"
 #include "ColorUtils.h"
 
-BoardWidget::BoardWidget(const IBoard& gameBoard, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) 
+BoardWidget::BoardWidget(const IBoard& gameBoard, IPlayer* currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) 
 	: QWidget{ parent }
 	, m_gameBoard{ gameBoard }
+	, m_currentPlayer{currentPlayer}
 	, m_firstPlayerColor{ firstPlayerColor }
 	, m_secondPlayerColor{ secondPlayerColor }
 
@@ -107,7 +108,6 @@ void BoardWidget::mousePressEvent(QMouseEvent* event)
 {
 	Position pos{ CoordinatesToPosition(event->position()) };
 	if (IsCorner(pos.GetRow(), pos.GetColumn())) return;
-
 	emit(BoardClicked(std::move(pos), event->button()));
 	update();
 }

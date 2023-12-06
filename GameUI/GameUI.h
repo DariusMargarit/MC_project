@@ -8,7 +8,7 @@
 #include "GameScreen.h"
 #include "WidgetUtils.h"
 
-#include "../GameLib/IGame.h"
+#include "IGame.h"
 
 
 

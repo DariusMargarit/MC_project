@@ -8,22 +8,18 @@ class BoardTests : public testing::Test {
 protected:
 	void SetUp() override
 	{
-		m_player1 = IPlayer::Produce("Mihai", "red");
-		m_player2 = IPlayer::Produce("Cosmin", "blue");
-		m_game = IGame::Produce(m_player1, m_player2, 24);
+		m_gameSettings = IGameSettings::GetInstance();
+		m_game = IGame::Produce(*m_gameSettings);
 	}
 
 	void TearDown() override
 	{
 		delete m_game;
-		delete m_player1;
-		delete m_player2;
 	}
 
 protected:
 	IGame* m_game;
-	IPlayer* m_player1;
-	IPlayer* m_player2;
+	IGameSettings* m_gameSettings;
 };
 
 TEST_F(BoardTests, PlaceColumnTest) {
@@ -38,6 +34,6 @@ TEST_F(BoardTests, PlaceColumnTest) {
 	EXPECT_TRUE(insertedColumn != nullptr);
 
 	// expects that the found column is owned by Player1
-	EXPECT_EQ(insertedColumn->GetPlayer(), m_player1);
+	EXPECT_EQ(insertedColumn->GetPlayer()->GetColor(), m_gameSettings->GetFirstPlayerColor());
 
 }
