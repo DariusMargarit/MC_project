@@ -11,10 +11,10 @@ public:
 	const uint16_t GetRow() const noexcept;
 	const uint16_t GetColumn() const noexcept;
 
-	bool IsEqual(const uint16_t& row, const uint16_t& column);
+	bool IsEqual(const uint16_t& row, const uint16_t& column) const;
 
-	bool operator==(const Position& position);
-	bool operator!=(const Position& position);
+	bool operator==(const Position& position) const;
+	bool operator!=(const Position& position) const;
 
 public:
 	static const Position& EmptyPosition();

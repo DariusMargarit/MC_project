@@ -67,3 +67,19 @@ const QColor ColorUtils::TwixtColorToQColor(EColor color)
 
 	}
 }
+
+void ColorUtils::FillPixmapBackground(QPixmap& pixmap, EColor color)
+{
+	QColor targetColor = TwixtColorToQColor(color);
+	QImage image = pixmap.toImage();
+
+	for (int y = 0; y < image.height(); ++y) {
+		for (int x = 0; x < image.width(); ++x) {
+			if (image.pixelColor(x, y).alpha() == 0)
+			{
+				image.setPixelColor(x, y, targetColor);
+			}
+		}
+	}
+	pixmap = QPixmap::fromImage(image);
+}

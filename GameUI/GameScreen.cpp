@@ -42,6 +42,7 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 {
 	if (button == Qt::LeftButton)
 	{
+		m_history->AddColumnItem(m_game->GetTurn(), position);
 		m_game->PlaceColumn(position);
 	}
 	else if (button == Qt::RightButton)

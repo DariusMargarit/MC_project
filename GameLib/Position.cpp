@@ -25,17 +25,17 @@ const uint16_t Position::GetColumn() const noexcept
 	return m_column;
 }
 
-bool Position::IsEqual(const uint16_t& row, const uint16_t& column)
+bool Position::IsEqual(const uint16_t& row, const uint16_t& column) const
 {
 	return row == m_row && column == m_column;
 }
 
-bool Position::operator==(const Position& position)
+bool Position::operator==(const Position& position) const
 {
 	return IsEqual(position.m_row,position.m_column);
 }
 
-bool Position::operator!=(const Position& position)
+bool Position::operator!=(const Position& position) const
 {
 	return !IsEqual(position.m_row, position.m_column);
 }
