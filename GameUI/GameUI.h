@@ -23,6 +23,9 @@ public:
 public slots:
     void OnMainMenuButtonClicked(const EButtonPressed& button);
 
+protected:
+    void changeEvent(QEvent* event) override;
+
 private:
     void InitializeMainMenu();
     void LoadFonts();

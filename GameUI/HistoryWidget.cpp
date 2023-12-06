@@ -3,6 +3,5 @@
 HistoryWidget::HistoryWidget(QWidget* parent) 
 	: QListWidget{parent}
 {
-	//QWidget::adjustSize();
-	//setSizeAdjustPolicy(QListWidget::AdjustToContents);
+
 }

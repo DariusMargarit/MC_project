@@ -56,6 +56,21 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     }
 }
 
+void GameUI::changeEvent(QEvent* event)
+{
+	if (event->type() == QEvent::WindowStateChange)
+	{
+		if (windowState() && Qt::WindowFullScreen)
+		{
+            m_gameScreen->SetWindowFullScreen(true);
+		}
+		else
+		{
+            m_gameScreen->SetWindowFullScreen(false);
+		}
+	}
+}
+
 void GameUI::InitializeMainMenu()
 {
     // Initialize the main menu screen

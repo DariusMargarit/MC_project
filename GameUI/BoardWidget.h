@@ -20,6 +20,7 @@ class BoardWidget : public QWidget
 public:
 	BoardWidget(const IBoard& gameBoard, IPlayer* currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
 	void ChangeSelectedColumn(const Position& selectedColumn);
+	void SetWindowFullScreen(bool isFullScreen);
 
 signals:
 	void BoardClicked(const Position& position, const Qt::MouseButton& button);
@@ -42,6 +43,8 @@ private:
 	float CalculateSlope(QPointF firstNode, QPointF secondNode);
 
 private:
+	bool m_isFullScreen;
+
 	const IBoard& m_gameBoard;
 	IPlayer* m_currentPlayer;
 	EColor m_firstPlayerColor, m_secondPlayerColor;

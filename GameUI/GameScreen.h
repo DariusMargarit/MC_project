@@ -12,7 +12,8 @@ class GameScreen : public QWidget
 
 public:
 	GameScreen(QWidget* parent = nullptr);
-	
+	void SetWindowFullScreen(bool isFullScreen);
+
 private slots:
 	void OnBoardClicked(const Position& position, const Qt::MouseButton& button);
 

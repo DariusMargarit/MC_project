@@ -1,4 +1,5 @@
 #include "WidgetUtils.h"
+#include <QMainWindow>
 
 void WidgetUtils::CenterWidget(QWidget* widgetToCenter, QWidget* parent /*= nullptr*/)
 {

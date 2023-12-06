@@ -33,6 +33,11 @@ GameScreen::GameScreen(QWidget* parent)
 	setStyleSheet(stylesheet);
 }
 
+void GameScreen::SetWindowFullScreen(bool isFullScreen)
+{
+	m_board->SetWindowFullScreen(isFullScreen);
+}
+
 void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton& button)
 {
 	if (button == Qt::LeftButton)

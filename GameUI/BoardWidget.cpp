@@ -10,6 +10,7 @@ BoardWidget::BoardWidget(const IBoard& gameBoard, IPlayer* currentPlayer, EColor
 	, m_currentPlayer{currentPlayer}
 	, m_firstPlayerColor{ firstPlayerColor }
 	, m_secondPlayerColor{ secondPlayerColor }
+	, m_isFullScreen{ false }
 
 {
 	setMouseTracking(true);
@@ -20,6 +21,13 @@ void BoardWidget::ChangeSelectedColumn(const Position& selectedColumn)
 {
 	m_selected = selectedColumn;
 	update();
+}
+
+void BoardWidget::SetWindowFullScreen(bool isFullScreen)
+{
+	m_isFullScreen = isFullScreen;
+	QResizeEvent resizeEvent(size(), size());
+	this->resizeEvent(&resizeEvent);
 }
 
 void BoardWidget::paintEvent(QPaintEvent* event)
@@ -127,7 +135,7 @@ void BoardWidget::leaveEvent(QEvent* event)
 void BoardWidget::resizeEvent(QResizeEvent* event)
 {
 	const auto size = qMin(width(), height());
-	resize(size, size);
+	m_isFullScreen ? resize(size * 1.75f, size) : resize(size, size);
 	QWidget::resizeEvent(event);
 }
 
