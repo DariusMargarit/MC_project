@@ -172,6 +172,30 @@ const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::str
 	return std::make_pair(firstPosition, secondPosition);
 }
 
+void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath)
+{
+	std::vector<int16_t> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
+	std::vector<int16_t> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
+	std::stack<Position> positionStack;
+	positionStack.push(startPosition);
+	(*playerPath)[startPosition.GetRow()][startPosition.GetColumn()] = 1;
+	while (!positionStack.empty())
+	{
+		Position currentPosition = positionStack.top();
+		positionStack.pop();
+		for (uint8_t directionIndex{ 0 }; directionIndex < rowDirection.size(); ++directionIndex)
+		{
+			Position nextPosition(currentPosition.GetRow() + rowDirection[directionIndex],
+				currentPosition.GetColumn() + columnDirection[directionIndex]);
+			if (BridgeExists(currentPosition, nextPosition) && (*playerPath)[nextPosition.GetRow()][nextPosition.GetColumn()] == 0)
+			{
+				(*playerPath)[nextPosition.GetRow()][nextPosition.GetColumn()] = 1;
+				positionStack.push(nextPosition);
+			}
+		}
+	}
+}
+
 void Board::ComputePathToWin(bool player, bool action, Position& firstPosition, Position& secondPosition)
 {
 	std::vector<std::vector<bool>>* playerPath{ nullptr };
@@ -187,38 +211,35 @@ void Board::ComputePathToWin(bool player, bool action, Position& firstPosition, 
 	{
 		if (player == 0)
 		{
-			if (firstPosition.GetRow() == 0 || secondPosition.GetRow() == 0)
+			if (firstPosition.GetRow() == 0)
 			{
 				(*playerPath)[firstPosition.GetRow()][firstPosition.GetColumn()] = 1;
+				MarkPathWithOnes(secondPosition, playerPath);
+				return;
+			}
+			else if (secondPosition.GetRow() == 0)
+			{
 				(*playerPath)[secondPosition.GetRow()][secondPosition.GetColumn()] = 1;
+				MarkPathWithOnes(firstPosition, playerPath);
 				return;
 			}
 		}
 		else
 		{
-			if (firstPosition.GetColumn() == 0 || secondPosition.GetColumn() == 0)
+			if (firstPosition.GetColumn() == 0)
 			{
 				(*playerPath)[firstPosition.GetRow()][firstPosition.GetColumn()] = 1;
+				MarkPathWithOnes(secondPosition, playerPath);
+				return;
+			}
+			else if (secondPosition.GetColumn() == 0)
+			{
 				(*playerPath)[secondPosition.GetRow()][secondPosition.GetColumn()] = 1;
+				MarkPathWithOnes(firstPosition, playerPath);
 				return;
 			}
 		}
-		if ((*playerPath)[firstPosition.GetRow()][firstPosition.GetColumn()] == 1)
-		{
-			(*playerPath)[secondPosition.GetRow()][secondPosition.GetColumn()] = 1;
-		}
-		else 
-		{
-			return;
-		}
-		if ((*playerPath)[secondPosition.GetRow()][secondPosition.GetColumn()] == 1)
-		{
-			(*playerPath)[firstPosition.GetRow()][firstPosition.GetColumn()] = 1;
-		}
-		else
-		{
-			return;
-		}
+		
 	}
 	else
 	{

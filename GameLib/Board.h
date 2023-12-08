@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include <sstream>
+#include <stack>
 
 #include "Position.h"
 #include "IColumn.h"
@@ -44,6 +45,7 @@ private:
 	bool ValidBridge(Position& firstPosition, Position& secondPosition) const;
 	const std::string MakeKey(const Position& firstPosition, const Position& secondPosition) const;
 	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key);
+	void MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath);
 
 private:
 	std::unordered_map<std::string,Bridge*> m_bridges;
