@@ -12,13 +12,18 @@ Board::Board(const uint16_t& size)
 	// Empty
 }
 
-bool Board::ValidPlaceColumn(const Position& position) const
+bool Board::ValidPosition(const int16_t& row, const int16_t& column) const
 {
-	if (position.GetRow() < 0 || position.GetRow() >= m_matrix.size())
+	if (row < 0 || row >= m_matrix.size() || column < 0 || column >= m_matrix.size())
 	{
 		return false;
 	}
-	if (position.GetColumn() < 0 || position.GetColumn() >= m_matrix.size())
+	return true;
+}
+
+bool Board::ValidPlaceColumn(const Position& position) const
+{
+	if (!ValidPosition(position.GetRow(), position.GetColumn()))
 	{
 		return false;
 	}
@@ -56,11 +61,7 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 				{
 					int16_t secondRowIndex{ rowIndex + rowDirection[directionIndex] };
 					int16_t secondColumnIndex{ columnIndex + columnDirection[directionIndex] };
-					if (secondRowIndex < 0 || secondRowIndex > m_matrix.size() - 1)
-					{
-						continue;
-					}
-					if (secondColumnIndex < 0 || secondColumnIndex > m_matrix[0].size() - 1)
+					if (!ValidPosition(secondRowIndex, secondColumnIndex))
 					{
 						continue;
 					}
@@ -99,7 +100,7 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 	return false;
 }
 
-bool Board::orientation(Position& A, Position& B, Position& C) const
+bool Board::Orientation(Position& A, Position& B, Position& C) const
 {
 	int16_t val{ (B.GetColumn() - A.GetColumn()) * (C.GetRow() - B.GetRow()) -
 		(B.GetRow() - A.GetRow()) * (C.GetColumn() - B.GetColumn()) };
@@ -109,10 +110,10 @@ bool Board::orientation(Position& A, Position& B, Position& C) const
 
 bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const
 {
-	bool o1{ orientation(A1, B1, A2) };
-	bool o2{ orientation(A1, B1, B2) };
-	bool o3{ orientation(A2, B2, A1) };
-	bool o4{ orientation(A2, B2, B1) };
+	bool o1{ Orientation(A1, B1, A2) };
+	bool o2{ Orientation(A1, B1, B2) };
+	bool o3{ Orientation(A2, B2, A1) };
+	bool o4{ Orientation(A2, B2, B1) };
 
 	if (o1 != o2 && o3 != o4)
 		return true;
@@ -185,12 +186,16 @@ void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bo
 		positionStack.pop();
 		for (uint8_t directionIndex{ 0 }; directionIndex < rowDirection.size(); ++directionIndex)
 		{
-			Position nextPosition(currentPosition.GetRow() + rowDirection[directionIndex],
-				currentPosition.GetColumn() + columnDirection[directionIndex]);
-			if (BridgeExists(currentPosition, nextPosition) && (*playerPath)[nextPosition.GetRow()][nextPosition.GetColumn()] == 0)
+			int16_t nextPositionRow = currentPosition.GetRow() + rowDirection[directionIndex];
+			int16_t nextPositionColumn = currentPosition.GetColumn() + columnDirection[directionIndex];
+			if (ValidPosition(nextPositionRow, nextPositionColumn))
 			{
-				(*playerPath)[nextPosition.GetRow()][nextPosition.GetColumn()] = 1;
-				positionStack.push(nextPosition);
+				Position nextPosition(nextPositionRow, nextPositionColumn);
+				if (BridgeExists(currentPosition, nextPosition) && (*playerPath)[nextPosition.GetRow()][nextPosition.GetColumn()] == 0)
+				{
+					(*playerPath)[nextPosition.GetRow()][nextPosition.GetColumn()] = 1;
+					positionStack.push(nextPosition);
+				}
 			}
 		}
 	}

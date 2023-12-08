@@ -38,9 +38,10 @@ public:
 
 
 private:
+	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool ValidPlaceColumn(const Position& position) const;
 	bool FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const;
-	bool orientation(Position& A, Position& B, Position& C) const;
+	bool Orientation(Position& A, Position& B, Position& C) const;
 	bool doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const;
 	bool ValidBridge(Position& firstPosition, Position& secondPosition) const;
 	const std::string MakeKey(const Position& firstPosition, const Position& secondPosition) const;
