@@ -76,7 +76,14 @@ void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 	ComputePathToWin(1, firstPosition, secondPosition);
 }
 
+void Game::SwapPlayers()
+{
+	EColor auxiliarColor = m_player1->GetColor();
+	m_player1->SetColor(m_player2->GetColor());
+	m_player2->SetColor(auxiliarColor);
+	ChangeTurn();
 
+}
 
 IPlayer* Game::GetFirstPlayer() const
 {

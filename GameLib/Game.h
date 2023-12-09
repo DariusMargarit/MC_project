@@ -23,7 +23,7 @@ public:
 	void PlaceColumn(Position position) override;
 	void MakeBridge(Position firstPosition, Position secondPosition) override;
 	void RemoveBridge(Position firstPosition, Position secondPosition) override;
-	
+	void SwapPlayers();
 
 	Game& operator=(const Game& otherGame);
 	Game& operator=(Game&& otherGame) noexcept;
