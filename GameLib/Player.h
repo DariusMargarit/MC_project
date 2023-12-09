@@ -13,6 +13,7 @@ public:
 
 	EColor GetColor() const noexcept override;
 	std::string_view GetName() const noexcept override;
+	void SetColor(EColor otherColor) override;
 
 private:
 	std::string m_name;

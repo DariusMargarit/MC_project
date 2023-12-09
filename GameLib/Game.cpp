@@ -76,6 +76,8 @@ void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 	ComputePathToWin(1, firstPosition, secondPosition);
 }
 
+
+
 IPlayer* Game::GetFirstPlayer() const
 {
 	return m_player1;

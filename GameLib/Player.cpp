@@ -56,6 +56,11 @@ std::string_view Player::GetName() const noexcept
 	return m_name;
 }
 
+void Player::SetColor(EColor otherColor)
+{
+	m_color = otherColor;
+}
+
 IPlayer* IPlayer ::Produce(std::string_view name, EColor color)
 {
 	return new Player{ name, color };
