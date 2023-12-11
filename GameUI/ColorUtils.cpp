@@ -83,3 +83,10 @@ void ColorUtils::FillPixmapBackground(QPixmap& pixmap, EColor color)
 	}
 	pixmap = QPixmap::fromImage(image);
 }
+
+QIcon ColorUtils::ColoredIconFromImage(QString path, EColor color)
+{
+	QPixmap pixmap{path};
+	FillPixmapBackground(pixmap, color);
+	return std::move(QIcon{pixmap});
+}

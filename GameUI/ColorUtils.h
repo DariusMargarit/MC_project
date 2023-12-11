@@ -13,4 +13,5 @@ struct ColorUtils
 	static EColor StringToTwixtColor(QString string);
 	static const QColor TwixtColorToQColor(EColor color);
 	static void FillPixmapBackground(QPixmap& pixmap, EColor color);
+	static QIcon ColoredIconFromImage(QString path, EColor color);
 };
