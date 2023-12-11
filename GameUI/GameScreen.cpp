@@ -42,12 +42,12 @@ void GameScreen::OnColumnPlaced(Position& position, IPlayer* player)
 
 void GameScreen::OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayer* player)
 {
-	m_history->AddBridgeItem(player, firstPos, secondPos, true);
+	m_history->AddBridgeItem(player, firstPos, secondPos, false);
 }
 
 void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player)
 {
-	m_history->AddBridgeItem(player, firstPos, secondPos, false);
+	m_history->AddBridgeItem(player, firstPos, secondPos, true);
 }
 
 void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton& button)
@@ -61,7 +61,7 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 	{
 
 		auto currentColumn{ m_game->GetBoard()->GetElement(position) };
-		bool currentPlayerTurn = currentColumn->GetPlayer() == m_game->GetTurn();
+		bool currentPlayerTurn = currentColumn && currentColumn->GetPlayer() == m_game->GetTurn();
 
 		if (!currentColumn) return;
 		else if (m_selectedColumnPos == Position::EmptyPosition())

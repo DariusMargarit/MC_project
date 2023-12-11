@@ -22,5 +22,15 @@ void HistoryWidget::AddColumnItem(IPlayer* player, const Position& position)
 
 void HistoryWidget::AddBridgeItem(IPlayer* player, Position& firstPosition, Position& secondPosition, bool removed)
 {
+	QPixmap pixmap{ ":/GameUI/images/profile.png" };
+	ColorUtils::FillPixmapBackground(pixmap, player->GetColor());
+	QIcon icon{ std::move(pixmap) };
 
+	std::string text = std::format("Bridge between ({}, {}) -> ({}, {}) {}",
+		firstPosition.GetRow(), firstPosition.GetColumn(),
+		secondPosition.GetRow(), secondPosition.GetColumn(),
+		removed ? "removed" : "added");
+
+	QListWidgetItem* item = new QListWidgetItem(icon, QString::fromStdString(std::move(text)));
+	addItem(item);
 }
