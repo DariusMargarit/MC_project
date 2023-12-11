@@ -22,24 +22,19 @@ GameUI::GameUI(QWidget *parent)
 
 }
 
-GameUI::~GameUI()
-{
-
-}
-
 void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
 {
-    qDebug() << (int) button;
-
     // Load game screen when button pressed 
     if (button == EButtonPressed::playButton)
     {
-        m_gameScreen = new GameScreen(this);
+        IGameSettings* settings = IGameSettings::GetInstance();
+        const auto& game = IGame::Produce(*settings);
+        m_gameScreen = std::make_shared<GameScreen>(game, this);
+        game->AddObserver(m_gameScreen);
         resize(1050, 800);
-        m_screens->addWidget(m_gameScreen);
-        m_screens->setCurrentWidget(m_gameScreen);
+        m_screens->addWidget(m_gameScreen.get());
+        m_screens->setCurrentWidget(m_gameScreen.get());
         WidgetUtils::CenterWidget(this);
-        qDebug() << m_gameScreen->size();
     }
     else if (button == EButtonPressed::settingsButton)
     {

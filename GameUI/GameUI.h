@@ -18,7 +18,7 @@ class GameUI : public QMainWindow
 
 public:
     GameUI(QWidget *parent = nullptr);
-    ~GameUI();
+    ~GameUI() = default;
 
 public slots:
     void OnMainMenuButtonClicked(const EButtonPressed& button);
@@ -34,5 +34,5 @@ private:
     QStackedWidget* m_screens;
     MainMenuScreen* m_mainMenuScreen;
     SettingsScreen* m_settingsScreen;
-    GameScreen* m_gameScreen;
+    std::shared_ptr<GameScreen> m_gameScreen;
 };

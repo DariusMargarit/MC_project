@@ -10,8 +10,6 @@ Button::Button(QString headerText, QWidget* parent, QString descriptionText, QSv
 	: QWidget(parent)
 	, m_layout(new QGridLayout(this))
 {
-
-
 	// Header
 	m_headerLabel = new QLabel(headerText, this);
 	m_headerLabel->setObjectName("headerLabel");

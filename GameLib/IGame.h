@@ -1,13 +1,19 @@
 #pragma once
 
 #include "IGameSettings.h"
+#include "IGameObserver.h"
 #include "Position.h"
 #include "IPlayer.h"
 #include "IBoard.h"
 
+using IGamePtr = std::shared_ptr<struct IGame>;
+
 struct IGame
 {
-	static IGame* Produce(const IGameSettings& settings);
+	static IGamePtr Produce(const IGameSettings& settings);
+
+	virtual void AddObserver(ObserverPtr observer) = 0;
+	virtual void RemoveObserver(ObserverPtr observer) = 0;
 
 	virtual IPlayer* GetTurn() const = 0;
 	virtual IBoard* GetBoard() const = 0;
@@ -22,3 +28,4 @@ struct IGame
 
 	virtual ~IGame() = default;
 };
+

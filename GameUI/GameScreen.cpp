@@ -4,20 +4,17 @@
 #include "IGameSettings.h"
 
 
-GameScreen::GameScreen(QWidget* parent)
+GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 	: QWidget{parent}
+	, m_game{game}
 	, m_layout{new QGridLayout{this}}
-	, m_selectedColumnPos{Position::EmptyPosition()}
 	, m_history{new HistoryWidget{this}}
+	, m_firstPlayerBar{new PlayerBar{*game->GetFirstPlayer(), this}}
+	, m_secondPlayerBar{new PlayerBar{*game->GetSecondPlayer(), this}}
+	, m_board{new BoardWidget{*game->GetBoard(), game->GetTurn(),
+			  game->GetFirstPlayer()->GetColor(), game->GetSecondPlayer()->GetColor(),
+			  this}}
 {
-	IGameSettings* settings{ IGameSettings::GetInstance() };
-	m_game = IGame::Produce(*settings);
-	m_board = new BoardWidget(*m_game->GetBoard(), m_game->GetTurn(),
-		settings->GetFirstPlayerColor(), settings->GetSecondPlayerColor(), this);
-
-	m_firstPlayerBar = new PlayerBar(*m_game->GetFirstPlayer(), this);
-	m_secondPlayerBar = new PlayerBar(*m_game->GetSecondPlayer(), this);
-
 	m_layout->addWidget(m_firstPlayerBar, 0, 0, 1, 4);
 	m_layout->addWidget(m_board, 1, 0, 1, 3);
 	m_layout->addWidget(m_history, 1, 3);
@@ -38,11 +35,26 @@ void GameScreen::SetWindowFullScreen(bool isFullScreen)
 	m_board->SetWindowFullScreen(isFullScreen);
 }
 
+void GameScreen::OnColumnPlaced(Position& position, IPlayer* player)
+{
+	m_history->AddColumnItem(player, position);
+}
+
+void GameScreen::OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayer* player)
+{
+	m_history->AddBridgeItem(player, firstPos, secondPos, true);
+}
+
+void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player)
+{
+	m_history->AddBridgeItem(player, firstPos, secondPos, false);
+}
+
 void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton& button)
 {
+
 	if (button == Qt::LeftButton)
 	{
-		m_history->AddColumnItem(m_game->GetTurn(), position);
 		m_game->PlaceColumn(position);
 	}
 	else if (button == Qt::RightButton)
@@ -77,4 +89,3 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 		}
 	}
 }
-

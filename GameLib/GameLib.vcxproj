@@ -172,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="IBoard.h" />
+    <ClInclude Include="IGameObserver.h" />
     <ClInclude Include="IGameSettings.h" />
     <ClInclude Include="IPlayer.h" />
   </ItemGroup>

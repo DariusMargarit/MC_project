@@ -77,5 +77,8 @@
     <ClInclude Include="GameSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IGameObserver.h">
+      <Filter>Header Files\API</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

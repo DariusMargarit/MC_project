@@ -1,4 +1,7 @@
 #include "Game.h"
+#include <ranges>
+#include <algorithm>
+
 
 Game::Game(const IGameSettings& settings)
 	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()) }
@@ -32,10 +35,6 @@ Game::Game(Game&& otherGame) noexcept
 	otherGame.m_player2 = nullptr;
 	otherGame.m_turn = nullptr;
 }
-Game::~Game()
-{
-	// Empty
-}
 
 void Game::PlaceColumn(Position position)
 {
@@ -44,7 +43,10 @@ void Game::PlaceColumn(Position position)
 		if (m_turn == m_player2)
 		{
 			if (m_board->PlaceColumn(position, m_turn))
+			{
+				NotifyPlaceColumn(position, m_turn);
 				ChangeTurn();
+			}
 		}
 		   
 	}
@@ -53,13 +55,19 @@ void Game::PlaceColumn(Position position)
 		if (m_turn == m_player1)
 		{
 			if (m_board->PlaceColumn(position, m_turn))
+			{
+				NotifyPlaceColumn(position, m_turn);
 				ChangeTurn();
+			}
 		}
 	}
 	else
 	{
 		if (m_board->PlaceColumn(position, m_turn))
+		{
+			NotifyPlaceColumn(position, m_turn);
 			ChangeTurn();
+		}
 	}
 
 }
@@ -82,7 +90,6 @@ void Game::SwapPlayers()
 	m_player1->SetColor(m_player2->GetColor());
 	m_player2->SetColor(auxiliarColor);
 	ChangeTurn();
-
 }
 
 IPlayer* Game::GetFirstPlayer() const
@@ -166,6 +173,43 @@ IPlayer* Game::CheckWinner() const
 	return nullptr;
 }
 
+void Game::AddObserver(ObserverPtr observer)
+{
+	m_observers.push_front(observer);
+}
+
+void Game::RemoveObserver(ObserverPtr observer)
+{
+	m_observers.remove_if(
+		[observer](ObserverPtr weakObserver) {
+			return weakObserver.expired() || weakObserver.lock() == observer.lock();
+		});
+}
+
+void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
+{
+	for (auto& observer : m_observers)
+	{
+		observer.lock()->OnColumnPlaced(position, player);
+	}
+}
+
+void Game::NotifyMakeBridge(Position firstPosition, Position secondPosition, IPlayer* player) const
+{
+	for (auto& observer : m_observers)
+	{
+		observer.lock()->OnBridgePlaced(firstPosition, secondPosition, player);
+	}
+}
+
+void Game::NotifyRemoveBridge(Position firstPosition, Position secondPosition, IPlayer* player) const
+{
+	for (auto& observer : m_observers)
+	{
+		observer.lock()->OnBridgePlaced(firstPosition, secondPosition, player);
+	}
+}
+
 void Game::ChangeTurn()
 {
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
@@ -183,7 +227,7 @@ void Game::ComputePathToWin(bool action, Position& firstPosition, Position& seco
 	}
 }
 
-IGame* IGame::Produce(const IGameSettings& settings)
+IGamePtr IGame::Produce(const IGameSettings& settings)
 {
-	return new Game(settings);
+	return std::make_shared<Game>(settings);
 }
