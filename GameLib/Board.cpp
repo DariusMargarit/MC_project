@@ -328,24 +328,29 @@ bool Board::PlaceColumn(Position& position, IPlayer* player)
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn{ new Column(player) };
 		m_matrix[position.GetRow()][position.GetColumn()] = newColumn ;
+
 		return true;
 	}
 	return false;
 }
 
-void Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
+bool Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
 	if (ValidBridge(firstPosition, secondPosition)) {
 		Bridge* bridge{ new Bridge(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
 			m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]) };
 		std::string key{ MakeKey(firstPosition, secondPosition) };
 		m_bridges.emplace(key, bridge);
+
+		return true;
 	}
+	return false;
 }
 
-void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
+bool Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
 {
-	if (!BridgeExists(firstPosition, secondPosition)) return;
+	if (!BridgeExists(firstPosition, secondPosition)) 
+		return false;
 
 	const auto firstKey{ MakeKey(firstPosition, secondPosition) };
 	const auto secondKey{ MakeKey(secondPosition, firstPosition) };
@@ -358,9 +363,8 @@ void Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 	{
 		delete m_bridges[secondKey];
 		m_bridges.erase(secondKey);
-
 	}
-	
+	return true;
 }
 
 bool Board::BridgeExists(const Position& firstPosition, const Position& secondPosition) const

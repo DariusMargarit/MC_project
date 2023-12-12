@@ -74,16 +74,20 @@ void Game::PlaceColumn(Position position)
 
 void Game::MakeBridge(Position firstPosition, Position secondPosition)
 {
-	m_board->MakeBridge(firstPosition, secondPosition, m_turn);
-	NotifyMakeBridge(firstPosition, secondPosition, m_turn);
-	ComputePathToWin(0, firstPosition, secondPosition);
+	if(m_board->MakeBridge(firstPosition, secondPosition, m_turn))
+	{
+		NotifyMakeBridge(firstPosition, secondPosition, m_turn);
+		ComputePathToWin(0, firstPosition, secondPosition);
+	}
 }
 
 void Game::RemoveBridge(Position firstPosition, Position secondPosition)
 {
-	m_board->RemoveBridge(firstPosition, secondPosition, m_turn);
-	NotifyRemoveBridge(firstPosition, secondPosition, m_turn);
-	ComputePathToWin(1, firstPosition, secondPosition);
+	if(m_board->RemoveBridge(firstPosition, secondPosition, m_turn))
+	{
+		NotifyRemoveBridge(firstPosition, secondPosition, m_turn);
+		ComputePathToWin(1, firstPosition, secondPosition);
+	}
 }
 
 void Game::SwapPlayers()

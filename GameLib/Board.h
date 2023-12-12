@@ -26,8 +26,8 @@ public:
 	bool BridgeExists(const Position& firstPosition, const Position& secondPosition) const override;
 
 	bool PlaceColumn(Position& position, IPlayer* player);
-	void MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
-	void RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
+	bool MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
+	bool RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPosition, Position& secondPosition);
 	bool CheckWinner(bool player);
 
