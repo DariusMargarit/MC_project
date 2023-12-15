@@ -63,6 +63,12 @@
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MinedGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MinedColumn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IPlayer.h">
@@ -79,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="IGameObserver.h">
       <Filter>Header Files\API</Filter>
+    </ClInclude>
+    <ClInclude Include="MinedColumn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MinedGame.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

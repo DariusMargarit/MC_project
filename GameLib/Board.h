@@ -30,6 +30,7 @@ public:
 	bool RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPosition, Position& secondPosition);
 	bool CheckWinner(bool player);
+	void AddMines();
 
 	const IColumn* operator [](Position pos) const override;
 

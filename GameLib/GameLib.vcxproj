@@ -164,6 +164,8 @@
     <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="IColumn.h" />
     <ClCompile Include="IGame.h" />
+    <ClCompile Include="MinedColumn.cpp" />
+    <ClCompile Include="MinedGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player.h" />
     <ClCompile Include="Position.cpp" />
@@ -175,6 +177,8 @@
     <ClInclude Include="IGameObserver.h" />
     <ClInclude Include="IGameSettings.h" />
     <ClInclude Include="IPlayer.h" />
+    <ClInclude Include="MinedColumn.h" />
+    <ClInclude Include="MinedGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

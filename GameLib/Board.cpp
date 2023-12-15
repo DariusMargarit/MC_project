@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "Column.h"
+#include "MinedColumn.h"
 
 Board::Board(const uint16_t& size)
 	: m_matrix{ size, std::vector<IColumn*>{size, nullptr}}
@@ -271,6 +272,12 @@ bool Board::CheckWinner(bool player)
 	return false;
 }
 
+void Board::AddMines()
+{
+	uint16_t numberMines = (5 / 100) * (24 * 24);
+	//TODO make a randomizer to put mines
+}
+
 
 Board::~Board() {
 	for (uint16_t index1{ 0 }; index1 < m_matrix.size(); index1++) {
@@ -381,7 +388,19 @@ Board::Board(const Board& otherBoard)
 		for (uint16_t column{ 0 }; column < otherBoard.m_matrix[line].size(); ++column)
 		{
 			if (otherBoard.m_matrix[line][column] != nullptr)
-				m_matrix[line][column] = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[line][column])) ;
+			{
+				IColumn* columnPointer = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[line][column]));
+				if (columnPointer)
+				{
+					m_matrix[line][column] = columnPointer;
+				}
+				else
+				{	
+					columnPointer = new MinedColumn(*dynamic_cast<MinedColumn*>(otherBoard.m_matrix[line][column]));
+					if (columnPointer)
+						m_matrix[line][column] = columnPointer;
+				}
+			}
 			else
 				m_matrix[line][column] = nullptr ;
 		}
