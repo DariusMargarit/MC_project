@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameTests", "GameTests\Game
 		{46153700-50F6-4CB0-AFA8-C101F849904C} = {46153700-50F6-4CB0-AFA8-C101F849904C}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwixtTextParser", "TwixtTextParser\TwixtTextParser.vcxproj", "{F8516903-A77E-4D70-8F8A-21EE96947A72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +49,14 @@ Global
 		{CC0D5D9D-6657-47C5-AAE8-A1FBE4EA77F1}.Release|x64.Build.0 = Release|x64
 		{CC0D5D9D-6657-47C5-AAE8-A1FBE4EA77F1}.Release|x86.ActiveCfg = Release|Win32
 		{CC0D5D9D-6657-47C5-AAE8-A1FBE4EA77F1}.Release|x86.Build.0 = Release|Win32
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Debug|x64.ActiveCfg = Debug|x64
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Debug|x64.Build.0 = Debug|x64
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Debug|x86.ActiveCfg = Debug|Win32
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Debug|x86.Build.0 = Debug|Win32
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Release|x64.ActiveCfg = Release|x64
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Release|x64.Build.0 = Release|x64
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Release|x86.ActiveCfg = Release|Win32
+		{F8516903-A77E-4D70-8F8A-21EE96947A72}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
