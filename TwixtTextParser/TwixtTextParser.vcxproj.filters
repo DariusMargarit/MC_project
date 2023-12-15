@@ -15,8 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TwixstParser.cppm">
+    <ClCompile Include="TwixtParser.cppm">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TwixtParser.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
