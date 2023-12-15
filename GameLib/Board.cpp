@@ -1,4 +1,5 @@
 #include <regex>
+#include <random>
 
 #include "Board.h"
 #include "Column.h"
@@ -274,14 +275,24 @@ bool Board::CheckWinner(bool player)
 
 void Board::AddMines()
 {
-	uint16_t numberMines = (5 / 100) * (24 * 24);
-	//TODO make a randomizer to put mines
+	uint16_t numberMines{ (uint16_t)((5 / 100) * (GetSize() * GetSize())) };
+	while(numberMines)
+	{
+		std::random_device rd;
+		std::mt19937 eng(rd());
+		std::uniform_int_distribution<> distr(1, GetSize() - 2);
+
+		uint16_t raw{ (uint16_t)distr(eng) }, column{ (uint16_t)distr(eng) };
+		Position pos{ raw,column };
+
+		PlaceMine(pos);
+		--numberMines;
+	}
 }
 
-
 Board::~Board() {
-	for (uint16_t index1{ 0 }; index1 < m_matrix.size(); index1++) {
-		for (uint16_t index2{ 0 }; index2 < m_matrix[index1].size(); index2++) {
+	for (uint16_t index1{ 0 }; index1 < m_matrix.size(); ++index1) {
+		for (uint16_t index2{ 0 }; index2 < m_matrix[index1].size(); ++index2) {
 			delete m_matrix[index1][index2];
 		}
 	}
@@ -333,6 +344,13 @@ bool Board::PlaceColumn(Position& position, IPlayer* player)
 		return true;
 	}
 	return false;
+}
+
+void Board::PlaceMine(Position& position)
+{
+	IColumn* newColumn{ new MinedColumn };
+	m_matrix[position.GetRow()][position.GetColumn()] = newColumn;
+
 }
 
 bool Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
@@ -389,16 +407,20 @@ Board::Board(const Board& otherBoard)
 		{
 			if (otherBoard.m_matrix[line][column] != nullptr)
 			{
-				IColumn* columnPointer = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[line][column]));
+				IColumn* columnPointer = dynamic_cast<Column*>(otherBoard.m_matrix[line][column]);
 				if (columnPointer)
 				{
+					columnPointer = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[line][column]));
 					m_matrix[line][column] = columnPointer;
 				}
 				else
 				{	
-					columnPointer = new MinedColumn(*dynamic_cast<MinedColumn*>(otherBoard.m_matrix[line][column]));
+					columnPointer = dynamic_cast<MinedColumn*>(otherBoard.m_matrix[line][column]);
 					if (columnPointer)
+					{
+						columnPointer = new MinedColumn(*dynamic_cast<MinedColumn*>(otherBoard.m_matrix[line][column]));
 						m_matrix[line][column] = columnPointer;
+					}
 				}
 			}
 			else
