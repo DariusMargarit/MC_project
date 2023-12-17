@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Player.h"
 
+#include "../TwixtTextParser/ITwixtParser.h"
 
 class Game : public IGame
 {
@@ -42,6 +43,8 @@ private:
 	Board* m_board;
 	uint16_t m_boardSize;
 	IPlayer* m_player1, *m_player2, *m_turn;
+	TwixtParserPtr m_parser;
+
 	ObserverList m_observers;
 };
 

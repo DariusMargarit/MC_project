@@ -1,41 +1,26 @@
 export module TwixtParser;
-import std;
 
-using std::uint16_t;
+export import "ITwixtParser.h";
 
-export enum class __declspec(dllexport) Pieces
+export class TwixtParser : public ITwixtParser
 {
-	FirstPlayer,
-	SecondPlayer,
-	Empty
-};
-
-
-export class __declspec(dllexport) TwixtParser
-{
-public:
-	using Position = std::pair<uint16_t, uint16_t>;
-	using BoardRepresentation = std::vector<std::vector<Pieces>>;
-	using MovesString = std::vector<std::string>;
-	using MovesPositions = std::vector<Position>;
-	using GameRepresentation = std::pair<BoardRepresentation, MovesPositions>;
-
 public:
 	TwixtParser(uint16_t boardSize);
+	bool Load(std::string_view path) override;
+	bool Save(std::string_view path) override;
 
-	bool Load(std::string_view path);
-	bool Save(std::string_view path);
+	void AddColumn(const Positionn& position, bool isFirstPlayer) override;
+	void AddBridge(const Positionn& firstPos, const Positionn& secondPos, bool removed) override;
 
-	void AddColumn(const Position& position, bool isFirstPlayer);
-	void AddBridge(const Position& firstPos, const Position& secondPos, bool removed);
+	GameRepresentation GetGameRepresentation() const override;
 
-	GameRepresentation GetGameRepresentation() const;
+	void Clear() override;
 
-	void Clear();
 
 private:
 	BoardRepresentation m_boardRepresentation;
 	MovesString m_movesRepresentation;
 
 };
+
 

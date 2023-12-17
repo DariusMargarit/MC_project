@@ -35,10 +35,6 @@ public:
 
 	const IColumn* operator [](Position pos) const override;
 
-
-
-
-
 private:
 	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool ValidPlaceColumn(const Position& position) const;

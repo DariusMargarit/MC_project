@@ -19,7 +19,7 @@ Player::Player(Player&& other) noexcept
 	, m_name{other.m_name}
 {
 	other.m_color = EColor::NoColor;
-	other.m_name = nullptr;
+	other.m_name = "";
 }
 
 Player& Player::operator=(const Player* other) noexcept
@@ -41,7 +41,7 @@ Player& Player::operator=(Player&& other) noexcept
 	m_color = other.m_color;
 
 	other.m_color = EColor::NoColor;
-	other.m_name = nullptr;
+	other.m_name = "";
 
 	return *this;
 }

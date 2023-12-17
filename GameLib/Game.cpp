@@ -7,7 +7,7 @@ Game::Game(const IGameSettings& settings)
 	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()) }
 	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor()) }
 	, m_boardSize{ settings.GetTableSize() }
-{
+{	
 	m_board = new Board(m_boardSize);
 	m_turn = m_player1;
 }
