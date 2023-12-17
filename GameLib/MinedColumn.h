@@ -5,7 +5,7 @@
 class MinedColumn : public IColumn
 {
 public:
-	MinedColumn();
+	MinedColumn() noexcept;
 	MinedColumn(const MinedColumn& rhs) noexcept;
 	MinedColumn(MinedColumn&& rhs) noexcept = default;
 	~MinedColumn();

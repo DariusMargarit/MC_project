@@ -1,6 +1,6 @@
 #include "MinedColumn.h"
 
-MinedColumn::MinedColumn()
+MinedColumn::MinedColumn() noexcept
 {
     m_mine = new Player("",EColor::NoColor);
 }

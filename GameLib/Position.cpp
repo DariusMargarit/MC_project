@@ -1,14 +1,14 @@
 #include "Position.h"
 
 
-Position::Position(const uint16_t& row, const uint16_t& column)
+Position::Position(const uint16_t& row, const uint16_t& column) noexcept
 	: m_row{row}
 	, m_column{column}
 {
 	// Empty
 }
 
-Position::Position(const Position& otherPosition)
+Position::Position(const Position& otherPosition) noexcept
 	: m_row{otherPosition.m_row}
 	, m_column{otherPosition.m_column}
 {
@@ -22,7 +22,7 @@ Position::Position(Position&& otherPosition) noexcept
 }
 
 
-Position::Position()
+Position::Position() noexcept
 	: Position{ EmptyPosition() }
 {
 	// Empty
@@ -71,7 +71,7 @@ Position& Position::operator=(Position&& position) noexcept {
 	return *this;
 }
 
-const Position& Position::EmptyPosition()
+const Position& Position::EmptyPosition() noexcept
 {
 	static const Position& position{UINT16_MAX, UINT16_MAX};
 	return position;

@@ -158,7 +158,7 @@ const std::string Board::MakeKey(const Position& firstPosition, const Position& 
 
 	std::string key{ std::to_string(row1) + " " + std::to_string(column1) +
 		" " + std::to_string(row2) + " " + std::to_string(column2) };
-	return key;
+	return std::move(key);
 }
 
 const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::string& key)
@@ -171,7 +171,7 @@ const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::str
 	in >> row >> column;
 	Position secondPosition(row, column);
 
-	return std::make_pair(firstPosition, secondPosition);
+	return std::move(std::make_pair(firstPosition, secondPosition));
 }
 
 void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath)
@@ -332,7 +332,7 @@ const BridgeVector Board::GetBridgesPositions() const
 
 const uint16_t Board::GetSize() const
 {
-	return (uint16_t)m_matrix.size();
+	return std::move((uint16_t)m_matrix.size());
 }
 
 bool Board::PlaceColumn(Position& position, IPlayer* player)

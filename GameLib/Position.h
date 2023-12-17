@@ -6,9 +6,9 @@
 class Position
 {
 public:
-	Position();
-	Position(const uint16_t& row, const uint16_t& column);
-	Position(const Position& otherPosition);
+	Position() noexcept;
+	Position(const uint16_t& row, const uint16_t& column) noexcept;
+	Position(const Position& otherPosition) noexcept;
 	Position(Position&& otherPosition) noexcept;
 
 	const uint16_t GetRow() const noexcept;
@@ -22,7 +22,7 @@ public:
 	Position& operator=(Position&& position) noexcept;
 
 public:
-	static const Position& EmptyPosition();
+	static const Position& EmptyPosition() noexcept;
 
 private:
 	uint16_t m_row, m_column;
