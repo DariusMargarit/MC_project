@@ -36,11 +36,11 @@ bool Board::ValidPlaceColumn(const Position& position) const
 	return true;
 }
 
-bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1SecondPosition) const
+bool Board::FindObstacleBridge(Position& lhs, Position& rhs) const
 {
-	uint16_t lowerRowIndex{ std::min(bridge1FirstPosition.GetRow(), bridge1SecondPosition.GetRow()) };
-	uint16_t lowerColumnIndex{ std::min(bridge1FirstPosition.GetColumn(), bridge1SecondPosition.GetColumn()) };
-	uint16_t absRowValue = abs(bridge1FirstPosition.GetRow() - bridge1SecondPosition.GetRow()) ;
+	uint16_t lowerRowIndex{ std::min(lhs.GetRow(), rhs.GetRow()) };
+	uint16_t lowerColumnIndex{ std::min(lhs.GetColumn(), rhs.GetColumn()) };
+	uint16_t absRowValue = abs(lhs.GetRow() - rhs.GetRow()) ;
 	std::vector<int16_t> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
 	std::vector<int16_t> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
 	uint8_t rowAddition, columnAddition;
@@ -73,8 +73,8 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 						{
 							Position bridge2FirstPosition(rowIndex, columnIndex);
 							Position bridge2SecondPosition(secondRowIndex, secondColumnIndex);
-							IColumn* bridge1FirstColumn{ m_matrix[bridge1FirstPosition.GetRow()][bridge1FirstPosition.GetColumn()] };
-							IColumn* bridge1SecondColumn{ m_matrix[bridge1SecondPosition.GetRow()][bridge1SecondPosition.GetColumn()] };
+							IColumn* bridge1FirstColumn{ m_matrix[lhs.GetRow()][lhs.GetColumn()] };
+							IColumn* bridge1SecondColumn{ m_matrix[rhs.GetRow()][rhs.GetColumn()] };
 							IColumn* bridge2FirstColumn{ m_matrix[rowIndex][columnIndex] };
 							IColumn* bridge2SecondColumn{ m_matrix[secondRowIndex][secondColumnIndex] };
 							if (bridge1FirstColumn == bridge2FirstColumn || bridge1FirstColumn == bridge2SecondColumn ||
@@ -85,7 +85,7 @@ bool Board::FindObstacleBridge(Position& bridge1FirstPosition, Position& bridge1
 							
 							if (BridgeExists(bridge2FirstPosition, bridge2SecondPosition))
 							{
-								if (doIntersect(bridge1FirstPosition, bridge1SecondPosition,
+								if (doIntersect(lhs, rhs,
 									bridge2FirstPosition, bridge2SecondPosition))
 								{
 									return true;
@@ -122,14 +122,14 @@ bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) 
 	return false;
 }
 
-bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
+bool Board::ValidBridge(Position& lhs, Position& rhs) const
 {
-	if (BridgeExists(firstPosition, secondPosition)) return false;
+	if (BridgeExists(lhs, rhs)) return false;
 
-	uint16_t absRowValue = abs(firstPosition.GetRow() - secondPosition.GetRow()) ;
-	uint16_t absColumnValue = abs(firstPosition.GetColumn() - secondPosition.GetColumn()) ;
-	IColumn* firstColumn{ m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()] };
-	IColumn* secondColumn{ m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()] };
+	uint16_t absRowValue = abs(lhs.GetRow() - rhs.GetRow()) ;
+	uint16_t absColumnValue = abs(lhs.GetColumn() - rhs.GetColumn()) ;
+	IColumn* firstColumn{ m_matrix[lhs.GetRow()][lhs.GetColumn()] };
+	IColumn* secondColumn{ m_matrix[rhs.GetRow()][rhs.GetColumn()] };
 	if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
 	{
 		return false;
@@ -140,7 +140,7 @@ bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
 	}
 	if (absRowValue + absColumnValue == 3) 
 	{
-		if (FindObstacleBridge(firstPosition, secondPosition))
+		if (FindObstacleBridge(lhs, rhs))
 		{
 			return false;
 		}
@@ -149,12 +149,12 @@ bool Board::ValidBridge(Position& firstPosition, Position& secondPosition) const
 	return false;
 }
 
-const std::string Board::MakeKey(const Position& firstPosition, const Position& secondPosition) const
+const std::string Board::MakeKey(const Position& lhs, const Position& rhs) const
 {
-	const auto& row1{ firstPosition.GetRow() },
-		      & row2{ secondPosition.GetRow() };
-	const auto& column1{ firstPosition.GetColumn() },
-		      & column2{ secondPosition.GetColumn() };
+	const auto& row1{ lhs.GetRow() },
+		      & row2{ rhs.GetRow() };
+	const auto& column1{ lhs.GetColumn() },
+		      & column2{ rhs.GetColumn() };
 
 	std::string key{ std::to_string(row1) + " " + std::to_string(column1) +
 		" " + std::to_string(row2) + " " + std::to_string(column2) };
@@ -211,7 +211,7 @@ void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bo
 	}
 }
 
-void Board::ComputePathToWin(bool player, bool action, Position& firstPosition, Position& secondPosition)
+void Board::ComputePathToWin(bool player, bool action, Position& lhs, Position& rhs)
 {
 	std::vector<std::vector<bool>>* playerPath{ nullptr };
 	if (player == 0)
@@ -224,22 +224,22 @@ void Board::ComputePathToWin(bool player, bool action, Position& firstPosition, 
 	}
 	if (action == 0)
 	{
-		if (firstPosition.GetRow() == 0 || firstPosition.GetColumn() == 0)
+		if (lhs.GetRow() == 0 || lhs.GetColumn() == 0)
 		{
-			(*playerPath)[firstPosition.GetRow()][firstPosition.GetColumn()] = 1;
+			(*playerPath)[lhs.GetRow()][lhs.GetColumn()] = 1;
 		}
-		else if (secondPosition.GetRow() == 0 || secondPosition.GetColumn() == 0)
+		else if (rhs.GetRow() == 0 || rhs.GetColumn() == 0)
 		{
-			(*playerPath)[secondPosition.GetRow()][secondPosition.GetColumn()] = 1;
+			(*playerPath)[rhs.GetRow()][rhs.GetColumn()] = 1;
 		}
 
-		if ((*playerPath)[firstPosition.GetRow()][firstPosition.GetColumn()] == 0)
+		if ((*playerPath)[lhs.GetRow()][lhs.GetColumn()] == 0)
 		{
-			MarkPathWithOnes(firstPosition, playerPath);
+			MarkPathWithOnes(lhs, playerPath);
 		}
-		if ((*playerPath)[secondPosition.GetRow()][secondPosition.GetColumn()] == 0)
+		if ((*playerPath)[rhs.GetRow()][rhs.GetColumn()] == 0)
 		{
-			MarkPathWithOnes(secondPosition, playerPath);
+			MarkPathWithOnes(rhs, playerPath);
 		}
 	}
 	else
@@ -353,12 +353,12 @@ void Board::PlaceMine(Position& position)
 
 }
 
-bool Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
+bool Board::MakeBridge(Position& lhs, Position& rhs, IPlayer* player)
 {
-	if (ValidBridge(firstPosition, secondPosition)) {
-		Bridge* bridge{ new Bridge(m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()],
-			m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()]) };
-		std::string key{ MakeKey(firstPosition, secondPosition) };
+	if (ValidBridge(lhs, rhs)) {
+		Bridge* bridge{ new Bridge(m_matrix[lhs.GetRow()][lhs.GetColumn()],
+			m_matrix[rhs.GetRow()][rhs.GetColumn()]) };
+		std::string key{ MakeKey(lhs, rhs) };
 		m_bridges.emplace(key, bridge);
 
 		return true;
@@ -366,13 +366,13 @@ bool Board::MakeBridge(Position& firstPosition, Position& secondPosition, IPlaye
 	return false;
 }
 
-bool Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPlayer* player)
+bool Board::RemoveBridge(Position& lhs, Position& rhs, IPlayer* player)
 {
-	if (!BridgeExists(firstPosition, secondPosition)) 
+	if (!BridgeExists(lhs, rhs)) 
 		return false;
 
-	const auto firstKey{ MakeKey(firstPosition, secondPosition) };
-	const auto secondKey{ MakeKey(secondPosition, firstPosition) };
+	const auto firstKey{ MakeKey(lhs, rhs) };
+	const auto secondKey{ MakeKey(rhs, lhs) };
 	if (m_bridges.find(firstKey) != m_bridges.end())
 	{
 		delete m_bridges[firstKey];
@@ -386,10 +386,10 @@ bool Board::RemoveBridge(Position& firstPosition, Position& secondPosition, IPla
 	return true;
 }
 
-bool Board::BridgeExists(const Position& firstPosition, const Position& secondPosition) const
+bool Board::BridgeExists(const Position& lhs, const Position& rhs) const
 {
-	const auto firstKey{ MakeKey(firstPosition, secondPosition) };
-	const auto secondKey{ MakeKey(secondPosition, firstPosition) };
+	const auto firstKey{ MakeKey(lhs, rhs) };
+	const auto secondKey{ MakeKey(rhs, lhs) };
 	if (m_bridges.find(firstKey)  != m_bridges.end() ||
 		m_bridges.find(secondKey) != m_bridges.end()) return true;
 	return false;
@@ -400,25 +400,25 @@ const IColumn* Board::operator[](Position pos) const
 	return GetElement(pos);
 }
 
-Board::Board(const Board& otherBoard) 
+Board::Board(const Board& rhs) 
 {
-	for (uint16_t line{ 0 }; line < otherBoard.m_matrix.size(); ++line)
-		for (uint16_t column{ 0 }; column < otherBoard.m_matrix[line].size(); ++column)
+	for (uint16_t line{ 0 }; line < rhs.m_matrix.size(); ++line)
+		for (uint16_t column{ 0 }; column < rhs.m_matrix[line].size(); ++column)
 		{
-			if (otherBoard.m_matrix[line][column] != nullptr)
+			if (rhs.m_matrix[line][column] != nullptr)
 			{
-				IColumn* columnPointer = dynamic_cast<Column*>(otherBoard.m_matrix[line][column]);
+				IColumn* columnPointer = dynamic_cast<Column*>(rhs.m_matrix[line][column]);
 				if (columnPointer)
 				{
-					columnPointer = new Column(*dynamic_cast<Column*>(otherBoard.m_matrix[line][column]));
+					columnPointer = new Column(*dynamic_cast<Column*>(rhs.m_matrix[line][column]));
 					m_matrix[line][column] = columnPointer;
 				}
 				else
 				{	
-					columnPointer = dynamic_cast<MinedColumn*>(otherBoard.m_matrix[line][column]);
+					columnPointer = dynamic_cast<MinedColumn*>(rhs.m_matrix[line][column]);
 					if (columnPointer)
 					{
-						columnPointer = new MinedColumn(*dynamic_cast<MinedColumn*>(otherBoard.m_matrix[line][column]));
+						columnPointer = new MinedColumn(*dynamic_cast<MinedColumn*>(rhs.m_matrix[line][column]));
 						m_matrix[line][column] = columnPointer;
 					}
 				}
@@ -427,7 +427,7 @@ Board::Board(const Board& otherBoard)
 				m_matrix[line][column] = nullptr ;
 		}
 
-	for (const auto& bridge : otherBoard.m_bridges)
+	for (const auto& bridge : rhs.m_bridges)
 	{
 		const auto& [firstPosition, secondPosition] { ExtractPositionFromKey(bridge.first)};
 		IColumn* firstColumn{ nullptr }, * secondColumn{ nullptr };

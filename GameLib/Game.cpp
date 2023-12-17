@@ -12,28 +12,28 @@ Game::Game(const IGameSettings& settings)
 	m_turn = m_player1;
 }
 
-Game::Game(const Game& otherGame)
-	:m_boardSize{otherGame.m_boardSize}
+Game::Game(const Game& rhs)
+	:m_boardSize{rhs.m_boardSize}
 {
-	m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
-	m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*otherGame.m_board);
+	m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
+	m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
+	m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
+	m_board = new Board(*rhs.m_board);
 }
 
-Game::Game(Game&& otherGame) noexcept
-	: m_boardSize{ otherGame.m_boardSize }
+Game::Game(Game&& rhs) noexcept
+	: m_boardSize{ rhs.m_boardSize }
  {
-	m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
-	m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*otherGame.m_board);
+	m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
+	m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
+	m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
+	m_board = new Board(*rhs.m_board);
 
-	otherGame.m_board = nullptr;
-	otherGame.m_boardSize = 0;
-	otherGame.m_player1 = nullptr;
-	otherGame.m_player2 = nullptr;
-	otherGame.m_turn = nullptr;
+	rhs.m_board = nullptr;
+	rhs.m_boardSize = 0;
+	rhs.m_player1 = nullptr;
+	rhs.m_player2 = nullptr;
+	rhs.m_turn = nullptr;
 }
 
 void Game::PlaceColumn(Position position)
@@ -72,21 +72,21 @@ void Game::PlaceColumn(Position position)
 
 }
 
-void Game::MakeBridge(Position firstPosition, Position secondPosition)
+void Game::MakeBridge(Position lhs, Position rhs)
 {
-	if(m_board->MakeBridge(firstPosition, secondPosition, m_turn))
+	if(m_board->MakeBridge(lhs, rhs, m_turn))
 	{
-		NotifyMakeBridge(firstPosition, secondPosition, m_turn);
-		ComputePathToWin(0, firstPosition, secondPosition);
+		NotifyMakeBridge(lhs, rhs, m_turn);
+		ComputePathToWin(0, lhs, rhs);
 	}
 }
 
-void Game::RemoveBridge(Position firstPosition, Position secondPosition)
+void Game::RemoveBridge(Position lhs, Position rhs)
 {
-	if(m_board->RemoveBridge(firstPosition, secondPosition, m_turn))
+	if(m_board->RemoveBridge(lhs, rhs, m_turn))
 	{
-		NotifyRemoveBridge(firstPosition, secondPosition, m_turn);
-		ComputePathToWin(1, firstPosition, secondPosition);
+		NotifyRemoveBridge(lhs, rhs, m_turn);
+		ComputePathToWin(1, lhs, rhs);
 	}
 }
 
@@ -108,26 +108,26 @@ IPlayer* Game::GetSecondPlayer() const
 	return m_player2;
 }
 
-Game& Game::operator=(const Game& otherGame)
+Game& Game::operator=(const Game& rhs)
 {
-	if (this != &otherGame) {
+	if (this != &rhs) {
 		
 		delete m_player1;
 		delete m_player2;
 		delete m_board;
 
-		m_boardSize = otherGame.m_boardSize;
-		m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
-		m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
-		m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
-		m_board = new Board(*otherGame.m_board);
+		m_boardSize = rhs.m_boardSize;
+		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
+		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
+		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
+		m_board = new Board(*rhs.m_board);
 
 	}
 	return *this;
 }
 
-Game& Game::operator=(Game&& otherGame) noexcept {
-	if (this == &otherGame)
+Game& Game::operator=(Game&& rhs) noexcept {
+	if (this == &rhs)
 	{
 		return *this;
 	}
@@ -135,17 +135,17 @@ Game& Game::operator=(Game&& otherGame) noexcept {
 		delete m_player2;
 		delete m_board;
 
-		m_boardSize = otherGame.m_boardSize;
-		m_player1 = new Player(dynamic_cast<Player*>(otherGame.m_player1));
-		m_player2 = new Player(dynamic_cast<Player*>(otherGame.m_player2));
-		m_turn = (otherGame.m_turn == otherGame.m_player1) ? m_player1 : m_player2;
-		m_board = new Board(*otherGame.m_board);
+		m_boardSize = rhs.m_boardSize;
+		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
+		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
+		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
+		m_board = new Board(*rhs.m_board);
 
-		otherGame.m_board = nullptr;
-		otherGame.m_boardSize = 0;
-	    otherGame.m_player1 = nullptr;
-	    otherGame.m_player2 = nullptr;
-	    otherGame.m_turn = nullptr;
+		rhs.m_board = nullptr;
+		rhs.m_boardSize = 0;
+	    rhs.m_player1 = nullptr;
+	    rhs.m_player2 = nullptr;
+	    rhs.m_turn = nullptr;
 
 	return *this;
 }
@@ -200,19 +200,19 @@ void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
 	}
 }
 
-void Game::NotifyMakeBridge(Position firstPosition, Position secondPosition, IPlayer* player) const
+void Game::NotifyMakeBridge(Position lhs, Position rhs, IPlayer* player) const
 {
 	for (auto& observer : m_observers)
 	{
-		observer.lock()->OnBridgePlaced(firstPosition, secondPosition, player);
+		observer.lock()->OnBridgePlaced(lhs, rhs, player);
 	}
 }
 
-void Game::NotifyRemoveBridge(Position firstPosition, Position secondPosition, IPlayer* player) const
+void Game::NotifyRemoveBridge(Position lhs, Position rhs, IPlayer* player) const
 {
 	for (auto& observer : m_observers)
 	{
-		observer.lock()->OnBridgeRemoved(firstPosition, secondPosition, player);
+		observer.lock()->OnBridgeRemoved(lhs, rhs, player);
 	}
 }
 
@@ -221,15 +221,15 @@ void Game::ChangeTurn()
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
 }
 
-void Game::ComputePathToWin(bool action, Position& firstPosition, Position& secondPosition) const
+void Game::ComputePathToWin(bool action, Position& lhs, Position& rhs) const
 {
 	if (m_turn == m_player1)
 	{
-		m_board->ComputePathToWin(0, action, firstPosition, secondPosition);
+		m_board->ComputePathToWin(0, action, lhs, rhs);
 	}
 	else
 	{
-		m_board->ComputePathToWin(1, action, firstPosition, secondPosition);
+		m_board->ComputePathToWin(1, action, lhs, rhs);
 	}
 }
 

@@ -8,15 +8,15 @@ Position::Position(const uint16_t& row, const uint16_t& column) noexcept
 	// Empty
 }
 
-Position::Position(const Position& otherPosition) noexcept
-	: m_row{otherPosition.m_row}
-	, m_column{otherPosition.m_column}
+Position::Position(const Position& rhs) noexcept
+	: m_row{rhs.m_row}
+	, m_column{rhs.m_column}
 {
 	// Empty
 }
 
-Position::Position(Position&& otherPosition) noexcept
-	: m_row(std::move(otherPosition.m_row)), m_column(std::move(otherPosition.m_column))
+Position::Position(Position&& rhs) noexcept
+	: m_row(std::move(rhs.m_row)), m_column(std::move(rhs.m_column))
 {
 	// Empty
 }
@@ -43,30 +43,30 @@ bool Position::IsEqual(const uint16_t& row, const uint16_t& column) const
 	return row == m_row && column == m_column;
 }
 
-bool Position::operator==(const Position& position) const
+bool Position::operator==(const Position& rhs) const
 {
-	return IsEqual(position.m_row,position.m_column);
+	return IsEqual(rhs.m_row,rhs.m_column);
 }
 
-bool Position::operator!=(const Position& position) const
+bool Position::operator!=(const Position& rhs) const
 {
-	return !IsEqual(position.m_row, position.m_column);
+	return !IsEqual(rhs.m_row, rhs.m_column);
 }
 
-Position& Position::operator=(const Position& position)
+Position& Position::operator=(const Position& rhs)
 {
-	if (this != &position)
+	if (this != &rhs)
 	{
-		m_row = position.m_row;
-		m_column = position.m_column;
+		m_row = rhs.m_row;
+		m_column = rhs.m_column;
 	}
 	return *this;
 }
 
-Position& Position::operator=(Position&& position) noexcept {
-	if (this != &position) {
-		m_row = std::move(position.m_row);
-		m_column = std::move(position.m_column);
+Position& Position::operator=(Position&& rhs) noexcept {
+	if (this != &rhs) {
+		m_row = std::move(rhs.m_row);
+		m_column = std::move(rhs.m_column);
 	}
 	return *this;
 }

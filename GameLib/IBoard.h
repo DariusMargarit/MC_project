@@ -16,7 +16,7 @@ struct IBoard
 	virtual const IColumn* GetElement(const Position& pos) const = 0;
 	virtual const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const = 0;
 	virtual const BridgeVector GetBridgesPositions() const = 0;
-	virtual bool BridgeExists(const Position& firstPosition, const Position& secondPosition) const = 0;
+	virtual bool BridgeExists(const Position& lhs, const Position& rhs) const = 0;
 
 	virtual const IColumn* operator[](Position pos) const = 0;
 

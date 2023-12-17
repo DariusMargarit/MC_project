@@ -10,8 +10,8 @@ class Game : public IGame
 {
 public:
 	Game(const IGameSettings& settings);
-	Game(const Game& otherGame);
-	Game(Game&& otherGame) noexcept;
+	Game(const Game& rhs);
+	Game(Game&& rhs) noexcept;
 	~Game() = default;
 
 	IPlayer* GetTurn() const override;
@@ -22,22 +22,22 @@ public:
 	IPlayer* GetSecondPlayer() const override;
 
 	void PlaceColumn(Position position) override;
-	void MakeBridge(Position firstPosition, Position secondPosition) override;
-	void RemoveBridge(Position firstPosition, Position secondPosition) override;
+	void MakeBridge(Position lhs, Position rhs) override;
+	void RemoveBridge(Position lhs, Position rhs) override;
 	void SwapPlayers();
 
-	Game& operator=(const Game& otherGame);
-	Game& operator=(Game&& otherGame) noexcept;
+	Game& operator=(const Game& rhs);
+	Game& operator=(Game&& rhs) noexcept;
 
 private:
 	void AddObserver(ObserverPtr observer) override;
 	void RemoveObserver(ObserverPtr observer) override;
 	void NotifyPlaceColumn(Position position, IPlayer* player) const;
-	void NotifyMakeBridge(Position firstPosition, Position secondPosition, IPlayer* player) const;
-	void NotifyRemoveBridge(Position firstPosition, Position secondPosition, IPlayer* player) const;
+	void NotifyMakeBridge(Position lhs, Position rhs, IPlayer* player) const;
+	void NotifyRemoveBridge(Position lhs, Position rhs, IPlayer* player) const;
 
 	void ChangeTurn();
-	void ComputePathToWin(bool action, Position& firstPosition, Position& secondPosition) const; // action = 0 - make, 1 - remove
+	void ComputePathToWin(bool action, Position& lhs, Position& rhs) const; // action = 0 - make, 1 - remove
 
 private:
 	Board* m_board;

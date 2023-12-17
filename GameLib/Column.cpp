@@ -6,16 +6,16 @@ Column::Column(IPlayer* player)
 	// Empty
 }
 
-Column::Column(const Column& other)
-	:m_player{ other.m_player }
+Column::Column(const Column& rhs)
+	:m_player{ rhs.m_player }
 {
 	// Empty
 }
 
-Column::Column(Column&& other) noexcept
-	:m_player{ other.m_player }
+Column::Column(Column&& rhs) noexcept
+	:m_player{ rhs.m_player }
 {
-	other.m_player = nullptr;
+	rhs.m_player = nullptr;
 }
 
 IPlayer* Column::GetPlayer() const noexcept
@@ -23,20 +23,20 @@ IPlayer* Column::GetPlayer() const noexcept
 	return m_player;
 }
 
-Column& Column::operator=(const Column& other) noexcept
+Column& Column::operator=(const Column& rhs) noexcept
 {
-	if (m_player != other.m_player)
-		m_player = other.m_player;
+	if (m_player != rhs.m_player)
+		m_player = rhs.m_player;
 	return *this;
 }
 
-Column& Column::operator=(Column&& other) noexcept
+Column& Column::operator=(Column&& rhs) noexcept
 {
-	if (this == &other)
+	if (this == &rhs)
 		return *this;
-	m_player = other.m_player;
+	m_player = rhs.m_player;
 
-	other.m_player = nullptr;
+	rhs.m_player = nullptr;
 
 	return *this;
 }

@@ -19,6 +19,6 @@ struct IPlayer
 
 	virtual EColor GetColor() const noexcept = 0;
 	virtual std::string_view GetName() const noexcept = 0;
-	virtual void SetColor(EColor otherColor) = 0;
+	virtual void SetColor(EColor rhs) = 0;
 	virtual ~IPlayer() = default;
 };

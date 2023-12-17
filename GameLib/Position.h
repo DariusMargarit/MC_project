@@ -8,18 +8,18 @@ class Position
 public:
 	Position() noexcept;
 	Position(const uint16_t& row, const uint16_t& column) noexcept;
-	Position(const Position& otherPosition) noexcept;
-	Position(Position&& otherPosition) noexcept;
+	Position(const Position& rhs) noexcept;
+	Position(Position&& rhs) noexcept;
 
 	const uint16_t GetRow() const noexcept;
 	const uint16_t GetColumn() const noexcept;
 
 	bool IsEqual(const uint16_t& row, const uint16_t& column) const;
 
-	bool operator==(const Position& position) const;
-	bool operator!=(const Position& position) const;
-	Position& operator=(const Position& position);
-	Position& operator=(Position&& position) noexcept;
+	bool operator==(const Position& rhs) const;
+	bool operator!=(const Position& rhs) const;
+	Position& operator=(const Position& rhs);
+	Position& operator=(Position&& rhs) noexcept;
 
 public:
 	static const Position& EmptyPosition() noexcept;

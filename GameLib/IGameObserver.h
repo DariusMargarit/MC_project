@@ -12,8 +12,8 @@ using ObserverList = std::forward_list<ObserverPtr>;
 struct IGameObserver
 {
 	virtual void OnColumnPlaced(Position& position, IPlayer* player) = 0;
-	virtual void OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayer* player) = 0;
-	virtual void OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player) = 0;
+	virtual void OnBridgePlaced(Position& lhs, Position& rhs, IPlayer* player) = 0;
+	virtual void OnBridgeRemoved(Position& lhs, Position& rhs, IPlayer* player) = 0;
 
 	virtual ~IGameObserver() = default;
 };
