@@ -30,8 +30,11 @@ namespace parser
 
 		static TwixtParserPtr Produce(uint16_t boardSize);
 
-		virtual bool Load(std::string_view path) = 0;
-		virtual bool Save(std::string_view path) = 0;
+		virtual bool LoadPTG(std::string_view path) = 0;
+		virtual bool SavePTG(std::string_view path) = 0;
+
+		static GameRepresentation LoadSTN(std::string_view path);
+		static bool SaveSTN(const GameRepresentation& game, std::string_view path);
 
 		virtual void AddColumn(const Position& position, bool isFirstPlayer) = 0;
 		virtual void AddBridge(bool removed, const Position& firstPos, const Position& secondPos) = 0;

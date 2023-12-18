@@ -1,15 +1,27 @@
 module TwixtParser;
 
 using namespace parser;
+
 import <format>;
 import <fstream>;
 import <algorithm>;
 import <ranges>;
 import <regex>;
 
+
 TwixtParserPtr parser::ITwixtParser::Produce(uint16_t boardSize)
 {
 	return std::make_shared<TwixtParser>(boardSize);
+}
+
+GameRepresentation parser::ITwixtParser::LoadSTN(std::string_view path)
+{
+	return GameRepresentation();
+}
+
+bool parser::ITwixtParser::SaveSTN(const GameRepresentation& game, std::string_view path)
+{
+	return false;
 }
 
 TwixtParser::TwixtParser(uint16_t boardSize)
@@ -18,51 +30,20 @@ TwixtParser::TwixtParser(uint16_t boardSize)
 	// Empty
 }
 
-bool TwixtParser::Load(std::string_view path)
+bool TwixtParser::LoadPTG(std::string_view path)
 {
 	std::ifstream file(std::string(std::move(path)));
 	if (!file.is_open()) return false;
 
-	uint16_t boardSize, element;
-	file >> boardSize;
-	m_boardRepresentation.resize(boardSize, std::vector<Piece>{boardSize, Piece::Empty});
+	if (!LoadBoardRepresentation(m_boardRepresentation, file)) return false;
+	LoadMoveRepresentation(m_movesRepresentation, file);
 
-	for (int row = 0; row < boardSize; row++)
-	{
-		for (int column = 0; column < boardSize; column++)
-		{
-			file >> element;
-			if (element < 0 || element > 2) return false;
-			if (element == 0) continue;
-			m_boardRepresentation[row][column] = static_cast<Piece>(element);
-		}
-	}
-
-	std::regex pattern{ R"(\b\d+)" };
-	std::string line;
-
-	while(std::getline(file, line)) 
-	{
-		bool removed = line[0] == '-' ? true : false;
-		std::vector<uint16_t> positions;
-		auto it{ std::sregex_iterator(line.begin(), line.end(), pattern) };
-
-		for (&it; it != std::sregex_iterator(); ++it)
-		{
-			positions.push_back(std::stoi((*it).str()));
-		}
-
-		Position firstColumn{ positions[0], positions[1] };
-		Position secondColumn{ positions[2], positions[3] };
-
-		AddBridge(removed, firstColumn, secondColumn);
-	}
 	file.close();
 	
 	return true;
 }
 
-bool TwixtParser::Save(std::string_view path)
+bool TwixtParser::SavePTG(std::string_view path)
 {
 	std::ofstream file(std::string(std::move(path)));
 	if (!file.is_open()) return false;
@@ -113,5 +94,57 @@ GameRepresentation TwixtParser::GetGameRepresentation() const
 void TwixtParser::Clear()
 {
 	// Empty
+}
+
+bool parser::TwixtParser::LoadBoardRepresentation(BoardRepresentation& board, std::ifstream& file)
+{
+	uint16_t boardSize, element;
+	file >> boardSize;
+	board.resize(boardSize, std::vector<Piece>{boardSize, Piece::Empty});
+
+	for (int row = 0; row < boardSize; row++)
+	{
+		for (int column = 0; column < boardSize; column++)
+		{
+			file >> element;
+			if (element < 0 || element > 2) return false;
+			if (element == 0) continue;
+			board[row][column] = static_cast<Piece>(element);
+		}
+	}
+	return true;
+}
+
+void parser::TwixtParser::LoadMoveRepresentation(MovesPositionsVariant movesRepresentation, std::ifstream& file)
+{
+	std::regex pattern{ R"(\b\d+)" };
+	std::string line;
+
+	bool fullMovesPositions = std::holds_alternative<FullMovesPositions>(movesRepresentation);
+
+	while (std::getline(file, line))
+	{
+		std::vector<uint16_t> positions;
+		auto it{ std::sregex_iterator(line.begin(), line.end(), pattern) };
+
+		for (&it; it != std::sregex_iterator(); ++it)
+		{
+			positions.push_back(std::stoi((*it).str()));
+		}
+
+		Position firstColumn { positions[0], positions[1] };
+		Position secondColumn{ positions[2], positions[3] };
+
+		if (fullMovesPositions)
+		{
+			bool removed = line[0] == '-' ? true : false;
+			AddBridge(removed, firstColumn, secondColumn);
+		}
+		else
+		{
+			auto representation = std::get<MovesPositions>(movesRepresentation);
+			representation.emplace_back(firstColumn, secondColumn);
+		}
+	}
 }
 
