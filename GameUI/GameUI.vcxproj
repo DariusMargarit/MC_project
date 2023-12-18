@@ -72,7 +72,7 @@
       <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>GameLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GameLib.lib;TwixtTextParser.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../x64/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <QtMoc>
@@ -91,7 +91,7 @@
       <EnableModules>false</EnableModules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>GameLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GameLib.lib;TwixtTextParser.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../x64/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <QtMoc>

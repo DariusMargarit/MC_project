@@ -2,25 +2,29 @@ export module TwixtParser;
 
 export import "ITwixtParser.h";
 
-export class TwixtParser : public ITwixtParser
+export namespace parser
 {
-public:
-	TwixtParser(uint16_t boardSize);
-	bool Load(std::string_view path) override;
-	bool Save(std::string_view path) override;
+	class TwixtParser : public ITwixtParser
+	{
+	public:
+		TwixtParser(uint16_t boardSize);
+		TwixtParser(const TwixtParser& other) = default;
 
-	void AddColumn(const Positionn& position, bool isFirstPlayer) override;
-	void AddBridge(const Positionn& firstPos, const Positionn& secondPos, bool removed) override;
+		bool Load(std::string_view path) override;
+		bool Save(std::string_view path) override;
 
-	GameRepresentation GetGameRepresentation() const override;
+		void AddColumn(const Position& position, bool isFirstPlayer) override;
+		void AddBridge(const Position& firstPos, const Position& secondPos, bool removed) override;
 
-	void Clear() override;
+		GameRepresentation GetGameRepresentation() const override;
+
+		void Clear() override;
 
 
-private:
-	BoardRepresentation m_boardRepresentation;
-	MovesString m_movesRepresentation;
+	private:
+		BoardRepresentation m_boardRepresentation;
+		FullMovesPositions m_movesRepresentation;
 
-};
-
+	};
+}
 

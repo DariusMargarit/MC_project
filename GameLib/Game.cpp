@@ -7,13 +7,14 @@ Game::Game(const IGameSettings& settings)
 	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()) }
 	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor()) }
 	, m_boardSize{ settings.GetTableSize() }
+	, m_parser{ parser::ITwixtParser::Produce(settings.GetTableSize())}
 {	
 	m_board = new Board(m_boardSize);
 	m_turn = m_player1;
 }
 
 Game::Game(const Game& rhs)
-	:m_boardSize{rhs.m_boardSize}
+	: m_boardSize{rhs.m_boardSize}
 {
 	m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
 	m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));

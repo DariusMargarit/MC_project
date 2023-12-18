@@ -324,7 +324,7 @@ const BridgeVector Board::GetBridgesPositions() const
 			positions.push_back(std::stoi((*it).str()));
 		}
 		Position firstColumn{positions[0], positions[1]};
-		Position secondColumn{positions[2], positions[3]};
+		Position secondColumn{ positions[2], positions[3] };
 		bridgesPositions.emplace_back(std::move(firstColumn), std::move(secondColumn));
 	}
 	return std::move(bridgesPositions);
