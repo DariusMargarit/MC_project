@@ -34,7 +34,7 @@ namespace parser
 		virtual bool Save(std::string_view path) = 0;
 
 		virtual void AddColumn(const Position& position, bool isFirstPlayer) = 0;
-		virtual void AddBridge(const Position& firstPos, const Position& secondPos, bool removed) = 0;
+		virtual void AddBridge(bool removed, const Position& firstPos, const Position& secondPos) = 0;
 
 		virtual GameRepresentation GetGameRepresentation() const = 0;
 

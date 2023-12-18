@@ -55,13 +55,42 @@ bool TwixtParser::Load(std::string_view path)
 		Position firstColumn{ positions[0], positions[1] };
 		Position secondColumn{ positions[2], positions[3] };
 
-		AddBridge(firstColumn, secondColumn, removed);
+		AddBridge(removed, firstColumn, secondColumn);
 	}
+	file.close();
 	
+	return true;
 }
 
 bool TwixtParser::Save(std::string_view path)
 {
+	std::ofstream file(std::string(std::move(path)));
+	if (!file.is_open()) return false;
+
+	for (int row = 0; row < m_boardRepresentation.size(); row++)
+	{
+		for (int column = 0; column < m_boardRepresentation.size(); column++)
+		{
+			file << static_cast<int>(m_boardRepresentation[row][column]) << " ";
+		}
+		file << std::endl;
+	}
+
+	for (auto& move : m_movesRepresentation)
+	{
+		const auto& [removed, firstPos, secondPos] = move;
+		const auto& [firstPosRow, firstPosColumn] = firstPos;
+		const auto& [secondPosRow, secondPosColumn] = secondPos;
+
+		const auto& lineFormat = std::format(
+			"{} {} {} {} {}",
+			removed ? '-' : '+',
+			firstPosRow, firstPosColumn,
+			secondPosRow, secondPosColumn
+			);
+	}
+	file.close();
+
 	return false;
 }
 
@@ -71,7 +100,7 @@ void TwixtParser::AddColumn(const Position& position, bool isFirstPlayer)
 	m_boardRepresentation[row][column] = isFirstPlayer ? Piece::FirstPlayer : Piece::SecondPlayer;
 }
 
-void TwixtParser::AddBridge(const Position& firstPos, const Position& secondPos, bool removed)
+void TwixtParser::AddBridge(bool removed, const Position& firstPos, const Position& secondPos)
 {
 	m_movesRepresentation.emplace_back(removed, firstPos, secondPos);
 }

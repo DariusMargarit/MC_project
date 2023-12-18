@@ -14,7 +14,7 @@ export namespace parser
 		bool Save(std::string_view path) override;
 
 		void AddColumn(const Position& position, bool isFirstPlayer) override;
-		void AddBridge(const Position& firstPos, const Position& secondPos, bool removed) override;
+		void AddBridge(bool removed, const Position& firstPos, const Position& secondPos) override;
 
 		GameRepresentation GetGameRepresentation() const override;
 
