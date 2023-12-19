@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <utility>
 
+using PositionPair = std::pair<uint16_t, uint16_t>;
+
 class Position
 {
 public:
@@ -13,6 +15,7 @@ public:
 
 	const uint16_t GetRow() const noexcept;
 	const uint16_t GetColumn() const noexcept;
+	PositionPair ToPair() const;
 
 	bool IsEqual(const uint16_t& row, const uint16_t& column) const;
 

@@ -1,12 +1,11 @@
 export module TwixtParser;
 
 export import "ITwixtParser.h";
-import <variant>;
 
 
 export namespace parser
 {
-	using MovesPositionsVariant = std::variant<FullMovesPositions, MovesPositions>;
+	using FullMovesPositions = std::vector<std::tuple<bool, Position, Position>>;
 
 	class TwixtParser : public ITwixtParser
 	{
@@ -24,9 +23,18 @@ export namespace parser
 
 		void Clear() override;
 
+		static bool LoadBoardRepresentation(BoardRepresentation& board, std::ifstream& file);
+		static bool LoadMoveRepresentation(FullMovesPositions& moves, bool isFullMove, std::ifstream& file);
+		static void SaveGame(BoardRepresentation board, FullMovesPositions moves, std::ofstream& file);
+		static MovesPositions ConvertFullMovesToSimpleMoves(const FullMovesPositions& moves);
+		static FullMovesPositions ConvertSimpleMovesToFullMoves(const MovesPositions& moves);
+		static bool HasExtension(const std::string_view filePath, const std::string_view extension);
 	private:
-		bool LoadBoardRepresentation(BoardRepresentation& board, std::ifstream& file);
-		void LoadMoveRepresentation(MovesPositionsVariant movesRepresentation, std::ifstream& file);
+		template<size_t FirstArg, size_t SecondArg, class... T>
+		static auto TupleToPair(std::tuple<T...> t)
+		{
+			return std::make_pair(std::get<FirstArg>(t), std::get<SecondArg>(t));
+		}
 
 	private:
 		BoardRepresentation m_boardRepresentation;

@@ -13,7 +13,6 @@ namespace parser
 	using std::uint16_t;
 	using Position = std::pair<uint16_t, uint16_t>;
 	using MovesPositions = std::vector<std::pair<Position, Position>>;
-	using FullMovesPositions = std::vector<std::tuple<bool, Position, Position>>;
 	using BoardRepresentation = std::vector<std::vector<Piece>>;
 	using GameRepresentation = std::pair<BoardRepresentation, MovesPositions>;
 	using TwixtParserPtr = std::shared_ptr<ITwixtParser>;

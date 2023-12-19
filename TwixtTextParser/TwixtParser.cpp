@@ -5,8 +5,8 @@ using namespace parser;
 import <format>;
 import <fstream>;
 import <algorithm>;
-import <ranges>;
 import <regex>;
+import <ranges>;
 
 
 TwixtParserPtr parser::ITwixtParser::Produce(uint16_t boardSize)
@@ -16,12 +16,30 @@ TwixtParserPtr parser::ITwixtParser::Produce(uint16_t boardSize)
 
 GameRepresentation parser::ITwixtParser::LoadSTN(std::string_view path)
 {
-	return GameRepresentation();
+	BoardRepresentation board;
+	FullMovesPositions moves;
+	
+	std::ifstream file(std::string(std::move(path)));
+	if (!file.is_open()) return GameRepresentation();
+	
+	if (!TwixtParser::LoadBoardRepresentation(board, file)) return GameRepresentation();
+	if (!TwixtParser::LoadMoveRepresentation(moves, false, file)) return GameRepresentation();
+
+	MovesPositions simpleMoves = TwixtParser::ConvertFullMovesToSimpleMoves(moves);
+	return std::make_pair(board, simpleMoves);
 }
 
 bool parser::ITwixtParser::SaveSTN(const GameRepresentation& game, std::string_view path)
 {
-	return false;
+	std::ofstream file(std::string(std::move(path)));
+	if (!file.is_open()) return false;
+
+	const auto& [board, simpleMoves] = game;
+	FullMovesPositions fullMoves = TwixtParser::ConvertSimpleMovesToFullMoves(simpleMoves);
+
+	TwixtParser::SaveGame(board, fullMoves, file);
+
+	return true;
 }
 
 TwixtParser::TwixtParser(uint16_t boardSize)
@@ -32,11 +50,14 @@ TwixtParser::TwixtParser(uint16_t boardSize)
 
 bool TwixtParser::LoadPTG(std::string_view path)
 {
+	if (!HasExtension(path, "ptg")) return false;
+	Clear();
+	
 	std::ifstream file(std::string(std::move(path)));
 	if (!file.is_open()) return false;
 
 	if (!LoadBoardRepresentation(m_boardRepresentation, file)) return false;
-	LoadMoveRepresentation(m_movesRepresentation, file);
+	if (!LoadMoveRepresentation(m_movesRepresentation, true, file)) return false;
 
 	file.close();
 	
@@ -47,29 +68,9 @@ bool TwixtParser::SavePTG(std::string_view path)
 {
 	std::ofstream file(std::string(std::move(path)));
 	if (!file.is_open()) return false;
+	
+	SaveGame(m_boardRepresentation, m_movesRepresentation, file);
 
-	for (int row = 0; row < m_boardRepresentation.size(); row++)
-	{
-		for (int column = 0; column < m_boardRepresentation.size(); column++)
-		{
-			file << static_cast<int>(m_boardRepresentation[row][column]) << " ";
-		}
-		file << std::endl;
-	}
-
-	for (auto& move : m_movesRepresentation)
-	{
-		const auto& [removed, firstPos, secondPos] = move;
-		const auto& [firstPosRow, firstPosColumn] = firstPos;
-		const auto& [secondPosRow, secondPosColumn] = secondPos;
-
-		const auto& lineFormat = std::format(
-			"{} {} {} {} {}",
-			removed ? '-' : '+',
-			firstPosRow, firstPosColumn,
-			secondPosRow, secondPosColumn
-			);
-	}
 	file.close();
 
 	return false;
@@ -88,15 +89,18 @@ void TwixtParser::AddBridge(bool removed, const Position& firstPos, const Positi
 
 GameRepresentation TwixtParser::GetGameRepresentation() const
 {
-	return GameRepresentation();
+	MovesPositions moves = ConvertFullMovesToSimpleMoves(m_movesRepresentation);
+	return std::make_pair(m_boardRepresentation, std::move(moves));
 }
 
 void TwixtParser::Clear()
 {
-	// Empty
+	std::ranges::for_each(m_boardRepresentation, [](auto& row) { row.clear(); });
+	m_boardRepresentation.clear();
+	m_movesRepresentation.clear();
 }
 
-bool parser::TwixtParser::LoadBoardRepresentation(BoardRepresentation& board, std::ifstream& file)
+bool TwixtParser::LoadBoardRepresentation(BoardRepresentation& board, std::ifstream& file)
 {
 	uint16_t boardSize, element;
 	file >> boardSize;
@@ -115,15 +119,17 @@ bool parser::TwixtParser::LoadBoardRepresentation(BoardRepresentation& board, st
 	return true;
 }
 
-void parser::TwixtParser::LoadMoveRepresentation(MovesPositionsVariant movesRepresentation, std::ifstream& file)
+bool TwixtParser::LoadMoveRepresentation(FullMovesPositions& moves, bool isFullMove, std::ifstream & file)
 {
 	std::regex pattern{ R"(\b\d+)" };
 	std::string line;
 
-	bool fullMovesPositions = std::holds_alternative<FullMovesPositions>(movesRepresentation);
-
 	while (std::getline(file, line))
 	{
+		bool removed = isFullMove
+			? line[0] == '-' ? true : false
+			: false;
+
 		std::vector<uint16_t> positions;
 		auto it{ std::sregex_iterator(line.begin(), line.end(), pattern) };
 
@@ -131,20 +137,77 @@ void parser::TwixtParser::LoadMoveRepresentation(MovesPositionsVariant movesRepr
 		{
 			positions.push_back(std::stoi((*it).str()));
 		}
+		if (positions.size() != 4) return false;
 
-		Position firstColumn { positions[0], positions[1] };
-		Position secondColumn{ positions[2], positions[3] };
+		Position firstPos { positions[0], positions[1] };
+		Position secondPos{ positions[2], positions[3] };
 
-		if (fullMovesPositions)
-		{
-			bool removed = line[0] == '-' ? true : false;
-			AddBridge(removed, firstColumn, secondColumn);
-		}
-		else
-		{
-			auto representation = std::get<MovesPositions>(movesRepresentation);
-			representation.emplace_back(firstColumn, secondColumn);
-		}
+		moves.emplace_back(removed, firstPos, secondPos);
 	}
+	return true;
+}
+
+void parser::TwixtParser::SaveGame(BoardRepresentation board, FullMovesPositions moves, std::ofstream& file)
+{
+	for (int row = 0; row < board.size(); row++)
+	{
+		for (int column = 0; column < board.size(); column++)
+		{
+			file << static_cast<int>(board[row][column]) << " ";
+		}
+		file << std::endl;
+	}
+
+	file << std::endl;
+
+	for (auto& move : moves)
+	{
+		const auto& [removed, firstPos, secondPos] = move;
+		const auto& [firstPosRow, firstPosColumn] = firstPos;
+		const auto& [secondPosRow, secondPosColumn] = secondPos;
+
+		const auto& lineFormat = std::format(
+			"{} {} {} {} {}",
+			removed ? '-' : '+',
+			firstPosRow, firstPosColumn,
+			secondPosRow, secondPosColumn
+		);
+		file << lineFormat;
+	}
+}
+
+MovesPositions TwixtParser::ConvertFullMovesToSimpleMoves(const FullMovesPositions& moves)
+{
+	MovesPositions simpleMoves;
+	for (const auto& move : moves)
+	{
+		simpleMoves.push_back(std::move(TupleToPair<1, 2, bool, Position, Position>(move)));
+	}
+
+	return std::move(simpleMoves);
+}
+
+FullMovesPositions parser::TwixtParser::ConvertSimpleMovesToFullMoves(const MovesPositions& moves)
+{
+	FullMovesPositions fullMoves;
+	for (const auto& move : moves)
+	{
+		const auto& [firstPos, secondPos] = move;
+		fullMoves.push_back({ true, firstPos, secondPos });
+	}
+	return std::move(fullMoves);
+}
+
+bool TwixtParser::HasExtension(const std::string_view filePath, const std::string_view extension)
+{
+	size_t dotPos = filePath.find_last_of(".");
+	if (dotPos == std::string::npos) return false;
+	std::string actualExtension = std::string(filePath.substr(dotPos + 1));
+	std::string currentExtension = std::string(extension);
+
+	std::ranges::for_each(actualExtension, [](char& c) {c = std::tolower(c); });
+	std::ranges::for_each(currentExtension, [](char& c) {c = std::tolower(c); });
+	if (actualExtension == extension) return true;
+	return false;
 }
 

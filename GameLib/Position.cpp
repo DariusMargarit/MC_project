@@ -38,6 +38,11 @@ const uint16_t Position::GetColumn() const noexcept
 	return m_column;
 }
 
+PositionPair Position::ToPair() const
+{
+	return std::move(std::make_pair(m_row, m_column));
+}
+
 bool Position::IsEqual(const uint16_t& row, const uint16_t& column) const
 {
 	return row == m_row && column == m_column;
