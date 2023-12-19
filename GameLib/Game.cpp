@@ -39,56 +39,37 @@ Game::Game(Game&& rhs) noexcept
 
 void Game::PlaceColumn(Position position)
 {
-	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1))
-	{
-		if (m_turn == m_player2)
-		{
-			if (m_board->PlaceColumn(position, m_turn))
-			{
-				NotifyPlaceColumn(position, m_turn);
-				ChangeTurn();
-			}
-		}
-		   
-	}
-	else if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) )
-	{
-		if (m_turn == m_player1)
-		{
-			if (m_board->PlaceColumn(position, m_turn))
-			{
-				NotifyPlaceColumn(position, m_turn);
-				ChangeTurn();
-			}
-		}
-	}
-	else
-	{
-		if (m_board->PlaceColumn(position, m_turn))
-		{
-			NotifyPlaceColumn(position, m_turn);
-			ChangeTurn();
-		}
-	}
+	bool isFirstPlayer = m_turn == m_player1;
+	if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) &&
+		!isFirstPlayer) return;
+
+	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1) &&
+		isFirstPlayer) return;
+
+	if (!m_board->PlaceColumn(position, m_turn)) return;
+
+	NotifyPlaceColumn(position, m_turn);
+	m_parser->AddColumn(position.ToPair(), isFirstPlayer);
+	ChangeTurn();
 
 }
 
-void Game::MakeBridge(Position lhs, Position rhs)
+void Game::MakeBridge(Position firstPos, Position secondPos)
 {
-	if(m_board->MakeBridge(lhs, rhs, m_turn))
-	{
-		NotifyMakeBridge(lhs, rhs, m_turn);
-		ComputePathToWin(0, lhs, rhs);
-	}
+	if (!m_board->MakeBridge(firstPos, secondPos, m_turn)) return;
+
+	NotifyMakeBridge(firstPos, secondPos, m_turn);
+	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
+	ComputePathToWin(0, firstPos, secondPos);
 }
 
-void Game::RemoveBridge(Position lhs, Position rhs)
+void Game::RemoveBridge(Position firstPos, Position secondPos)
 {
-	if(m_board->RemoveBridge(lhs, rhs, m_turn))
-	{
-		NotifyRemoveBridge(lhs, rhs, m_turn);
-		ComputePathToWin(1, lhs, rhs);
-	}
+	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return;
+
+	NotifyRemoveBridge(firstPos, secondPos, m_turn);
+	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
+	ComputePathToWin(1, firstPos, secondPos);
 }
 
 void Game::SwapPlayers()

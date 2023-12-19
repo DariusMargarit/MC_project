@@ -22,8 +22,8 @@ public:
 	IPlayer* GetSecondPlayer() const override;
 
 	void PlaceColumn(Position position) override;
-	void MakeBridge(Position lhs, Position rhs) override;
-	void RemoveBridge(Position lhs, Position rhs) override;
+	void MakeBridge(Position firstPos, Position secondPos) override;
+	void RemoveBridge(Position firstPos, Position secondPos) override;
 	void SwapPlayers();
 
 	Game& operator=(const Game& rhs);

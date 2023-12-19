@@ -27,9 +27,9 @@ public:
 
 	bool PlaceColumn(Position& position, IPlayer* player);
 	void PlaceMine(Position& position);
-	bool MakeBridge(Position& lhs, Position& rhs, IPlayer* player);
-	bool RemoveBridge(Position& lhs, Position& rhs, IPlayer* player);
-	void ComputePathToWin(bool player, bool action, Position& lhs, Position& rhs);
+	bool MakeBridge(Position& firstPos, Position& secondPos, IPlayer* player);
+	bool RemoveBridge(Position& firstPos, Position& secondPos, IPlayer* player);
+	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
 	bool CheckWinner(bool player);
 	void AddMines();
 
@@ -38,11 +38,11 @@ public:
 private:
 	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool ValidPlaceColumn(const Position& position) const;
-	bool FindObstacleBridge(Position& lhs, Position& rhs) const;
+	bool FindObstacleBridge(Position& firstPos, Position& secondPos) const;
 	bool Orientation(Position& A, Position& B, Position& C) const;
 	bool doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const;
-	bool ValidBridge(Position& lhs, Position& rhs) const;
-	const std::string MakeKey(const Position& lhs, const Position& rhs) const;
+	bool ValidBridge(Position& firstPos, Position& secondPos) const;
+	const std::string MakeKey(const Position& firstPos, const Position& secondPos) const;
 	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key);
 	void MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath);
 

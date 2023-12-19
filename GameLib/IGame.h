@@ -23,8 +23,8 @@ struct IGame
 	virtual IPlayer* GetSecondPlayer() const = 0;
 
 	virtual void PlaceColumn(Position position) = 0;
-	virtual void MakeBridge(Position lhs, Position rhs) = 0;
-	virtual void RemoveBridge(Position lhs , Position rhs) = 0;
+	virtual void MakeBridge(Position firstPos, Position secondPos) = 0;
+	virtual void RemoveBridge(Position firstPos , Position secondPos) = 0;
 
 	virtual ~IGame() = default;
 };
