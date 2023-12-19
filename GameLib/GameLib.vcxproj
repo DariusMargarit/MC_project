@@ -172,6 +172,7 @@
     <ClCompile Include="Board.h" />
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Bridge.h" />
+    <ClCompile Include="BulldozerGame.cpp" />
     <ClCompile Include="Column.cpp" />
     <ClCompile Include="Column.h" />
     <ClCompile Include="Game.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Position.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulldozerGame.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="IBoard.h" />
     <ClInclude Include="IGameObserver.h" />
