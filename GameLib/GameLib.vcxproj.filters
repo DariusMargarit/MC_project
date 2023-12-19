@@ -72,6 +72,9 @@
     <ClCompile Include="BulldozerGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BulldozerColumn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IPlayer.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BulldozerGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BulldozerColumn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

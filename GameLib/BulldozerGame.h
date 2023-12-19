@@ -13,6 +13,10 @@ public:
 	BulldozerGame& operator=(const BulldozerGame& rhs);
 	BulldozerGame& operator=(BulldozerGame&& rhs) noexcept = default;
 	
+	
+
+
+
 private:
 	Board* m_board;
 	uint16_t m_boardSize;

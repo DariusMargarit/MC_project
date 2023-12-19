@@ -32,6 +32,7 @@ public:
 	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
 	bool CheckWinner(bool player);
 	void AddMines();
+    
 
 	const IColumn* operator [](Position pos) const override;
 
