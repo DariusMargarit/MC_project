@@ -73,7 +73,7 @@ bool TwixtParser::SavePTG(std::string_view path)
 
 	file.close();
 
-	return false;
+	return true;
 }
 
 void TwixtParser::AddColumn(const Position& position, bool isFirstPlayer)
@@ -172,7 +172,7 @@ void parser::TwixtParser::SaveGame(BoardRepresentation board, FullMovesPositions
 			firstPosRow, firstPosColumn,
 			secondPosRow, secondPosColumn
 		);
-		file << lineFormat;
+		file << lineFormat << std::endl;
 	}
 }
 
@@ -193,7 +193,7 @@ FullMovesPositions parser::TwixtParser::ConvertSimpleMovesToFullMoves(const Move
 	for (const auto& move : moves)
 	{
 		const auto& [firstPos, secondPos] = move;
-		fullMoves.push_back({ true, firstPos, secondPos });
+		fullMoves.push_back({ false, firstPos, secondPos });
 	}
 	return std::move(fullMoves);
 }

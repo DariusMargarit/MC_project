@@ -26,6 +26,9 @@ public:
 	void RemoveBridge(Position firstPos, Position secondPos) override;
 	void SwapPlayers();
 
+	bool SaveGame(const std::string_view path, StorageFormat format) override;
+	bool LoadGame(const std::string_view path, StorageFormat format) override;
+
 	Game& operator=(const Game& rhs);
 	Game& operator=(Game&& rhs) noexcept;
 
@@ -38,6 +41,7 @@ private:
 
 	void ChangeTurn();
 	void ComputePathToWin(bool action, Position& lhs, Position& rhs) const; // action = 0 - make, 1 - remove
+	parser::GameRepresentation GetParserGameRepresentation();
 
 private:
 	Board* m_board;
@@ -46,6 +50,7 @@ private:
 	parser::TwixtParserPtr m_parser;
 
 	ObserverList m_observers;
+
 };
 
 

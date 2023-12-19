@@ -8,6 +8,12 @@
 
 using IGamePtr = std::shared_ptr<struct IGame>;
 
+enum class StorageFormat
+{
+	STN, // standard twixt notation
+	PTG // portable twixt game
+};
+
 struct IGame
 {
 	static IGamePtr Produce(const IGameSettings& settings);
@@ -25,6 +31,9 @@ struct IGame
 	virtual void PlaceColumn(Position position) = 0;
 	virtual void MakeBridge(Position firstPos, Position secondPos) = 0;
 	virtual void RemoveBridge(Position firstPos , Position secondPos) = 0;
+
+	virtual bool SaveGame(const std::string_view path, StorageFormat format) = 0;
+	virtual bool LoadGame(const std::string_view path, StorageFormat format) = 0;
 
 	virtual ~IGame() = default;
 };

@@ -2,6 +2,10 @@
 #include <ranges>
 #include <algorithm>
 
+IGamePtr IGame::Produce(const IGameSettings& settings)
+{
+	return std::make_shared<Game>(settings);
+}
 
 Game::Game(const IGameSettings& settings)
 	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()) }
@@ -50,6 +54,8 @@ void Game::PlaceColumn(Position position)
 
 	NotifyPlaceColumn(position, m_turn);
 	m_parser->AddColumn(position.ToPair(), isFirstPlayer);
+	SaveGame("game.ptg", StorageFormat::PTG);
+	SaveGame("game.stn", StorageFormat::STN);
 	ChangeTurn();
 
 }
@@ -60,6 +66,8 @@ void Game::MakeBridge(Position firstPos, Position secondPos)
 
 	NotifyMakeBridge(firstPos, secondPos, m_turn);
 	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
+	SaveGame("game.ptg", StorageFormat::PTG);
+	SaveGame("game.stn", StorageFormat::STN);
 	ComputePathToWin(0, firstPos, secondPos);
 }
 
@@ -69,6 +77,8 @@ void Game::RemoveBridge(Position firstPos, Position secondPos)
 
 	NotifyRemoveBridge(firstPos, secondPos, m_turn);
 	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
+	SaveGame("game.ptg", StorageFormat::PTG);
+	SaveGame("game.stn", StorageFormat::STN);
 	ComputePathToWin(1, firstPos, secondPos);
 }
 
@@ -215,7 +225,55 @@ void Game::ComputePathToWin(bool action, Position& lhs, Position& rhs) const
 	}
 }
 
-IGamePtr IGame::Produce(const IGameSettings& settings)
+parser::GameRepresentation Game::GetParserGameRepresentation()
 {
-	return std::make_shared<Game>(settings);
+	parser::BoardRepresentation boardRepresentation{m_boardSize, std::vector<parser::Piece>{m_boardSize, parser::Piece::Empty}};
+	for (int row = 0; row < m_boardSize; row++)
+	{
+		for (int column = 0; column < m_boardSize; column++)
+		{
+			auto currentColumn = m_board->GetElement(row, column);
+			if (!currentColumn) continue;
+			boardRepresentation[row][column] = currentColumn->GetPlayer() == m_player1
+				? parser::Piece::FirstPlayer
+				: parser::Piece::SecondPlayer;
+		}
+	}
+
+	BridgeVector bridges = m_board->GetBridgesPositions();
+	parser::MovesPositions movesRepresentation;
+	for (auto bridge : bridges)
+	{
+		const auto& [firstPos, secondPos] = bridge;
+		movesRepresentation.emplace_back(firstPos.ToPair(), secondPos.ToPair());
+	}
+
+	return std::make_pair(boardRepresentation, movesRepresentation);
+}
+
+bool Game::SaveGame(const std::string_view path, StorageFormat format)
+{
+	switch (format)
+	{
+	case StorageFormat::STN:
+		return parser::ITwixtParser::SaveSTN(GetParserGameRepresentation(), path);
+	case StorageFormat::PTG:
+		return m_parser->SavePTG(path);
+	}
+	return false;
+}
+
+bool Game::LoadGame(const std::string_view path, StorageFormat format)
+{
+	//switch (format)
+	//{
+	//case StorageFormat::STN:
+	//	auto representation = parser::ITwixtParser::LoadSTN(path);
+	//	const auto& [board, moves] = representation;
+	//	if (board.empty()) return false;
+
+	//case StorageFormat::PTG:
+	//	return m_parser->LoadPTG(path);
+	//}
+	return false;
 }
