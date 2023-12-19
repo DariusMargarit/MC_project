@@ -40,3 +40,34 @@ BulldozerGame::~BulldozerGame()
 		delete m_board;
 }
 
+BulldozerGame& BulldozerGame::operator=(const BulldozerGame& rhs)
+{
+	if (this != &rhs) {
+
+		delete m_player1;
+		delete m_player2;
+		delete m_bulldozer;
+		delete m_board;
+
+		m_boardSize = rhs.m_boardSize;
+		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
+		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
+		m_bulldozer = new Player(dynamic_cast<Player*>(rhs.m_bulldozer));
+		if (rhs.m_turn == rhs.m_player1)
+		{
+			m_turn = m_player1;
+		}
+		else if (rhs.m_turn == rhs.m_player2)
+		{
+			m_turn = m_player2;
+		}
+		else if (rhs.m_turn == rhs.m_bulldozer)
+		{
+			m_turn = m_bulldozer;
+		}
+		m_board = new Board(*rhs.m_board);
+
+	}
+	return *this;
+}
+

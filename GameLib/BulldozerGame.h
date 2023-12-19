@@ -10,6 +10,8 @@ public:
 	BulldozerGame(const BulldozerGame& rhs);
 	BulldozerGame(BulldozerGame&& rhs) = default;
 	~BulldozerGame();
+	BulldozerGame& operator=(const BulldozerGame& rhs);
+	BulldozerGame& operator=(BulldozerGame&& rhs) noexcept = default;
 	
 private:
 	Board* m_board;
