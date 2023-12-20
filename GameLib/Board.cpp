@@ -386,10 +386,10 @@ bool Board::RemoveBridge(Position& firstPos, Position& secondPos, IPlayer* playe
 	return true;
 }
 
-bool Board::BridgeExists(const Position& lhs, const Position& rhs) const
+bool Board::BridgeExists(const Position& firstPos, const Position& secondPos) const
 {
-	const auto firstKey{ MakeKey(lhs, rhs) };
-	const auto secondKey{ MakeKey(rhs, lhs) };
+	const auto firstKey{ MakeKey(firstPos, secondPos) };
+	const auto secondKey{ MakeKey(secondPos, firstPos) };
 	if (m_bridges.find(firstKey)  != m_bridges.end() ||
 		m_bridges.find(secondKey) != m_bridges.end()) return true;
 	return false;
@@ -400,34 +400,23 @@ const IColumn* Board::operator[](Position pos) const
 	return GetElement(pos);
 }
 
-Board::Board(const Board& rhs) 
+Board::Board(const Board & other) 
+	: m_matrix(other.GetSize(), std::vector<IColumn*>(other.GetSize(), nullptr))
 {
-	for (uint16_t line{ 0 }; line < rhs.m_matrix.size(); ++line)
-		for (uint16_t column{ 0 }; column < rhs.m_matrix[line].size(); ++column)
+	for (uint16_t line{ 0 }; line < m_matrix.size(); ++line)
+	{
+		for (uint16_t column{ 0 }; column < m_matrix[line].size(); ++column)
 		{
-			if (rhs.m_matrix[line][column] != nullptr)
-			{
-				IColumn* columnPointer = dynamic_cast<Column*>(rhs.m_matrix[line][column]);
-				if (columnPointer)
-				{
-					columnPointer = new Column(*dynamic_cast<Column*>(rhs.m_matrix[line][column]));
-					m_matrix[line][column] = columnPointer;
-				}
-				else
-				{	
-					columnPointer = dynamic_cast<MinedColumn*>(rhs.m_matrix[line][column]);
-					if (columnPointer)
-					{
-						columnPointer = new MinedColumn(*dynamic_cast<MinedColumn*>(rhs.m_matrix[line][column]));
-						m_matrix[line][column] = columnPointer;
-					}
-				}
-			}
-			else
-				m_matrix[line][column] = nullptr ;
+			if (!other.m_matrix[line][column]) continue;
+			
+			const auto basicColumn = dynamic_cast<Column*>(other.m_matrix[line][column]);
+			if (basicColumn) m_matrix[line][column] = new Column(*basicColumn);
+			const auto minedColumn = dynamic_cast<MinedColumn*>(other.m_matrix[line][column]);
+			if (minedColumn) m_matrix[line][column] = new MinedColumn(*minedColumn);
 		}
+	}
 
-	for (const auto& bridge : rhs.m_bridges)
+	for (const auto& bridge : other.m_bridges)
 	{
 		const auto& [firstPosition, secondPosition] { ExtractPositionFromKey(bridge.first)};
 		IColumn* firstColumn{ nullptr }, * secondColumn{ nullptr };

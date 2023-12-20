@@ -10,12 +10,13 @@
 #include "IColumn.h"
 #include "IBoard.h"
 #include "Bridge.h"
+#include "../TwixtTextParser/ITwixtParser.h"
 
 class Board : public IBoard
 {
 public:
 	Board(const uint16_t& size);
-	Board(const Board& rhs);
+	Board(const Board & other);
 	~Board();
 
 	const uint16_t GetSize() const override;

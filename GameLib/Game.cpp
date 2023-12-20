@@ -17,28 +17,28 @@ Game::Game(const IGameSettings& settings)
 	m_turn = m_player1;
 }
 
-Game::Game(const Game& rhs)
-	: m_boardSize{rhs.m_boardSize}
+Game::Game(const Game & other)
+	: m_boardSize{other.m_boardSize}
 {
-	m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
-	m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*rhs.m_board);
+	m_player1 = new Player(dynamic_cast<Player*>(other.m_player1));
+	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
+	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
+	m_board = new Board(*other.m_board);
 }
 
-Game::Game(Game&& rhs) noexcept
-	: m_boardSize{ rhs.m_boardSize }
+Game::Game(Game && other) noexcept
+	: m_boardSize{ other.m_boardSize }
  {
-	m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
-	m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*rhs.m_board);
+	m_player1 = new Player(dynamic_cast<Player*>(other.m_player1));
+	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
+	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
+	m_board = new Board(*other.m_board);
 
-	rhs.m_board = nullptr;
-	rhs.m_boardSize = 0;
-	rhs.m_player1 = nullptr;
-	rhs.m_player2 = nullptr;
-	rhs.m_turn = nullptr;
+	other.m_board = nullptr;
+	other.m_boardSize = 0;
+	other.m_player1 = nullptr;
+	other.m_player2 = nullptr;
+	other.m_turn = nullptr;
 }
 
 void Game::PlaceColumn(Position position)
@@ -192,19 +192,19 @@ void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
 	}
 }
 
-void Game::NotifyMakeBridge(Position lhs, Position rhs, IPlayer* player) const
+void Game::NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* player) const
 {
 	for (auto& observer : m_observers)
 	{
-		observer.lock()->OnBridgePlaced(lhs, rhs, player);
+		observer.lock()->OnBridgePlaced(firstPos, secondPos, player);
 	}
 }
 
-void Game::NotifyRemoveBridge(Position lhs, Position rhs, IPlayer* player) const
+void Game::NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* player) const
 {
 	for (auto& observer : m_observers)
 	{
-		observer.lock()->OnBridgeRemoved(lhs, rhs, player);
+		observer.lock()->OnBridgeRemoved(firstPos, secondPos, player);
 	}
 }
 
@@ -213,19 +213,19 @@ void Game::ChangeTurn()
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
 }
 
-void Game::ComputePathToWin(bool action, Position& lhs, Position& rhs) const
+void Game::ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const
 {
 	if (m_turn == m_player1)
 	{
-		m_board->ComputePathToWin(0, action, lhs, rhs);
+		m_board->ComputePathToWin(0, action, firstPos, secondPos);
 	}
 	else
 	{
-		m_board->ComputePathToWin(1, action, lhs, rhs);
+		m_board->ComputePathToWin(1, action, firstPos, secondPos);
 	}
 }
 
-parser::GameRepresentation Game::GetParserGameRepresentation()
+parser::GameRepresentation Game::GetParserGameRepresentation() const
 {
 	parser::BoardRepresentation boardRepresentation{m_boardSize, std::vector<parser::Piece>{m_boardSize, parser::Piece::Empty}};
 	for (int row = 0; row < m_boardSize; row++)
@@ -265,15 +265,15 @@ bool Game::SaveGame(const std::string_view path, StorageFormat format)
 
 bool Game::LoadGame(const std::string_view path, StorageFormat format)
 {
-	//switch (format)
-	//{
-	//case StorageFormat::STN:
-	//	auto representation = parser::ITwixtParser::LoadSTN(path);
-	//	const auto& [board, moves] = representation;
-	//	if (board.empty()) return false;
+	switch (format)
+	{
+	case StorageFormat::STN:
+		auto representation = parser::ITwixtParser::LoadSTN(path);
+		const auto& [board, moves] = representation;
+		if (board.empty()) return false;
 
-	//case StorageFormat::PTG:
-	//	return m_parser->LoadPTG(path);
-	//}
+	case StorageFormat::PTG:
+		return m_parser->LoadPTG(path);
+	}
 	return false;
 }

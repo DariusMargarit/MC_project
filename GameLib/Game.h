@@ -10,8 +10,8 @@ class Game : public IGame
 {
 public:
 	Game(const IGameSettings& settings);
-	Game(const Game& rhs);
-	Game(Game&& rhs) noexcept;
+	Game(const Game & other);
+	Game(Game && other) noexcept;
 	~Game() = default;
 
 	IPlayer* GetTurn() const override;
@@ -26,6 +26,9 @@ public:
 	void RemoveBridge(Position firstPos, Position secondPos) override;
 	void SwapPlayers();
 
+	void AddObserver(ObserverPtr observer) override;
+	void RemoveObserver(ObserverPtr observer) override;
+
 	bool SaveGame(const std::string_view path, StorageFormat format) override;
 	bool LoadGame(const std::string_view path, StorageFormat format) override;
 
@@ -33,14 +36,12 @@ public:
 	Game& operator=(Game&& rhs) noexcept;
 
 private:
-	void AddObserver(ObserverPtr observer) override;
-	void RemoveObserver(ObserverPtr observer) override;
 	void NotifyPlaceColumn(Position position, IPlayer* player) const;
-	void NotifyMakeBridge(Position lhs, Position rhs, IPlayer* player) const;
-	void NotifyRemoveBridge(Position lhs, Position rhs, IPlayer* player) const;
+	void NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* player) const;
+	void NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* player) const;
 
 	void ChangeTurn();
-	void ComputePathToWin(bool action, Position& lhs, Position& rhs) const; // action = 0 - make, 1 - remove
+	void ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const; // action = 0 - make, 1 - remove
 	parser::GameRepresentation GetParserGameRepresentation();
 
 private:
