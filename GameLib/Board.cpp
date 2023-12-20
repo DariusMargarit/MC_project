@@ -36,7 +36,7 @@ bool Board::ValidPlaceColumn(const Position& position) const
 	return true;
 }
 
-bool Board::FindObstacleBridge(Position& firstPos, Position& secondPos) const
+bool Board::FindObstacleBridge(const Position& firstPos, const Position& secondPos) const
 {
 	uint16_t lowerRowIndex{ std::min(firstPos.GetRow(), secondPos.GetRow()) };
 	uint16_t lowerColumnIndex{ std::min(firstPos.GetColumn(), secondPos.GetColumn()) };
@@ -101,7 +101,7 @@ bool Board::FindObstacleBridge(Position& firstPos, Position& secondPos) const
 	return false;
 }
 
-bool Board::Orientation(Position& A, Position& B, Position& C) const
+bool Board::Orientation(const Position& A, const Position& B, const Position& C) const
 {
 	int16_t val{ (B.GetColumn() - A.GetColumn()) * (C.GetRow() - B.GetRow()) -
 		(B.GetRow() - A.GetRow()) * (C.GetColumn() - B.GetColumn()) };
@@ -109,7 +109,7 @@ bool Board::Orientation(Position& A, Position& B, Position& C) const
 	return (val > 0) ? 0 : 1; // 0 - left, 1 - right
 }
 
-bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const
+bool Board::doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const
 {
 	bool o1{ Orientation(A1, B1, A2) };
 	bool o2{ Orientation(A1, B1, B2) };
@@ -122,7 +122,7 @@ bool Board::doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) 
 	return false;
 }
 
-bool Board::ValidBridge(Position& firstPos, Position& secondPos) const
+bool Board::ValidBridge(const Position& firstPos, const Position& secondPos) const
 {
 	if (BridgeExists(firstPos, secondPos)) return false;
 
@@ -335,7 +335,7 @@ const uint16_t Board::GetSize() const
 	return std::move((uint16_t)m_matrix.size());
 }
 
-bool Board::PlaceColumn(Position& position, IPlayer* player)
+bool Board::PlaceColumn(const Position& position, IPlayer* player)
 {
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn{ new Column(player) };
@@ -346,14 +346,14 @@ bool Board::PlaceColumn(Position& position, IPlayer* player)
 	return false;
 }
 
-void Board::PlaceMine(Position& position)
+void Board::PlaceMine(const Position& position)
 {
 	IColumn* newColumn{ new MinedColumn };
 	m_matrix[position.GetRow()][position.GetColumn()] = newColumn;
 
 }
 
-bool Board::MakeBridge(Position& firstPos, Position& secondPos, IPlayer* player)
+bool Board::MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player)
 {
 	if (ValidBridge(firstPos, secondPos)) {
 		Bridge* bridge{ new Bridge(m_matrix[firstPos.GetRow()][firstPos.GetColumn()],
@@ -366,7 +366,7 @@ bool Board::MakeBridge(Position& firstPos, Position& secondPos, IPlayer* player)
 	return false;
 }
 
-bool Board::RemoveBridge(Position& firstPos, Position& secondPos, IPlayer* player)
+bool Board::RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player)
 {
 	if (!BridgeExists(firstPos, secondPos)) 
 		return false;

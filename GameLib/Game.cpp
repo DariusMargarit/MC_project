@@ -251,6 +251,33 @@ parser::GameRepresentation Game::GetParserGameRepresentation() const
 	return std::make_pair(boardRepresentation, movesRepresentation);
 }
 
+Board Game::GameRepresentationToBoard(const parser::GameRepresentation& game) const
+{
+	const auto& [boardRepresentation, moves] = game;
+	Board board(boardRepresentation.size());
+	for (uint16_t row = 0; row < boardRepresentation.size(); row++)
+	{
+		for (uint16_t column = 0; column < boardRepresentation.size(); column++)
+		{
+			if (boardRepresentation[row][column] == parser::Piece::Empty) continue;
+			IPlayer* currentPlayer = boardRepresentation[row][column] == parser::Piece::FirstPlayer ? m_player1 : m_player2;
+			board.PlaceColumn({ row, column }, currentPlayer);
+		}
+	}
+
+	for (auto move : moves)
+	{
+		const auto& [firstPos, secondPos] = move;
+		const auto& [firstPosRow, firstPosColumn] = firstPos;
+		const auto& [secondPosRow, secondPosColumn] = secondPos;
+		IPlayer* currentPlayer = board.GetElement(firstPosRow, firstPosColumn)->GetPlayer();
+
+		board.MakeBridge({ firstPosRow, firstPosColumn }, { secondPosRow, secondPosColumn }, currentPlayer);
+	}
+
+	return std::move(board);
+}
+
 bool Game::SaveGame(const std::string_view path, StorageFormat format)
 {
 	switch (format)
@@ -265,15 +292,15 @@ bool Game::SaveGame(const std::string_view path, StorageFormat format)
 
 bool Game::LoadGame(const std::string_view path, StorageFormat format)
 {
-	switch (format)
-	{
-	case StorageFormat::STN:
-		auto representation = parser::ITwixtParser::LoadSTN(path);
-		const auto& [board, moves] = representation;
-		if (board.empty()) return false;
+	//switch (format)
+	//{
+	//case StorageFormat::STN:
+	//	auto representation = parser::ITwixtParser::LoadSTN(path);
+	//	const auto& [board, moves] = representation;
+	//	if (board.empty()) return false;
 
-	case StorageFormat::PTG:
-		return m_parser->LoadPTG(path);
-	}
+	//case StorageFormat::PTG:
+	//	return m_parser->LoadPTG(path);
+	//}
 	return false;
 }

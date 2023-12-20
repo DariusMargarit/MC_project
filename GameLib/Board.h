@@ -24,12 +24,12 @@ public:
 	const IColumn* GetElement(const Position& pos) const override;
 	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
 	const BridgeVector GetBridgesPositions() const override;
-	bool BridgeExists(const Position& lhs, const Position& rhs) const override;
+	bool BridgeExists(const Position& firstPos, const Position& secondPos) const override;
 
-	bool PlaceColumn(Position& position, IPlayer* player);
-	void PlaceMine(Position& position);
-	bool MakeBridge(Position& firstPos, Position& secondPos, IPlayer* player);
-	bool RemoveBridge(Position& firstPos, Position& secondPos, IPlayer* player);
+	bool PlaceColumn(const Position& position, IPlayer* player);
+	void PlaceMine(const Position& position);
+	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
+	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
 	bool CheckWinner(bool player);
 	void AddMines();
@@ -40,10 +40,10 @@ public:
 private:
 	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool ValidPlaceColumn(const Position& position) const;
-	bool FindObstacleBridge(Position& firstPos, Position& secondPos) const;
-	bool Orientation(Position& A, Position& B, Position& C) const;
-	bool doIntersect(Position& A1, Position& B1, Position& A2, Position& B2) const;
-	bool ValidBridge(Position& firstPos, Position& secondPos) const;
+	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
+	bool Orientation(const Position& A, const Position& B, const Position& C) const;
+	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;
+	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
 	const std::string MakeKey(const Position& firstPos, const Position& secondPos) const;
 	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key);
 	void MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath);

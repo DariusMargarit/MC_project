@@ -42,7 +42,8 @@ private:
 
 	void ChangeTurn();
 	void ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const; // action = 0 - make, 1 - remove
-	parser::GameRepresentation GetParserGameRepresentation();
+	parser::GameRepresentation GetParserGameRepresentation() const;
+	Board GameRepresentationToBoard(const parser::GameRepresentation& game) const;
 
 private:
 	Board* m_board;
