@@ -176,8 +176,8 @@ const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::str
 
 void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath)
 {
-	std::vector<int16_t> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
-	std::vector<int16_t> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
+	std::array<int16_t, 8> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
+	std::array<int16_t, 8> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
 	std::stack<Position> positionStack;
 	positionStack.push(startPosition);
 	while (!positionStack.empty())
@@ -244,7 +244,67 @@ void Board::ComputePathToWin(bool player, bool action, Position& firstPos, Posit
 	}
 	else
 	{
-		return;
+		std::array<int16_t, 8> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
+		std::array<int16_t, 8> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
+		playerPath->clear();
+		for (uint16_t index{ 0 }; index < m_matrix.size(); ++index)
+		{
+			playerPath->push_back(std::vector<bool>(m_matrix.size(), 0));
+		}
+		if (player == 0)
+		{
+			for (uint16_t index{ 0 }; index < m_matrix.size(); ++index)
+			{
+				if (m_matrix[0][index] != nullptr)
+				{
+					(*playerPath)[0][index] = 1;
+					for (uint8_t directionIndex{ 0 }; directionIndex < rowDirection.size(); ++directionIndex)
+					{
+						int16_t nextPositionRow = rowDirection[directionIndex];
+						int16_t nextPositionColumn = index + columnDirection[directionIndex];
+						if (ValidPosition(nextPositionRow, nextPositionColumn))
+						{
+							Position nextPosition(nextPositionRow, nextPositionColumn);
+							Position currentPosition(0, index);
+							if (BridgeExists(currentPosition, nextPosition))
+							{
+								if ((*playerPath)[nextPositionRow][nextPositionColumn] == 0)
+								{
+									MarkPathWithOnes(nextPosition, playerPath);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for (uint16_t index{ 0 }; index < m_matrix.size(); ++index)
+			{
+				if (m_matrix[index][0] != nullptr)
+				{
+					(*playerPath)[index][0] = 1;
+					for (uint8_t directionIndex{ 0 }; directionIndex < rowDirection.size(); ++directionIndex)
+					{
+						int16_t nextPositionRow = index + rowDirection[directionIndex];
+						int16_t nextPositionColumn = columnDirection[directionIndex];
+						if (ValidPosition(nextPositionRow, nextPositionColumn))
+						{
+							Position nextPosition(nextPositionRow, nextPositionColumn);
+							Position currentPosition(index, 0);
+							if (BridgeExists(currentPosition, nextPosition))
+							{
+								if ((*playerPath)[nextPositionRow][nextPositionColumn] == 0)
+								{
+									MarkPathWithOnes(nextPosition, playerPath);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

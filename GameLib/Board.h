@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <stack>
+#include <array>
 
 #include "Position.h"
 #include "IColumn.h"
