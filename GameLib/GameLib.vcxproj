@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Board.h" />
+    <ClCompile Include="BoardNode.cpp" />
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Bridge.h" />
     <ClCompile Include="BulldozerColumn.cpp" />
@@ -183,12 +184,14 @@
     <ClCompile Include="IGame.h" />
     <ClCompile Include="MinedColumn.cpp" />
     <ClCompile Include="MinedGame.cpp" />
+    <ClCompile Include="Minimax.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player.h" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="Position.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoardNode.h" />
     <ClInclude Include="BulldozerColumn.h" />
     <ClInclude Include="BulldozerGame.h" />
     <ClInclude Include="GameSettings.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="IPlayer.h" />
     <ClInclude Include="MinedColumn.h" />
     <ClInclude Include="MinedGame.h" />
+    <ClInclude Include="Minimax.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwixtTextParser\TwixtTextParser.vcxproj">
