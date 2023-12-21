@@ -14,11 +14,12 @@ protected:
 
 	void TearDown() override
 	{
-		delete m_game;
+		// delete m_game;
 	}
 
 protected:
-	IGame* m_game;
+	// Game* m_game;
+	IGamePtr m_game;
 	IGameSettings* m_gameSettings;
 };
 

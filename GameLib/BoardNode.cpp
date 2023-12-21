@@ -11,16 +11,8 @@ BoardNode::BoardNode(const BoardNode& other)
 {
     for (const auto& child : other.m_children)
     {
-		m_children.push_back(new BoardNode(*child));
+        m_children.push_back(std::make_unique<BoardNode>(*child));
     }
-}
-
-BoardNode::~BoardNode()
-{
-	for (auto& child : m_children)
-	{
-		delete child;
-	}
 }
 
 BoardNode& BoardNode::operator=(const BoardNode& rhs)
@@ -29,15 +21,11 @@ BoardNode& BoardNode::operator=(const BoardNode& rhs)
     {
         static_cast<Board&>(*this) = rhs;
 
-        for (auto& child : m_children)
-        {
-            delete child;
-        }
         m_children.clear();
 
         for (const auto& child : rhs.m_children)
         {
-            m_children.push_back(new BoardNode(*child));
+            m_children.push_back(std::make_unique<BoardNode>(*child));
         }
     }
 

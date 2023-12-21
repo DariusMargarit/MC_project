@@ -35,6 +35,8 @@ struct IGame
 	virtual bool SaveGame(const std::string_view path, StorageFormat format) = 0;
 	virtual bool LoadGame(const std::string_view path, StorageFormat format) = 0;
 
+	virtual Position GetHint() const = 0;
+
 	virtual ~IGame() = default;
 };
 

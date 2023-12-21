@@ -3,6 +3,7 @@
 #include "IGame.h"
 #include "Board.h"
 #include "Player.h"
+#include "Minimax.h"
 
 #include "../TwixtTextParser/ITwixtParser.h"
 
@@ -32,6 +33,8 @@ public:
 	bool SaveGame(const std::string_view path, StorageFormat format) override;
 	bool LoadGame(const std::string_view path, StorageFormat format) override;
 
+	Position GetHint() const override;
+
 	Game& operator=(const Game& rhs);
 	Game& operator=(Game&& rhs) noexcept;
 
@@ -49,6 +52,7 @@ private:
 	Board* m_board;
 	uint16_t m_boardSize;
 	IPlayer* m_player1, *m_player2, *m_turn;
+	Minimax* m_minimax;
 	parser::TwixtParserPtr m_parser;
 
 	ObserverList m_observers;

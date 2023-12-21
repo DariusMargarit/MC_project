@@ -15,6 +15,7 @@ Game::Game(const IGameSettings& settings)
 {	
 	m_board = new Board(m_boardSize);
 	m_turn = m_player1;
+	m_minimax = new Minimax(*m_board);
 }
 
 Game::Game(const Game & other)
@@ -24,6 +25,7 @@ Game::Game(const Game & other)
 	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
 	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
 	m_board = new Board(*other.m_board);
+	m_minimax = new Minimax(*m_board);
 }
 
 Game::Game(Game && other) noexcept
@@ -33,12 +35,14 @@ Game::Game(Game && other) noexcept
 	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
 	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
 	m_board = new Board(*other.m_board);
+	m_minimax = new Minimax(*m_board);
 
 	other.m_board = nullptr;
 	other.m_boardSize = 0;
 	other.m_player1 = nullptr;
 	other.m_player2 = nullptr;
 	other.m_turn = nullptr;
+	other.m_minimax = nullptr;
 }
 
 void Game::PlaceColumn(Position position)
@@ -303,4 +307,9 @@ bool Game::LoadGame(const std::string_view path, StorageFormat format)
 	//	return m_parser->LoadPTG(path);
 	//}
 	return false;
+}
+
+Position Game::GetHint() const
+{
+	return Position();
 }
