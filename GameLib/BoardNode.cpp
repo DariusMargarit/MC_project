@@ -11,7 +11,7 @@ BoardNode::BoardNode(const BoardNode& other)
 {
     for (const auto& child : other.m_children)
     {
-        m_children.push_back(std::make_unique<BoardNode>(*child));
+        m_children.push_back(std::make_shared<BoardNode>(*child));
     }
 }
 
@@ -25,7 +25,7 @@ BoardNode& BoardNode::operator=(const BoardNode& rhs)
 
         for (const auto& child : rhs.m_children)
         {
-            m_children.push_back(std::make_unique<BoardNode>(*child));
+            m_children.push_back(std::make_shared<BoardNode>(*child));
         }
     }
 

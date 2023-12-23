@@ -37,6 +37,7 @@ public:
     
 
 	const IColumn* operator [](Position pos) const override;
+	bool operator==(const Board& rhs) const;
 
 private:
 	bool ValidPosition(const int16_t& row, const int16_t& column) const;
@@ -46,7 +47,7 @@ private:
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;
 	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
 	const std::string MakeKey(const Position& firstPos, const Position& secondPos) const;
-	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key);
+	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key) const;
 	void MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath);
 
 private:

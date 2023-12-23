@@ -161,7 +161,7 @@ const std::string Board::MakeKey(const Position& firstPos, const Position& secon
 	return std::move(key);
 }
 
-const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::string& key)
+const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::string& key) const
 {
 	std::istringstream in(key);
 	uint16_t row, column;
@@ -460,6 +460,35 @@ const IColumn* Board::operator[](Position pos) const
 	return GetElement(pos);
 }
 
+bool Board::operator==(const Board& rhs) const
+{
+	for (uint16_t line{ 0 }; line < m_matrix.size(); ++line)
+	{
+		for (uint16_t column{ 0 }; column < m_matrix[line].size(); ++column)
+		{
+			if (m_matrix[line][column]->GetPlayer() != rhs.m_matrix[line][column]->GetPlayer())
+			{
+				return false;
+			}
+		}
+	}
+	if (m_bridges.size() != rhs.m_bridges.size())
+	{
+		return false;
+	}
+	for (const auto& [key, bridge] : m_bridges)
+	{
+		auto positions = ExtractPositionFromKey(key);
+		auto key1ToVerify = MakeKey(positions.first, positions.second);
+		auto key2ToVerify = MakeKey(positions.second, positions.first);
+		if (!rhs.m_bridges.contains(key1ToVerify) && rhs.m_bridges.contains(key2ToVerify))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 Board::Board(const Board & other) 
 	: m_matrix(other.GetSize(), std::vector<IColumn*>(other.GetSize(), nullptr))
 {
@@ -487,5 +516,16 @@ Board::Board(const Board & other)
 		Bridge* newBridge{ new Bridge(firstColumn, secondColumn) };
 		m_bridges.emplace(bridge.first,newBridge);
 	}
-
+	for (uint16_t line{ 0 }; line < other.m_firstPlayerPath.size(); ++line)
+	{
+		std::vector<bool> firstPlayerPathLine;
+		std::vector<bool> secondPlayerPathLine;
+		for (uint16_t column{ 0 }; column < other.m_firstPlayerPath[line].size(); ++column)
+		{
+			firstPlayerPathLine.push_back(other.m_firstPlayerPath[line][column]);
+			secondPlayerPathLine.push_back(other.m_secondPlayerPath[line][column]);
+		}
+		m_firstPlayerPath.push_back(firstPlayerPathLine);
+		m_secondPlayerPath.push_back(secondPlayerPathLine);
+	}
 }

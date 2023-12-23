@@ -1,7 +1,8 @@
 #pragma once
+#include <memory>
 
 #include "Board.h"
-#include <memory>
+#include "IPlayer.h"
 
 class BoardNode : public Board
 {
@@ -10,8 +11,13 @@ public:
 	BoardNode(const BoardNode& other);
 	~BoardNode() = default;
 
+	bool GameOver() const;
+	int16_t Evaluate() const;
+
 	BoardNode& operator=(const BoardNode& rhs);
 
 private:
-	std::vector<std::unique_ptr<BoardNode>> m_children;
+	std::vector<std::shared_ptr<BoardNode>> m_children;
+	IPlayer* m_maximizingPlayer;
+	IPlayer* m_minimizingPlayer;
 };

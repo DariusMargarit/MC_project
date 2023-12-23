@@ -6,14 +6,15 @@
 class Minimax 
 {
 public:
-	Minimax(const Board& board);
-	~Minimax();
+	Minimax(const Board& board, int16_t depth);
+	~Minimax() = default;
+
+	
 
 private:
 	bool GameOver() const;
 	int16_t Evaluate() const;
 
 private:
-	std::unique_ptr<Board> m_board;
-	std::unique_ptr<BoardNode> m_treeHead;
+	std::shared_ptr<BoardNode> m_treeHead;
 };
