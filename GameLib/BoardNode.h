@@ -7,10 +7,11 @@
 class BoardNode : public Board
 {
 public:
-	BoardNode(const Board& board);
+	BoardNode(const Board& board, IPlayer* maximizingPlayer, IPlayer* minimizingPlayer);
 	BoardNode(const BoardNode& other);
 	~BoardNode() = default;
 
+	void InsertChildren(std::shared_ptr<BoardNode> children);
 	bool GameOver() const;
 	int16_t Evaluate() const;
 
