@@ -21,6 +21,42 @@ void Minimax::GenerateTree(Board& board, int16_t depth, std::shared_ptr<BoardNod
 	{
 		return;
 	}
+	Board newBoard(board);
+	std::stack<Position> positionToStart;
+	for (uint16_t line{ 0 }; line < board.GetSize(); ++line)
+	{
+		for (uint16_t column{ 0 }; column < board.GetSize(); ++column)
+		{
+			Position position(line, column);
+			if (board.GetElement(position) != nullptr)
+			{
+				if (board.GetElement(position)->GetPlayer() == firstPlayer)
+				{
+					positionToStart.push(position);
+				}
+			}
+		}
+	}
+	std::array<int16_t, 8> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
+	std::array<int16_t, 8> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
+	while (!positionToStart.empty())
+	{
+		Position currentPosition = positionToStart.top();
+		positionToStart.pop();
+		for (uint8_t directionIndex{ 0 }; directionIndex < rowDirection.size(); ++directionIndex)
+		{
+			Position nextPosition(currentPosition.GetRow() + rowDirection[directionIndex],
+				currentPosition.GetColumn() + columnDirection[directionIndex]);
+			if (board.ValidPlaceColumn(nextPosition) && board.ValidPosibleBridge(currentPosition, nextPosition))
+			{
+				newBoard.PlaceColumn(nextPosition, firstPlayer);
+				newBoard.MakeBridge(currentPosition, nextPosition, firstPlayer);
+				std::shared_ptr<BoardNode> nextHead = std::make_shared<BoardNode>(newBoard, firstPlayer, secondPlayer);
+				currentHead->InsertChildren(nextHead);
+				GenerateTree(newBoard, depth - 1, nextHead, secondPlayer, firstPlayer);
+			}
+		}
+	}
 }
 
 bool Minimax::GameOver() const

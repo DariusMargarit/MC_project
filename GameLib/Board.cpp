@@ -130,7 +130,11 @@ bool Board::ValidBridge(const Position& firstPos, const Position& secondPos) con
 	uint16_t absColumnValue = abs(firstPos.GetColumn() - secondPos.GetColumn()) ;
 	IColumn* firstColumn{ m_matrix[firstPos.GetRow()][firstPos.GetColumn()] };
 	IColumn* secondColumn{ m_matrix[secondPos.GetRow()][secondPos.GetColumn()] };
-	if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
+	if (firstColumn == nullptr || secondColumn == nullptr)
+	{
+		return false;
+	}
+	else if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
 	{
 		return false;
 	}
@@ -139,6 +143,26 @@ bool Board::ValidBridge(const Position& firstPos, const Position& secondPos) con
 		return false;
 	}
 	if (absRowValue + absColumnValue == 3) 
+	{
+		if (FindObstacleBridge(firstPos, secondPos))
+		{
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Board::ValidPosibleBridge(const Position& firstPos, const Position& secondPos) const
+{
+	uint16_t absRowValue = abs(firstPos.GetRow() - secondPos.GetRow());
+	uint16_t absColumnValue = abs(firstPos.GetColumn() - secondPos.GetColumn());
+
+	if (absRowValue == 0 || absColumnValue == 0)
+	{
+		return false;
+	}
+	if (absRowValue + absColumnValue == 3)
 	{
 		if (FindObstacleBridge(firstPos, secondPos))
 		{

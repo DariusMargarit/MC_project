@@ -27,8 +27,11 @@ public:
 	const BridgeVector GetBridgesPositions() const override;
 	bool BridgeExists(const Position& firstPos, const Position& secondPos) const override;
 
+	bool ValidPlaceColumn(const Position& position) const;
 	bool PlaceColumn(const Position& position, IPlayer* player);
 	void PlaceMine(const Position& position);
+	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
+	bool ValidPosibleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
@@ -41,11 +44,9 @@ public:
 
 private:
 	bool ValidPosition(const int16_t& row, const int16_t& column) const;
-	bool ValidPlaceColumn(const Position& position) const;
 	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool Orientation(const Position& A, const Position& B, const Position& C) const;
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;
-	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
 	const std::string MakeKey(const Position& firstPos, const Position& secondPos) const;
 	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key) const;
 	void MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath);
