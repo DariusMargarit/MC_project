@@ -27,6 +27,7 @@ public:
 	const BridgeVector GetBridgesPositions() const override;
 	bool BridgeExists(const Position& firstPos, const Position& secondPos) const override;
 
+	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool ValidPlaceColumn(const Position& position) const;
 	bool PlaceColumn(const Position& position, IPlayer* player);
 	void PlaceMine(const Position& position);
@@ -35,7 +36,7 @@ public:
 	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
-	bool CheckWinner(bool player);
+	bool CheckWinner(bool player) const;
 	void AddMines();
     
 
@@ -43,7 +44,6 @@ public:
 	bool operator==(const Board& rhs) const;
 
 private:
-	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool Orientation(const Position& A, const Position& B, const Position& C) const;
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;

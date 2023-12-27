@@ -332,7 +332,7 @@ void Board::ComputePathToWin(bool player, bool action, Position& firstPos, Posit
 	}
 }
 
-bool Board::CheckWinner(bool player)
+bool Board::CheckWinner(bool player) const
 {
 	if (player == 0)
 	{

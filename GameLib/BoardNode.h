@@ -11,6 +11,8 @@ public:
 	BoardNode(const BoardNode& other);
 	~BoardNode() = default;
 
+	std::vector<std::shared_ptr<BoardNode>> GetChildren();
+
 	void InsertChildren(std::shared_ptr<BoardNode> children);
 	bool GameOver() const;
 	int16_t Evaluate() const;

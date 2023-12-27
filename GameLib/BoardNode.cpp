@@ -19,6 +19,11 @@ BoardNode::BoardNode(const BoardNode& other)
     }
 }
 
+std::vector<std::shared_ptr<BoardNode>> BoardNode::GetChildren()
+{
+    return m_children;
+}
+
 void BoardNode::InsertChildren(std::shared_ptr<BoardNode> children)
 {
     m_children.push_back(children);
@@ -26,6 +31,10 @@ void BoardNode::InsertChildren(std::shared_ptr<BoardNode> children)
 
 bool BoardNode::GameOver() const
 {
+    if (CheckWinner(m_maximizingPlayer) || CheckWinner(m_minimizingPlayer))
+    {
+        return true;
+    }
     return false;
 }
 
