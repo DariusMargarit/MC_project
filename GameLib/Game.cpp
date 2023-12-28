@@ -309,7 +309,7 @@ bool Game::LoadGame(const std::string_view path, StorageFormat format)
 	return false;
 }
 
-Position Game::GetHint() const
+std::pair<BridgeVector, Position> Game::GetHint(int16_t depth, IPlayer* player) const
 {
-	return Position();
+	return m_minimax->GetHint(depth, player);
 }

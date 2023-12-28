@@ -33,7 +33,7 @@ public:
 	bool SaveGame(const std::string_view path, StorageFormat format) override;
 	bool LoadGame(const std::string_view path, StorageFormat format) override;
 
-	Position GetHint() const override;
+	std::pair<BridgeVector, Position> GetHint(int16_t depth, IPlayer* player) const;
 
 	Game& operator=(const Game& rhs);
 	Game& operator=(Game&& rhs) noexcept;

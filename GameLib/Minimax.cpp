@@ -16,20 +16,57 @@ Minimax::Minimax(Board& board, int16_t depth, IPlayer* firstPlayer, IPlayer* sec
 	GenerateTree(newBoard, depth - 2, currentHead, firstPlayer, secondPlayer);
 }
 
-std::shared_ptr<BoardNode> Minimax::GetHint(int16_t depth, IPlayer* player)
+std::pair<BridgeVector, Position> Minimax::GetHint(int16_t depth, IPlayer* player)
+{
+	auto boardNode = GetBoardNodeHint(depth, player);
+	auto boardNodeBridges = boardNode->GetBridgesPositions();
+	auto treeHeadBridges = m_treeHead->GetBridgesPositions();
+	BridgeVector newBridges;
+	for (const auto& bridge : boardNodeBridges)
+	{
+		const auto& [firstPosition, secondPosition] = bridge;
+		bool found = false;
+		for (const auto& aux : treeHeadBridges)
+		{
+			if (firstPosition == aux.first && secondPosition == aux.second)
+			{
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+		{
+			newBridges.push_back(bridge);
+		}
+	}
+	for (uint16_t line{ 0 }; line < boardNode->GetSize(); ++line)
+	{
+		for (uint16_t column{ 0 }; column < boardNode->GetSize(); ++column)
+		{
+			if (boardNode->GetElement(line, column) != m_treeHead->GetElement(line, column))
+			{
+				Position aux(line, column);
+				return { newBridges, aux};
+			}
+		}
+	}
+}
+
+std::shared_ptr<BoardNode> Minimax::GetBoardNodeHint(int16_t depth, IPlayer* player)
 {
 	auto children = m_treeHead->GetChildren();
 	int16_t maxEvaluation = -std::numeric_limits<int16_t>::infinity();
+	std::shared_ptr<BoardNode> nodeToReturn;
 	for (auto child : children)
 	{
 		int16_t evaluation = minimax(child, depth, player);
 		if (evaluation > maxEvaluation)
 		{
 			maxEvaluation = evaluation;
-			m_treeHead = child;
+			nodeToReturn = child;
 		}
 	}
-	return m_treeHead;
+	return nodeToReturn;
 }
 
 void Minimax::GenerateTree(Board& board, int16_t depth, std::shared_ptr<BoardNode> currentHead, IPlayer* firstPlayer, IPlayer* secondPlayer)
