@@ -15,7 +15,7 @@ Game::Game(const IGameSettings& settings)
 {	
 	m_board = new Board(m_boardSize);
 	m_turn = m_player1;
-	//m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
+	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
 }
 
 Game::Game(const Game & other)

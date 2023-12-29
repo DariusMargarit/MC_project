@@ -1,6 +1,6 @@
 #include "GameSettings.h"
 
-const size_t GameSettings::defaultTableSize{24};
+const size_t GameSettings::defaultTableSize{7};
 const size_t GameSettings::defaultColumnLimit{50};
 const size_t GameSettings::defaultBridgeLimit{50};
 const std::string GameSettings::defaultFirstPlayerName{"Player1"};

@@ -55,7 +55,7 @@ std::pair<BridgeVector, Position> Minimax::GetHint(int16_t depth, IPlayer* playe
 std::shared_ptr<BoardNode> Minimax::GetBoardNodeHint(int16_t depth, IPlayer* player)
 {
 	auto children = m_treeHead->GetChildren();
-	int16_t maxEvaluation = -std::numeric_limits<int16_t>::infinity();
+	int16_t maxEvaluation = std::numeric_limits<int16_t>::lowest();
 	std::shared_ptr<BoardNode> nodeToReturn;
 	for (auto child : children)
 	{

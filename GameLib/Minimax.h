@@ -17,7 +17,7 @@ private:
 	int16_t Evaluate() const;
 	std::shared_ptr<BoardNode> GetBoardNodeHint(int16_t depth, IPlayer* player);
 	int16_t minimax(std::shared_ptr<BoardNode> boardNode, int16_t depth, IPlayer* maximizingPlayer,
-		int16_t alpha = -std::numeric_limits<int16_t>::infinity(),
+		int16_t alpha = std::numeric_limits<int16_t>::lowest(),
 		int16_t beta = std::numeric_limits<int16_t>::infinity());
 
 private:
