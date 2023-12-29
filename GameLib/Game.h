@@ -22,9 +22,9 @@ public:
 	IPlayer* GetFirstPlayer() const override;
 	IPlayer* GetSecondPlayer() const override;
 
-	void PlaceColumn(Position position) override;
-	void MakeBridge(Position firstPos, Position secondPos) override;
-	void RemoveBridge(Position firstPos, Position secondPos) override;
+	bool PlaceColumn(Position position) override;
+	bool MakeBridge(Position firstPos, Position secondPos) override;
+	bool RemoveBridge(Position firstPos, Position secondPos) override;
 	void SwapPlayers();
 
 	void AddObserver(ObserverPtr observer) override;

@@ -374,6 +374,13 @@ void Board::AddMines()
 	}
 }
 
+Board& Board::operator=(const Board& rhs) noexcept
+{
+	if (this == &rhs) return *this;
+
+
+}
+
 Board::~Board() {
 	for (uint16_t index1{ 0 }; index1 < m_matrix.size(); ++index1) {
 		for (uint16_t index2{ 0 }; index2 < m_matrix[index1].size(); ++index2) {

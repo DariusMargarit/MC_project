@@ -15,7 +15,7 @@ Game::Game(const IGameSettings& settings)
 {	
 	m_board = new Board(m_boardSize);
 	m_turn = m_player1;
-	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
+	//m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
 }
 
 Game::Game(const Game & other)
@@ -45,45 +45,45 @@ Game::Game(Game && other) noexcept
 	other.m_minimax = nullptr;
 }
 
-void Game::PlaceColumn(Position position)
+bool Game::PlaceColumn(Position position)
 {
 	bool isFirstPlayer = m_turn == m_player1;
 	if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) &&
-		!isFirstPlayer) return;
+		!isFirstPlayer) return false;
 
 	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1) &&
-		isFirstPlayer) return;
+		isFirstPlayer) return false;
 
-	if (!m_board->PlaceColumn(position, m_turn)) return;
+	if (!m_board->PlaceColumn(position, m_turn)) return false;
 
 	NotifyPlaceColumn(position, m_turn);
 	m_parser->AddColumn(position.ToPair(), isFirstPlayer);
-	SaveGame("game.ptg", StorageFormat::PTG);
-	SaveGame("game.stn", StorageFormat::STN);
 	ChangeTurn();
+
+	return true;
 
 }
 
-void Game::MakeBridge(Position firstPos, Position secondPos)
+bool Game::MakeBridge(Position firstPos, Position secondPos)
 {
-	if (!m_board->MakeBridge(firstPos, secondPos, m_turn)) return;
+	if (!m_board->MakeBridge(firstPos, secondPos, m_turn)) return false;
 
 	NotifyMakeBridge(firstPos, secondPos, m_turn);
 	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
-	SaveGame("game.ptg", StorageFormat::PTG);
-	SaveGame("game.stn", StorageFormat::STN);
 	ComputePathToWin(0, firstPos, secondPos);
+
+	return true;
 }
 
-void Game::RemoveBridge(Position firstPos, Position secondPos)
+bool Game::RemoveBridge(Position firstPos, Position secondPos)
 {
-	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return;
+	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return false;
 
 	NotifyRemoveBridge(firstPos, secondPos, m_turn);
 	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
-	SaveGame("game.ptg", StorageFormat::PTG);
-	SaveGame("game.stn", StorageFormat::STN);
 	ComputePathToWin(1, firstPos, secondPos);
+
+	return true;
 }
 
 void Game::SwapPlayers()

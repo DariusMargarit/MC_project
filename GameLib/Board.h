@@ -39,7 +39,8 @@ public:
 	bool CheckWinner(bool player) const;
 	void AddMines();
     
-
+	
+	Board& operator=(const Board& rhs) noexcept;
 	const IColumn* operator [](Position pos) const override;
 	bool operator==(const Board& rhs) const;
 

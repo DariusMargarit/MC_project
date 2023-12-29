@@ -28,9 +28,9 @@ struct IGame
 	virtual IPlayer* GetFirstPlayer() const = 0;
 	virtual IPlayer* GetSecondPlayer() const = 0;
 
-	virtual void PlaceColumn(Position position) = 0;
-	virtual void MakeBridge(Position firstPos, Position secondPos) = 0;
-	virtual void RemoveBridge(Position firstPos , Position secondPos) = 0;
+	virtual bool PlaceColumn(Position position) = 0;
+	virtual bool MakeBridge(Position firstPos, Position secondPos) = 0;
+	virtual bool RemoveBridge(Position firstPos , Position secondPos) = 0;
 
 	virtual bool SaveGame(const std::string_view path, StorageFormat format) = 0;
 	virtual bool LoadGame(const std::string_view path, StorageFormat format) = 0;

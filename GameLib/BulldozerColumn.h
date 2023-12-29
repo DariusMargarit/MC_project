@@ -15,7 +15,7 @@ public:
 
 	IPlayer* GetPlayer() const noexcept override;
 private:
-		IPlayer* m_bulldozer;
+	IPlayer* m_bulldozer;
 	
 };
 
