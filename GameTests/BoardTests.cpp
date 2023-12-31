@@ -80,3 +80,18 @@ TEST_F(BoardTests, MakeBridgeTest)
 	EXPECT_EQ(m_game->MakeBridge({ 9, 3 }, { 10, 4 }), false);
 	EXPECT_EQ(m_game->MakeBridge({ 10, 3 }, { 9, 4 }), false);
 }
+
+TEST_F(BoardTests, MakeBridgeDifferentColumnsTest)
+{
+	
+	Position firstColumn = {5,5} ;
+	Position secondColumn = { 7,6 };
+
+	EXPECT_EQ(m_game->PlaceColumn(firstColumn), true);
+	EXPECT_EQ(m_game->PlaceColumn(secondColumn), true);
+
+
+	EXPECT_EQ(m_game->MakeBridge(firstColumn, secondColumn), false);
+	
+}
+
