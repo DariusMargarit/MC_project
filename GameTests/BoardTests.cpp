@@ -66,3 +66,17 @@ TEST_F(BoardTests, MakeBridgeIntersection2)
 	EXPECT_EQ(m_game->MakeBridge({ 2, 2 }, { 3, 4 }), true);
 	EXPECT_EQ(m_game->MakeBridge({ 4, 3 }, { 2, 4 }), false);
 }
+
+TEST_F(BoardTests, MakeBridgeTest)
+{
+	std::vector<Position> positions{ {9, 3}, {10, 3},  {10, 4},  {9, 4} };
+
+	// the position should be valid before insertion
+	for (auto position : positions)
+	{
+		EXPECT_EQ(m_game->PlaceColumn(position), true);
+	}
+
+	EXPECT_EQ(m_game->MakeBridge({ 9, 3 }, { 10, 4 }), false);
+	EXPECT_EQ(m_game->MakeBridge({ 10, 3 }, { 9, 4 }), false);
+}
