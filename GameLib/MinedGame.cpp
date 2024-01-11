@@ -5,7 +5,6 @@ MinedGame::MinedGame(BoardPtr board)
 {
 }
 
-
 void MinedGame::AddMines()
 {
 	uint16_t numberMines{ (uint16_t)((5.0 / 100.0) * (m_board->GetSize() * m_board->GetSize())) };
@@ -20,6 +19,23 @@ void MinedGame::AddMines()
 
 		PlaceMine(pos);
 		--numberMines;
+	}
+}
+
+void MinedGame::DestroyArea(const Position& position)
+{
+	uint16_t rowPosition= position.GetRow(), columnPosition = position.GetColumn();
+	
+	for (uint16_t row{rowPosition - 1}; row != rowPosition + 1; ++row)
+	{
+		for (uint16_t column{columnPosition - 1}; column != columnPosition + 1; ++column)
+		{
+			if((row != 0 && column !=0) &&
+			   (row != 0 && column != m_board->GetSize() - 1) &&
+			   (row != m_board->GetSize() - 1 && column != 0) &&
+			   (row != m_board->GetSize() - 1 && column != m_board->GetSize() - 1))
+					m_board->RemoveColumn({ row,column });
+		}
 	}
 }
 

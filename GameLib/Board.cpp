@@ -59,17 +59,17 @@ std::vector<std::string> Board::GetColumnConnections(Position position) const
 
 			if (m_bridges.find(firstKey) != m_bridges.end()) 
 			{
-				bridgeKeyList.push_back(std::move(firstKey));
+				bridgeKeyList.push_back(firstKey);
 			}
 			else if (m_bridges.find(secondKey) != m_bridges.end())
 			{
-				bridgeKeyList.push_back(std::move(secondKey));
+				bridgeKeyList.push_back(secondKey);
 			}
 
 		}
 	}
 
-	return std::move(bridgeKeyList);
+	return bridgeKeyList;
 }
 
 bool Board::FindObstacleBridge(const Position& firstPos, const Position& secondPos) const

@@ -18,6 +18,7 @@ public:
 	void PlaceMine(const Position& position);
 	void AddMines();
 
+	void DestroyArea(const Position& position);
 private:
 	BoardPtr m_board;
 };
