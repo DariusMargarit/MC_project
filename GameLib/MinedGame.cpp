@@ -25,11 +25,11 @@ void MinedGame::AddMines()
 
 void MinedGame::DestroyArea(const Position& position)
 {
-	uint16_t rowPosition= position.GetRow(), columnPosition = position.GetColumn();
+	uint16_t rowPosition{ position.GetRow() }, columnPosition{ position.GetColumn() };
 	
-	for (uint16_t row{rowPosition - 1}; row != rowPosition + 1; ++row)
+	for (uint16_t row{ (uint16_t)(rowPosition - 1) }; row != rowPosition + 1; ++row)
 	{
-		for (uint16_t column{columnPosition - 1}; column != columnPosition + 1; ++column)
+		for (uint16_t column{ (uint16_t)(columnPosition - 1) }; column != columnPosition + 1; ++column)
 		{
 			if((row != 0 && column !=0) &&
 			   (row != 0 && column != m_board->GetSize() - 1) &&
