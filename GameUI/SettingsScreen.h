@@ -25,7 +25,8 @@ private:
 	void AddFieldToLayout(QString fieldName, QWidget* widget = nullptr);
 	void InitializeButtons();
 	void InitializeValues();
-	void InitializeComboBox(bool isFirstPlayerBox);
+	void InitializePlayerColorPick(bool isFirstPlayerBox);
+	void InitializeGamemodes();
 	void InitializeLayout();
 	
 
@@ -34,7 +35,7 @@ private:
 	QGridLayout* m_layout;
 	Slider* m_tableSizeSlider, * m_columnLimitSlider, * m_bridgeLimitSlider;
 	QLineEdit* m_firstPlayerName, * m_secondPlayerName;
-	QComboBox* m_firstPlayerColor, * m_secondPlayerColor;
+	QComboBox* m_firstPlayerColor, * m_secondPlayerColor, *m_gamemode;
 	Button* m_updateButton, * m_discardButton;
 
 	std::vector<EColor> m_colors;

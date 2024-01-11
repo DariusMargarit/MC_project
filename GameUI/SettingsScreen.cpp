@@ -3,7 +3,7 @@
 #include "FileUtils.h"
 #include "ColorUtils.h"
 
-const uint16_t SettingsScreen::minTableSize{12}, SettingsScreen::maxTableSize{50};
+const uint16_t SettingsScreen::minTableSize{5}, SettingsScreen::maxTableSize{50};
 const uint16_t SettingsScreen::minColumnLimit{20}, SettingsScreen::maxColumnLimit{100};
 const uint16_t SettingsScreen::minBridgeLimit{20}, SettingsScreen::maxBridgeLimit{100};
 
@@ -18,6 +18,7 @@ SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
 	, m_secondPlayerName{new QLineEdit{this}}
 	, m_firstPlayerColor{new QComboBox{this}}
 	, m_secondPlayerColor{new QComboBox{this}}
+	, m_gamemode{new QComboBox{this}}
 	, m_updateButton{new Button{"Update"}}
 	, m_discardButton{new Button{"Discard"}}
 {
@@ -94,12 +95,13 @@ void SettingsScreen::InitializeValues()
 	m_firstPlayerName->setText(QString::fromStdString(m_gameSettings.GetFirstPlayerName().data()));
 	m_secondPlayerName->setText(QString::fromStdString(m_gameSettings.GetSecondPlayerName().data()));
 
-	InitializeComboBox(true);
-	InitializeComboBox(false);
+	InitializePlayerColorPick(true);
+	InitializePlayerColorPick(false);
+	InitializeGamemodes();
 
 }
 
-void SettingsScreen::InitializeComboBox(bool isFirstPlayerBox)
+void SettingsScreen::InitializePlayerColorPick(bool isFirstPlayerBox)
 {
 	QComboBox* currentBox;
 	EColor initialColor;
@@ -129,6 +131,13 @@ void SettingsScreen::InitializeComboBox(bool isFirstPlayerBox)
 	}
 }
 
+void SettingsScreen::InitializeGamemodes()
+{
+	m_gamemode->addItem("Standard");
+	m_gamemode->addItem("Mined Columns");
+	m_gamemode->addItem("Bulldozer");
+}
+
 void SettingsScreen::InitializeLayout()
 {
 	// Player settings related widgets
@@ -140,6 +149,12 @@ void SettingsScreen::InitializeLayout()
 	AddFieldToLayout("Second Player Settings");
 	AddFieldToLayout("Name", m_secondPlayerName);
 	AddFieldToLayout("Color", m_secondPlayerColor);
+	AddFieldToLayout("");
+
+	// Game settings related widgets
+	AddFieldToLayout("");
+	AddFieldToLayout("Gamemodes settings");
+	AddFieldToLayout("Gamemode", m_gamemode);
 	AddFieldToLayout("");
 
 	// Board settings related widgets

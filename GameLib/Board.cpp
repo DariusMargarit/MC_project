@@ -456,7 +456,7 @@ const BridgeVector Board::GetBridgesPositions() const
 	return std::move(bridgesPositions);
 }
 
-uint16_t Board::GetSize() const 
+const uint16_t Board::GetSize() const 
 {
 	return std::move((uint16_t)m_matrix.size());
 }

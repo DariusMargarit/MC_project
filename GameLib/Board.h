@@ -22,7 +22,7 @@ public:
 	Board(const Board & other);
 	~Board();
 
-	uint16_t GetSize() const override;
+	uint16_t const GetSize() const override;
 
 	const IColumn* GetElement(const Position& pos) const override;
 	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
@@ -48,7 +48,7 @@ public:
 	bool operator==(const Board& rhs) const;
 
 private:
-	std::vector<std::string> GetColumnConnections(Position columnPosition) const;
+	std::vector<std::string> GetColumnConnections(Position position) const;
 	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool Orientation(const Position& A, const Position& B, const Position& C) const;
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;
