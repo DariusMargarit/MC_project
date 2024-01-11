@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "Minimax.h"
+#include "MinedGame.h"
 
 #include "../TwixtTextParser/ITwixtParser.h"
 
@@ -16,7 +17,7 @@ public:
 	~Game() = default;
 
 	IPlayer* GetTurn() const override;
-	IBoard* GetBoard() const override;
+	IBoardPtr GetBoard() const override;
 	IPlayer* CheckWinner() const override;
 
 	IPlayer* GetFirstPlayer() const override;
@@ -49,11 +50,12 @@ private:
 	Board GameRepresentationToBoard(const parser::GameRepresentation& game) const;
 
 private:
-	Board* m_board;
+	BoardPtr m_board;
 	uint16_t m_boardSize;
 	Player* m_player1, * m_player2;
 	IPlayer* m_turn;
 	Minimax* m_minimax;
+	MinedGame* m_minedGame;
 	parser::TwixtParserPtr m_parser;
 
 	ObserverList m_observers;

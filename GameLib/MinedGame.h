@@ -1,11 +1,12 @@
 #pragma once
-#include<memory>
+
+#include <memory>
 #include <random>
 
 #include "MinedColumn.h"
 #include "Board.h"
 
-class MinedGame
+class MinedGame : public std::monostate
 {
 public:
 	MinedGame(BoardPtr board);

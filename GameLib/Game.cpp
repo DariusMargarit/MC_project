@@ -1,6 +1,10 @@
-#include "Game.h"
+
 #include <ranges>
 #include <algorithm>
+
+#include "Game.h"
+#include "MinedGame.h"
+#include "BulldozerGame.h"
 
 IGamePtr IGame::Produce(const IGameSettings& settings)
 {
@@ -13,9 +17,22 @@ Game::Game(const IGameSettings& settings)
 	, m_boardSize{ settings.GetTableSize() }
 	, m_parser{ parser::ITwixtParser::Produce(settings.GetTableSize())}
 {	
-	m_board = new Board(m_boardSize);
+	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
-	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
+	if (m_board->GetSize() <= 6)
+	{
+		m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
+	}
+
+	switch (settings.GetGamemode())
+	{
+	case EGamemode::Standard:
+		break;
+	case EGamemode::MinedColumns:
+		break;
+	case EGamemode::Bulldozer:
+		break;
+	}
 }
 
 Game::Game(const Game & other)
@@ -24,7 +41,7 @@ Game::Game(const Game & other)
 	m_player1 = new Player(dynamic_cast<Player*>(other.m_player1));
 	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
 	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*other.m_board);
+	m_board = std::make_shared<Board>(*other.m_board);
 	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
 }
 
@@ -34,7 +51,7 @@ Game::Game(Game && other) noexcept
 	m_player1 = new Player(dynamic_cast<Player*>(other.m_player1));
 	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
 	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*other.m_board);
+	m_board = std::make_shared<Board>(*other.m_board);
 	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
 
 	other.m_board = nullptr;
@@ -110,13 +127,12 @@ Game& Game::operator=(const Game& rhs)
 		
 		delete m_player1;
 		delete m_player2;
-		delete m_board;
 
 		m_boardSize = rhs.m_boardSize;
 		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
 		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
 		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-		m_board = new Board(*rhs.m_board);
+		m_board = std::make_shared<Board>(*rhs.m_board);
 
 	}
 	return *this;
@@ -129,13 +145,12 @@ Game& Game::operator=(Game&& rhs) noexcept {
 	}
 		delete m_player1;
 		delete m_player2;
-		delete m_board;
 
 		m_boardSize = rhs.m_boardSize;
 		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
 		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
 		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-		m_board = new Board(*rhs.m_board);
+		m_board = std::make_shared<Board>(*rhs.m_board);
 
 		rhs.m_board = nullptr;
 		rhs.m_boardSize = 0;
@@ -151,7 +166,7 @@ IPlayer* Game::GetTurn() const
 	return m_turn;
 }
 
-IBoard* Game::GetBoard() const 
+IBoardPtr Game::GetBoard() const 
 {
 	return m_board;
 }
@@ -258,7 +273,7 @@ parser::GameRepresentation Game::GetParserGameRepresentation() const
 Board Game::GameRepresentationToBoard(const parser::GameRepresentation& game) const
 {
 	const auto& [boardRepresentation, moves] = game;
-	Board board(boardRepresentation.size());
+	Board board(static_cast<uint16_t>(boardRepresentation.size()));
 	for (uint16_t row = 0; row < boardRepresentation.size(); row++)
 	{
 		for (uint16_t column = 0; column < boardRepresentation.size(); column++)

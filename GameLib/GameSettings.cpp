@@ -1,12 +1,14 @@
 #include "GameSettings.h"
 
-const size_t GameSettings::defaultTableSize{24};
-const size_t GameSettings::defaultColumnLimit{50};
-const size_t GameSettings::defaultBridgeLimit{50};
-const std::string GameSettings::defaultFirstPlayerName{"Player1"};
-const EColor GameSettings::defaultFirstPlayerColor{EColor::Blue};
-const std::string GameSettings::defaultSecondPlayerName{"Player2"};
-const EColor GameSettings::defaultSecondPlayerColor{EColor::Red};
+const size_t IGameSettings::defaultTableSize{24};
+const size_t IGameSettings::defaultColumnLimit{50};
+const size_t IGameSettings::defaultBridgeLimit{50};
+const std::string IGameSettings::defaultFirstPlayerName{"Player1"};
+const EColor IGameSettings::defaultFirstPlayerColor{EColor::Blue};
+const std::string IGameSettings::defaultSecondPlayerName{"Player2"};
+const EColor IGameSettings::defaultSecondPlayerColor{EColor::Red};
+const EGamemode IGameSettings::defaultGamemode{EGamemode::Standard};
+
 GameSettings* GameSettings::instance{nullptr};
 
 IGameSettings* IGameSettings::GetInstance()
@@ -32,6 +34,7 @@ GameSettings::GameSettings()
 	, m_firstPlayerColor(defaultFirstPlayerColor)
 	, m_secondPlayerName(defaultSecondPlayerName)
 	, m_secondPlayerColor(defaultSecondPlayerColor)
+	, m_gamemode(defaultGamemode)
 {
 	// Empty
 }
@@ -69,6 +72,16 @@ void GameSettings::SetSecondPlayerName(std::string_view name)
 void GameSettings::SetSecondPlayerColor(EColor color)
 {
 	m_secondPlayerColor = color;
+}
+
+const EGamemode GameSettings::GetGamemode() const noexcept
+{
+	return m_gamemode;
+}
+
+void GameSettings::SetGamemode(EGamemode gamemode)
+{
+	m_gamemode = gamemode;
 }
 
 const uint16_t GameSettings::GetTableSize() const noexcept

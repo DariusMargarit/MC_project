@@ -3,6 +3,7 @@
 MinedGame::MinedGame(BoardPtr board)
 	:m_board{board}
 {
+	// Empty
 }
 
 void MinedGame::AddMines()

@@ -10,8 +10,8 @@ using IGamePtr = std::shared_ptr<struct IGame>;
 
 enum class StorageFormat
 {
-	STN, // standard twixt notation
-	PTG // portable twixt game
+	STN,  // standard twixt notation
+	PTG,  // portable twixt game
 };
 
 struct IGame
@@ -22,7 +22,7 @@ struct IGame
 	virtual void RemoveObserver(ObserverPtr observer) = 0;
 
 	virtual IPlayer* GetTurn() const = 0;
-	virtual IBoard* GetBoard() const = 0;
+	virtual IBoardPtr GetBoard() const = 0;
 	virtual IPlayer* CheckWinner() const = 0;
 
 	virtual IPlayer* GetFirstPlayer() const = 0;
