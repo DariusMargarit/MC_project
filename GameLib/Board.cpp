@@ -36,6 +36,42 @@ bool Board::ValidPlaceColumn(const Position& position) const
 	return true;
 }
 
+std::vector<std::string> Board::GetColumnConnections(Position position) const
+{
+	std::vector<std::string> bridgeKeyList;
+	std::pair<uint16_t, uint16_t> start, end;
+	static const uint8_t kMaximumSpan = 2;
+	auto& [startRow, startColumn] = start;
+	auto& [endRow, endColumn] = end;
+
+	startRow = position.GetRow() - kMaximumSpan < 0 ? 0 : position.GetRow() - kMaximumSpan;
+	startColumn = position.GetColumn() - kMaximumSpan < 0 ? 0 : position.GetColumn() - kMaximumSpan;
+	endRow = position.GetRow() + kMaximumSpan > GetSize() - 1 ? GetSize() - 1 : position.GetRow() + kMaximumSpan;
+	endColumn = position.GetColumn() + kMaximumSpan > GetSize() - 1 ? GetSize() - 1 : position.GetColumn() + kMaximumSpan;
+
+	for (uint16_t row = startRow; row <= endRow; ++row)
+	{
+		for (uint16_t column = startColumn; column <= endColumn; ++column)
+		{
+			const auto& currentPosition = Position{ row, column };
+			const auto& firstKey = MakeKey(currentPosition, position);
+			const auto& secondKey = MakeKey(position, currentPosition);
+
+			if (m_bridges.find(firstKey) != m_bridges.end()) 
+			{
+				bridgeKeyList.push_back(std::move(firstKey));
+			}
+			else if (m_bridges.find(secondKey) != m_bridges.end())
+			{
+				bridgeKeyList.push_back(std::move(secondKey));
+			}
+
+		}
+	}
+
+	return std::move(bridgeKeyList);
+}
+
 bool Board::FindObstacleBridge(const Position& firstPos, const Position& secondPos) const
 {
 	uint16_t lowerRowIndex{ std::min(firstPos.GetRow(), secondPos.GetRow()) };
@@ -357,6 +393,22 @@ bool Board::CheckWinner(bool player) const
 	return false;
 }
 
+uint16_t Board::RemoveColumn(const Position& position)
+{
+	uint16_t bridgesDeleted = 0;
+	const auto& bridgesToDelete = GetColumnConnections(position);
+
+	std::ranges::for_each(bridgesToDelete, [&](const std::string& key) { 
+		m_bridges.erase(key);
+		++bridgesDeleted;
+		});
+
+	m_matrix[position.GetRow()][position.GetColumn()] = nullptr;
+
+	return bridgesDeleted;
+	
+}
+
 void Board::AddMines()
 {
 	uint16_t numberMines{ (uint16_t)((5 / 100) * (GetSize() * GetSize())) };
@@ -421,7 +473,7 @@ const BridgeVector Board::GetBridgesPositions() const
 	return std::move(bridgesPositions);
 }
 
-const uint16_t Board::GetSize() const
+uint16_t Board::GetSize() const 
 {
 	return std::move((uint16_t)m_matrix.size());
 }

@@ -29,6 +29,7 @@ export namespace parser
 		static MovesPositions ConvertFullMovesToSimpleMoves(const FullMovesPositions& moves);
 		static FullMovesPositions ConvertSimpleMovesToFullMoves(const MovesPositions& moves);
 		static bool HasExtension(const std::string_view filePath, const std::string_view extension);
+
 	private:
 		template<size_t FirstArg, size_t SecondArg, class... T>
 		static auto TupleToPair(std::tuple<T...> t)

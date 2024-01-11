@@ -20,7 +20,7 @@ public:
 	Board(const Board & other);
 	~Board();
 
-	const uint16_t GetSize() const override;
+	uint16_t GetSize() const override;
 
 	const IColumn* GetElement(const Position& pos) const override;
 	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
@@ -29,14 +29,17 @@ public:
 
 	bool ValidPosition(const int16_t& row, const int16_t& column) const;
 	bool ValidPlaceColumn(const Position& position) const;
-	bool PlaceColumn(const Position& position, IPlayer* player);
-	void PlaceMine(const Position& position);
 	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
+	bool PlaceColumn(const Position& position, IPlayer* player);
+	void RemoveColumn(const Position& position);
 	bool ValidPosibleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
 	bool CheckWinner(bool player) const;
+
+	// To be moved in MinedGame
+	void PlaceMine(const Position& position);
 	void AddMines();
     
 	
@@ -45,6 +48,7 @@ public:
 	bool operator==(const Board& rhs) const;
 
 private:
+	std::vector<std::string> GetColumnConnections(Position columnPosition);
 	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool Orientation(const Position& A, const Position& B, const Position& C) const;
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;
