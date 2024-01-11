@@ -1,21 +1,23 @@
 #pragma once
-#include "IGame.h"
-#include "Board.h"
-#include "Player.h"
+#include<memory>
 #include <random>
-class MinedGame : public IGame
+
+#include "MinedColumn.h"
+#include "Board.h"
+
+class MinedGame
 {
 public:
-	MinedGame(const IGameSettings& settings);
-	MinedGame(const MinedGame& rhs);
+	MinedGame(BoardPtr board);
+	MinedGame(const MinedGame& rhs) = default;
 	MinedGame(MinedGame&& rhs) = default;
-	~MinedGame();
-	MinedGame& operator=(const MinedGame& rhs);
+	~MinedGame() = default;
+	MinedGame& operator=(const MinedGame& rhs) = default;
 	MinedGame& operator=(MinedGame&& rhs) noexcept = default;
 
+	void PlaceMine(const Position& position);
+	void AddMines();
+
 private:
-	Board* m_board;
-	uint16_t m_boardSize;
-	IPlayer* m_player1, * m_player2, * m_turn;
-	ObserverList m_observers;
+	BoardPtr m_board;
 };

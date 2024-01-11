@@ -409,23 +409,6 @@ uint16_t Board::RemoveColumn(const Position& position)
 	
 }
 
-void Board::AddMines()
-{
-	uint16_t numberMines{ (uint16_t)((5 / 100) * (GetSize() * GetSize())) };
-	while(numberMines)
-	{
-		std::random_device rd;
-		std::mt19937 eng(rd());
-		std::uniform_int_distribution<> distr(1, GetSize() - 2);
-
-		uint16_t raw{ (uint16_t)distr(eng) }, column{ (uint16_t)distr(eng) };
-		Position pos{ raw,column };
-
-		PlaceMine(pos);
-		--numberMines;
-	}
-}
-
 Board& Board::operator=(const Board& rhs) noexcept
 {
 	if (this == &rhs) return *this;
@@ -489,12 +472,17 @@ bool Board::PlaceColumn(const Position& position, IPlayer* player)
 	return false;
 }
 
-void Board::PlaceMine(const Position& position)
+bool Board::PlaceColumn(const Position& position, IColumn* column)
 {
-	IColumn* newColumn{ new MinedColumn };
-	m_matrix[position.GetRow()][position.GetColumn()] = newColumn;
+	if (ValidPlaceColumn(position)) {
+		m_matrix[position.GetRow()][position.GetColumn()] = column;
 
+		return true;
+	}
+	return false;
 }
+
+
 
 bool Board::MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player)
 {

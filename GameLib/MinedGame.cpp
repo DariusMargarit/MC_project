@@ -1,53 +1,29 @@
 #include "MinedGame.h"
 
-MinedGame::MinedGame(const IGameSettings& settings)
-	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()) }
-	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor()) }
-	, m_boardSize{ settings.GetTableSize() }
+MinedGame::MinedGame(BoardPtr board)
+	:m_board{board}
 {
-	m_board = new Board(m_boardSize);
-	m_turn = m_player1;
-	m_board->AddMines();
 }
 
-MinedGame::MinedGame(const MinedGame& rhs)
-	:m_boardSize{ rhs.m_boardSize }
+
+void MinedGame::AddMines()
 {
-	m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
-	m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-	m_board = new Board(*rhs.m_board);
-}
+	uint16_t numberMines{ (uint16_t)((5.0 / 100.0) * (m_board->GetSize() * m_board->GetSize())) };
+	while (numberMines)
+	{
+		std::random_device rd;
+		std::mt19937 eng(rd());
+		std::uniform_int_distribution<> distr(1, m_board->GetSize() - 2);
 
-MinedGame::~MinedGame()
-{
-	if(m_player1)
-		delete m_player1;
+		uint16_t row{ (uint16_t)distr(eng) }, column{ (uint16_t)distr(eng) };
+		Position pos{ row,column };
 
-	if(m_player2)
-		delete m_player2;
-
-	if (m_turn)
-		delete m_turn;
-
-	if (m_board)
-		delete m_board;
-}
-
-MinedGame& MinedGame::operator=(const MinedGame& rhs)
-{
-	if (this != &rhs) {
-
-		delete m_player1;
-		delete m_player2;
-		delete m_board;
-
-		m_boardSize = rhs.m_boardSize;
-		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
-		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
-		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-		m_board = new Board(*rhs.m_board);
-
+		PlaceMine(pos);
+		--numberMines;
 	}
-	return *this;
+}
+
+void MinedGame::PlaceMine(const Position& position)
+{
+	m_board->PlaceColumn(position, new MinedColumn);
 }

@@ -16,6 +16,7 @@ public:
 	void SetColor(EColor rhs) override;
 
 private:
+	bool m_hasDoubleColumnPlace;
 	std::string m_name;
 	EColor m_color;
 };

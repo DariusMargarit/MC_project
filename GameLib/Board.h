@@ -13,6 +13,8 @@
 #include "Bridge.h"
 #include "../TwixtTextParser/ITwixtParser.h"
 
+using BoardPtr = std::shared_ptr<class Board>;
+
 class Board : public IBoard
 {
 public:
@@ -26,21 +28,19 @@ public:
 	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
 	const BridgeVector GetBridgesPositions() const override;
 	bool BridgeExists(const Position& firstPos, const Position& secondPos) const override;
-
-	bool ValidPosition(const int16_t& row, const int16_t& column) const;
-	bool ValidPlaceColumn(const Position& position) const;
-	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
-	bool PlaceColumn(const Position& position, IPlayer* player);
-	void RemoveColumn(const Position& position);
-	bool ValidPosibleBridge(const Position& firstPos, const Position& secondPos) const;
-	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
-	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
 	bool CheckWinner(bool player) const;
 
-	// To be moved in MinedGame
-	void PlaceMine(const Position& position);
-	void AddMines();
+	bool ValidPosibleBridge(const Position& firstPos, const Position& secondPos) const;
+	bool ValidPosition(const int16_t& row, const int16_t& column) const;
+	bool ValidPlaceColumn(const Position& position) const;
+	bool ValidBridge(const Position& firstPos, const Position& secondPos) const;
+
+	bool PlaceColumn(const Position& position, IPlayer* player);
+	bool PlaceColumn(const Position& position, IColumn* column);
+	uint16_t RemoveColumn(const Position& position);
+	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
+	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
     
 	
 	Board& operator=(const Board& rhs) noexcept;
@@ -48,7 +48,7 @@ public:
 	bool operator==(const Board& rhs) const;
 
 private:
-	std::vector<std::string> GetColumnConnections(Position columnPosition);
+	std::vector<std::string> GetColumnConnections(Position columnPosition) const;
 	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool Orientation(const Position& A, const Position& B, const Position& C) const;
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;

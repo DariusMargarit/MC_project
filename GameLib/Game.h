@@ -51,7 +51,8 @@ private:
 private:
 	Board* m_board;
 	uint16_t m_boardSize;
-	IPlayer* m_player1, *m_player2, *m_turn;
+	Player* m_player1, * m_player2;
+	IPlayer* m_turn;
 	Minimax* m_minimax;
 	parser::TwixtParserPtr m_parser;
 

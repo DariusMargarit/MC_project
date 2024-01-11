@@ -3,23 +3,26 @@
 Player::Player(const std::string_view& name, const EColor& color)
 	: m_color{color}
 	, m_name{name}
+	, m_hasDoubleColumnPlace{false}
 {
 	// Empty
 }
 
-Player::Player(const Player* rhs)
-	: m_color{rhs->m_color}
-	, m_name{rhs->m_name}
+Player::Player(const Player*other)
+	: m_color{other->m_color}
+	, m_name{other->m_name}
+	, m_hasDoubleColumnPlace{ other->m_hasDoubleColumnPlace }
 {
 	// Empty
 }
 
-Player::Player(Player&& rhs) noexcept
-	: m_color{rhs.m_color}
-	, m_name{rhs.m_name}
+Player::Player(Player&&other) noexcept
+	: m_color{other.m_color}
+	, m_name{other.m_name}
+	, m_hasDoubleColumnPlace{other.m_hasDoubleColumnPlace}
 {
-	rhs.m_color = EColor::NoColor;
-	rhs.m_name = "";
+	other.m_color = EColor::NoColor;
+	other.m_name = "";
 }
 
 Player& Player::operator=(const Player* rhs) noexcept
