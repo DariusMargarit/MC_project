@@ -111,22 +111,22 @@ void Player::SetDoubleTurn(bool hasDoubleTurn)
 
 void Player::IncreaseBridgeNumber(const uint16_t& number)
 {
-	if(m_BridgeCounter + number < 50) m_BridgeCounter += number;
+	if(m_BridgeCounter + number <= 50) m_BridgeCounter += number;
 }
 
 void Player::DecreaseBridgeNumber(const uint16_t& number)
 {
-	if (m_BridgeCounter - number > 0) m_BridgeCounter -= number;
+	if (m_BridgeCounter - number >= 0) m_BridgeCounter -= number;
 }
 
 void Player::IncreaseColumnNumber(const uint16_t& number)
 {
-	if (m_ColumnCounter + number < 50) m_ColumnCounter += number;
+	if (m_ColumnCounter + number <= 50) m_ColumnCounter += number;
 }
 
 void Player::DecreaseColumnNumber(const uint16_t& number)
 {
-	if (m_ColumnCounter - number > 0) m_ColumnCounter -= number;
+	if (m_ColumnCounter - number >= 0) m_ColumnCounter -= number;
 }
 
 IPlayer* IPlayer ::Produce(std::string_view name, EColor color)

@@ -94,12 +94,19 @@ bool Game::PlaceColumn(Position position)
 
 bool Game::MakeBridge(Position firstPos, Position secondPos)
 {
+	bool isFirstPlayer = m_turn == m_player1;
+	if (isFirstPlayer)
+	{if (!m_player1->HasBridgesToAdd()) return false;}
+	else
+	{if (!m_player2->HasBridgesToAdd()) return false;}
+
 	if (!m_board->MakeBridge(firstPos, secondPos, m_turn)) return false;
 
 	NotifyMakeBridge(firstPos, secondPos, m_turn);
+	isFirstPlayer ? m_player1->DecreaseBridgeNumber():
+					m_player2->DecreaseBridgeNumber();
 	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
-	m_turn == m_player1 ? m_player1->DecreaseBridgeNumber(): 
-						  m_player2->DecreaseBridgeNumber();
+	
 	ComputePathToWin(0, firstPos, secondPos);
 
 	return true;
@@ -109,16 +116,12 @@ bool Game::RemoveBridge(Position firstPos, Position secondPos)
 {
 	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return false;
 
-	bool isFirstPlayer = m_turn == m_player1;
-	if (isFirstPlayer)
-	{if (!m_player1->HasBridgesToAdd()) return false;}
-	else
-	{if (!m_player2->HasBridgesToAdd()) return false;}
+	
 
 	NotifyRemoveBridge(firstPos, secondPos, m_turn);
 	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
-	isFirstPlayer ? m_player1->IncreaseBridgeNumber():
-					m_player2->IncreaseBridgeNumber();
+	m_turn == m_player1 ? m_player1->IncreaseBridgeNumber():
+						  m_player2->IncreaseBridgeNumber();
 	ComputePathToWin(1, firstPos, secondPos);
 
 	return true;
