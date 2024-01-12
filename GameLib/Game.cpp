@@ -73,7 +73,7 @@ bool Game::PlaceColumn(Position position)
 	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1) &&
 		isFirstPlayer) return false;
 
-	bool canAdd = isFirstPlayer ? m_player1->HasBridgesToAdd() : m_player2->HasBridgesToAdd();
+	bool canAdd = isFirstPlayer ? m_player1->HasColumnsToAdd() : m_player2->HasColumnsToAdd();
 	if (!canAdd && !m_notificationsDisabled) return false;
 
 	if (!m_board->PlaceColumn(position, m_turn)) return false;
@@ -98,10 +98,9 @@ bool Game::PlaceColumn(Position position)
 bool Game::MakeBridge(Position firstPos, Position secondPos)
 {
 	bool isFirstPlayer = m_turn == m_player1;
-	if (isFirstPlayer)
-	{if (!m_player1->HasBridgesToAdd()) return false;}
-	else
-	{if (!m_player2->HasBridgesToAdd()) return false;}
+
+	bool canAdd = isFirstPlayer ? m_player1->HasBridgesToAdd() : m_player2->HasBridgesToAdd();
+	if (!canAdd && !m_notificationsDisabled) return false;
 
 	if (!m_board->MakeBridge(firstPos, secondPos, m_turn)) return false;
 
@@ -122,8 +121,11 @@ bool Game::RemoveBridge(Position firstPos, Position secondPos)
 	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return false;
 
 	NotifyRemoveBridge(firstPos, secondPos, m_turn);
-	m_turn == m_player1 ? m_player1->IncreaseBridgeNumber():
-						  m_player2->IncreaseBridgeNumber();
+	if (!m_notificationsDisabled)
+	{
+		m_turn == m_player1 ? m_player1->IncreaseBridgeNumber() : m_player2->IncreaseBridgeNumber();
+	}
+
 	ComputePathToWin(1, firstPos, secondPos);
 
 	return true;
