@@ -14,6 +14,7 @@ public:
 	
 	bool CoinFlip();
 	void DestroyRandomColumn();
+	void MoveToRandomEmptyPlace();
 	
 
 private:
