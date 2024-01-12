@@ -23,8 +23,12 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 	m_history->setMaximumWidth(350);
 
 	connect(m_board,
-	SIGNAL(BoardClicked(const Position&, const Qt::MouseButton&)),
-	SLOT(OnBoardClicked(const Position&, const Qt::MouseButton&)));
+		SIGNAL(BoardClicked(const Position&, const Qt::MouseButton&)),
+		SLOT(OnBoardClicked(const Position&, const Qt::MouseButton&)));
+
+	connect(m_history,
+		SIGNAL(itemActivated(QListWidgetItem*)),
+		SLOT(OnHistoryClicked(QListWidgetItem*)));
 
 	QString stylesheet{ FileUtils::StylesheetFileToString("./stylesheets/game.qss") };
 	setStyleSheet(stylesheet);
@@ -48,6 +52,13 @@ void GameScreen::OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayer
 void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player)
 {
 	m_history->AddBridgeItem(player, firstPos, secondPos, true);
+}
+
+void GameScreen::OnHistoryClicked(QListWidgetItem* item)
+{
+	qDebug() << m_history->currentRow();
+	m_game->PreviewTable(m_history->currentRow());
+	m_board->update();
 }
 
 void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton& button)

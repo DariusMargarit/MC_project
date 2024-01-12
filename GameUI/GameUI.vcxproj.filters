@@ -90,9 +90,6 @@
     <ClInclude Include="WidgetUtils.h">
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="HistoryWidget.h">
-      <Filter>Screens\Game\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerBar.h">
       <Filter>Screens\Game\Widgets</Filter>
     </ClInclude>
@@ -117,6 +114,9 @@
       <Filter>Resource Files\Custom Widgets</Filter>
     </QtMoc>
     <QtMoc Include="BoardWidget.h">
+      <Filter>Screens\Game\Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="HistoryWidget.h">
       <Filter>Screens\Game\Widgets</Filter>
     </QtMoc>
   </ItemGroup>

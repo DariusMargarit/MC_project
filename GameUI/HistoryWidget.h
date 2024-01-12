@@ -6,6 +6,8 @@
 // Adapter class
 class HistoryWidget : public QListWidget 
 {
+	Q_OBJECT
+
 public:
 	HistoryWidget(QWidget* parent = nullptr);
 

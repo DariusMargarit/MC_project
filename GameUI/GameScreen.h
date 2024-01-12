@@ -20,6 +20,7 @@ public:
 	void OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player) override;
 
 private slots:
+	void OnHistoryClicked(QListWidgetItem* item);
 	void OnBoardClicked(const Position& position, const Qt::MouseButton& button);
 
 private:

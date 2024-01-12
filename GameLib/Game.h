@@ -25,6 +25,7 @@ public:
 	IPlayer* GetFirstPlayer() const override;
 	IPlayer* GetSecondPlayer() const override;
 
+	void PreviewTable(int historyIndex) override;
 	bool PlaceColumn(Position position) override;
 	bool MakeBridge(Position firstPos, Position secondPos) override;
 	bool RemoveBridge(Position firstPos, Position secondPos) override;
@@ -48,8 +49,8 @@ private:
 
 	void ChangeTurn();
 	void ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const; // action = 0 - make, 1 - remove
-	parser::GameRepresentation GetParserGameRepresentation() const;
-	Board GameRepresentationToBoard(const parser::GameRepresentation& game) const;
+	parser::STNGameRepresentation GetSTNGameRepresentation() const;
+	Board STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const;
 
 private:
 	BoardPtr m_board;

@@ -126,6 +126,14 @@ IPlayer* Game::GetSecondPlayer() const
 	return m_player2;
 }
 
+void Game::PreviewTable(int historyIndex)
+{
+	//const auto& moveRepresentation = m_parser->GetHistoryMovesPositions(historyIndex);
+	//if ()
+	//m_board.reset();
+	
+}
+
 Game& Game::operator=(const Game& rhs)
 {
 	if (this != &rhs) {
@@ -255,7 +263,7 @@ void Game::ComputePathToWin(bool action, Position& firstPos, Position& secondPos
 	}
 }
 
-parser::GameRepresentation Game::GetParserGameRepresentation() const
+parser::STNGameRepresentation Game::GetSTNGameRepresentation() const
 {
 	parser::BoardRepresentation boardRepresentation{m_boardSize, std::vector<parser::Piece>{m_boardSize, parser::Piece::Empty}};
 	for (int row = 0; row < m_boardSize; row++)
@@ -281,7 +289,7 @@ parser::GameRepresentation Game::GetParserGameRepresentation() const
 	return std::make_pair(boardRepresentation, movesRepresentation);
 }
 
-Board Game::GameRepresentationToBoard(const parser::GameRepresentation& game) const
+Board Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const
 {
 	const auto& [boardRepresentation, moves] = game;
 	Board board(static_cast<uint16_t>(boardRepresentation.size()));
@@ -313,7 +321,7 @@ bool Game::SaveGame(const std::string_view path, StorageFormat format)
 	switch (format)
 	{
 	case StorageFormat::STN:
-		return parser::ITwixtParser::SaveSTN(GetParserGameRepresentation(), path);
+		return parser::ITwixtParser::SaveSTN(GetSTNGameRepresentation(), path);
 	case StorageFormat::PTG:
 		return m_parser->SavePTG(path);
 	}
@@ -325,12 +333,19 @@ bool Game::LoadGame(const std::string_view path, StorageFormat format)
 	//switch (format)
 	//{
 	//case StorageFormat::STN:
+	//{
 	//	auto representation = parser::ITwixtParser::LoadSTN(path);
 	//	const auto& [board, moves] = representation;
 	//	if (board.empty()) return false;
 
+	//}
 	//case StorageFormat::PTG:
-	//	return m_parser->LoadPTG(path);
+	//{
+	//	if (m_parser->LoadPTG(path))
+	//	{
+
+	//	}
+	//}
 	//}
 	return false;
 }

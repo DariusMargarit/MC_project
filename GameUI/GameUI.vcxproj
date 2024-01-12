@@ -151,7 +151,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HistoryWidget.h" />
+    <QtMoc Include="HistoryWidget.h" />
     <ClInclude Include="PlayerBar.h" />
     <ClInclude Include="WidgetUtils.h" />
     <QtMoc Include="Slider.h" />
