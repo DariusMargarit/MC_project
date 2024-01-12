@@ -413,7 +413,46 @@ Board& Board::operator=(const Board& rhs) noexcept
 {
 	if (this == &rhs) return *this;
 
+	m_matrix = { rhs.GetSize(), std::vector<IColumn*>{rhs.GetSize(), nullptr} };
+	
+	for (uint16_t line{ 0 }; line < m_matrix.size(); ++line)
+	{
+		for (uint16_t column{ 0 }; column < m_matrix[line].size(); ++column)
+		{
+			if (!rhs.m_matrix[line][column]) continue;
 
+			const auto basicColumn = dynamic_cast<Column*>(rhs.m_matrix[line][column]);
+			if (basicColumn) m_matrix[line][column] = new Column(*basicColumn);
+			const auto minedColumn = dynamic_cast<MinedColumn*>(rhs.m_matrix[line][column]);
+			if (minedColumn) m_matrix[line][column] = new MinedColumn(*minedColumn);
+		}
+	}
+
+	for (const auto& bridge : rhs.m_bridges)
+	{
+		const auto& [firstPosition, secondPosition] { ExtractPositionFromKey(bridge.first)};
+		IColumn* firstColumn{ nullptr }, * secondColumn{ nullptr };
+
+		firstColumn = m_matrix[firstPosition.GetRow()][firstPosition.GetColumn()];
+		secondColumn = m_matrix[secondPosition.GetRow()][secondPosition.GetColumn()];
+
+		Bridge* newBridge{ new Bridge(firstColumn, secondColumn) };
+		m_bridges.emplace(bridge.first, newBridge);
+	}
+	for (uint16_t line{ 0 }; line < rhs.m_firstPlayerPath.size(); ++line)
+	{
+		std::vector<bool> firstPlayerPathLine;
+		std::vector<bool> secondPlayerPathLine;
+		for (uint16_t column{ 0 }; column < rhs.m_firstPlayerPath[line].size(); ++column)
+		{
+			firstPlayerPathLine.push_back(rhs.m_firstPlayerPath[line][column]);
+			secondPlayerPathLine.push_back(rhs.m_secondPlayerPath[line][column]);
+		}
+		m_firstPlayerPath.push_back(firstPlayerPathLine);
+		m_secondPlayerPath.push_back(secondPlayerPathLine);
+	}
+
+	return *this;
 }
 
 Board::~Board() {
