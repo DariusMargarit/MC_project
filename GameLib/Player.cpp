@@ -128,8 +128,3 @@ void Player::DecreaseColumnNumber(const uint16_t& number)
 {
 	if (m_ColumnCounter - number >= 0) m_ColumnCounter -= number;
 }
-
-IPlayer* IPlayer ::Produce(std::string_view name, EColor color)
-{
-	return new Player{ name, color };
-}

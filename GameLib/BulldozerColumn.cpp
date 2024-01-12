@@ -2,7 +2,7 @@
 
 BulldozerColumn::BulldozerColumn() noexcept
 {
-    m_bulldozer = new Player("", EColor::NoColor);
+    m_bulldozer = new Player("", EColor::NoColor, 0, 0);
 }
 
 BulldozerColumn::BulldozerColumn(const BulldozerColumn& rhs) noexcept

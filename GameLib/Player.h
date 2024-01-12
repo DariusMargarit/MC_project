@@ -6,7 +6,7 @@ class Player : public IPlayer
 {
 public:
 	Player(const std::string_view& name, const EColor& color,
-		   const uint16_t& BridgeCounter = 50, const uint16_t& ColumnCounter = 50);
+		   const uint16_t& BridgeCounter, const uint16_t& ColumnCounter);
 	Player(const Player* rhs);
 	Player(Player&& rhs) noexcept;
 	Player& operator= (const Player* rhs) noexcept;

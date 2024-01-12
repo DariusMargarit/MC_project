@@ -12,8 +12,10 @@ IGamePtr IGame::Produce(const IGameSettings& settings)
 }
 
 Game::Game(const IGameSettings& settings)
-	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor()) }
-	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor()) }
+	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor(),
+							settings.GetBridgeLimit(), settings.GetColumnLimit())}
+	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor(),
+							settings.GetBridgeLimit(), settings.GetColumnLimit())}
 	, m_boardSize{ settings.GetTableSize() }
 	, m_parser{ parser::ITwixtParser::Produce(settings.GetTableSize())}
 	, m_gamemode{ EGamemode::MinedColumns }
