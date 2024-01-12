@@ -60,6 +60,21 @@ void BulldozerGame::MoveToRandomEmptyPlace()
 
 }
 
+void BulldozerGame::DestroyOrMove()
+{
+	if (CoinFlip())
+	{
+		DestroyRandomColumn();
+	}
+	else
+	{
+		epsilon *= 0.97;
+		MoveToRandomEmptyPlace();
+	}
+
+
+}
+
 void BulldozerGame::PlaceBulldozer(const Position& position)
 {
 	m_board->PlaceColumn(position, new BulldozerColumn);
