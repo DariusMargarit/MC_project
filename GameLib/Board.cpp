@@ -384,7 +384,7 @@ bool Board::CheckWinner(bool player) const
 	{
 		for (uint16_t rowIndex{ 0 }; rowIndex < m_matrix.size(); ++rowIndex)
 		{
-			if (m_firstPlayerPath[rowIndex][m_matrix.size() - 1] == 1)
+			if (m_secondPlayerPath[rowIndex][m_matrix.size() - 1] == 1)
 			{
 				return true;
 			}
