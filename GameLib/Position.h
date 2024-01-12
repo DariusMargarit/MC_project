@@ -10,8 +10,9 @@ class Position
 public:
 	Position() noexcept;
 	Position(const uint16_t& row, const uint16_t& column) noexcept;
-	Position(const Position& rhs) noexcept;
-	Position(Position&& rhs) noexcept;
+	Position(const PositionPair& position);
+	Position(const Position& other) noexcept;
+	Position(Position&& other) noexcept;
 
 	const uint16_t GetRow() const noexcept;
 	const uint16_t GetColumn() const noexcept;

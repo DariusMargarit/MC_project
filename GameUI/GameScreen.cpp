@@ -36,7 +36,7 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 
 void GameScreen::SetWindowFullScreen(bool isFullScreen)
 {
-	m_board->SetWindowFullScreen(isFullScreen);
+	if (m_board) m_board->SetWindowFullScreen(isFullScreen);
 }
 
 void GameScreen::OnColumnPlaced(Position& position, IPlayer* player)
@@ -56,9 +56,10 @@ void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlaye
 
 void GameScreen::OnHistoryClicked(QListWidgetItem* item)
 {
-	qDebug() << m_history->currentRow();
-	m_game->PreviewTable(m_history->currentRow());
-	m_board->update();
+	const auto& index = m_history->currentRow() + 1;
+	m_game->PreviewTable(index);
+	m_board->setEnabled(index == m_history->count());
+	update();
 }
 
 void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton& button)

@@ -8,16 +8,16 @@ export namespace parser
 	class TwixtParser : public ITwixtParser
 	{
 	public:
-		TwixtParser(uint16_t boardSize);
+		TwixtParser() = default;
 		TwixtParser(const TwixtParser& other) = default;
 
 		bool LoadPTG(std::string_view path) override;
 		bool SavePTG(std::string_view path) override;
 
-		void AddColumn(const Position& position, bool isFirstPlayer) override;
+		void AddColumn(const Position& position) override;
 		void AddBridge(bool removed, const Position& firstPos, const Position& secondPos) override;
 
-		MovesPositions GetGamePreview(int historyIndex) const override;
+		PTGGameRepresentation GetGamePreview(int historyIndex) const override;
 
 		void Clear() override;
 
@@ -25,9 +25,7 @@ export namespace parser
 
 
 	private:
-		BoardRepresentation m_boardRepresentation;
-		MovesPositions m_movesRepresentation;
-		ColumnPositions m_columnPositions;
+		PTGGameRepresentation m_representation;
 
 	};
 }

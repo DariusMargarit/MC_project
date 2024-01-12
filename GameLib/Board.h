@@ -41,6 +41,8 @@ public:
 	uint16_t RemoveColumn(const Position& position);
 	bool MakeBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
 	bool RemoveBridge(const Position& firstPos, const Position& secondPos, IPlayer* player);
+
+	void Clear();
     
 	
 	Board& operator=(const Board& rhs) noexcept;

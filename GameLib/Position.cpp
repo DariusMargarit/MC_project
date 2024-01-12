@@ -28,6 +28,13 @@ Position::Position() noexcept
 	// Empty
 }
 
+Position::Position(const PositionPair& position)
+	: m_row(position.first)
+	, m_column(position.second)
+{
+	// Empty
+}
+
 const uint16_t Position::GetRow() const noexcept
 {
 	return m_row;

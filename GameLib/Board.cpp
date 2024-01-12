@@ -558,6 +558,14 @@ bool Board::RemoveBridge(const Position& firstPos, const Position& secondPos, IP
 	return true;
 }
 
+void Board::Clear()
+{
+	m_matrix = std::vector{ GetSize(), std::vector<IColumn*>{GetSize(), nullptr} };
+	m_bridges.clear();
+	m_firstPlayerPath = std::vector{ GetSize(), std::vector<bool>(GetSize(), 0) };
+	m_secondPlayerPath = std::vector{ GetSize(), std::vector<bool>(GetSize(), 0) };
+}
+
 bool Board::BridgeExists(const Position& firstPos, const Position& secondPos) const
 {
 	const auto firstKey{ MakeKey(firstPos, secondPos) };

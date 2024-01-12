@@ -62,6 +62,8 @@ private:
 	EGamemode m_gamemode;
 	parser::TwixtParserPtr m_parser;
 
+	bool m_notificationsDisabled;
+
 	ObserverList m_observers;
 
 };

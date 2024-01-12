@@ -17,8 +17,9 @@ Game::Game(const IGameSettings& settings)
 	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor(),
 							settings.GetBridgeLimit(), settings.GetColumnLimit())}
 	, m_boardSize{ settings.GetTableSize() }
-	, m_parser{ parser::ITwixtParser::Produce(settings.GetTableSize())}
-	, m_gamemode{ EGamemode::MinedColumns }
+	, m_parser{ parser::ITwixtParser::Produce()}
+	, m_gamemode{ settings.GetGamemode()}
+	, m_notificationsDisabled{false}
 {	
 	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
@@ -72,16 +73,16 @@ bool Game::PlaceColumn(Position position)
 	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1) &&
 		isFirstPlayer) return false;
 
-	if (isFirstPlayer)
-	{if (!m_player1->HasColumnsToAdd()) return false;}
-		else
-	{if (!m_player2->HasColumnsToAdd()) return false;}
+	bool canAdd = isFirstPlayer ? m_player1->HasBridgesToAdd() : m_player2->HasBridgesToAdd();
+	if (!canAdd && !m_notificationsDisabled) return false;
 
 	if (!m_board->PlaceColumn(position, m_turn)) return false;
 
 	NotifyPlaceColumn(position, m_turn);
-	isFirstPlayer ? m_player1->DecreaseColumnNumber() : m_player2->DecreaseColumnNumber();
-	m_parser->AddColumn(position.ToPair(), isFirstPlayer);
+	if (!m_notificationsDisabled)
+	{
+		isFirstPlayer ? m_player1->DecreaseColumnNumber() : m_player2->DecreaseColumnNumber();
+	}
 	ChangeTurn();
 
 	if (m_gamemode == EGamemode::MinedColumns && isMinedColumn)
@@ -105,9 +106,11 @@ bool Game::MakeBridge(Position firstPos, Position secondPos)
 	if (!m_board->MakeBridge(firstPos, secondPos, m_turn)) return false;
 
 	NotifyMakeBridge(firstPos, secondPos, m_turn);
-	isFirstPlayer ? m_player1->DecreaseBridgeNumber():
-					m_player2->DecreaseBridgeNumber();
-	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
+
+	if (!m_notificationsDisabled)
+	{
+		isFirstPlayer ? m_player1->DecreaseBridgeNumber() : m_player2->DecreaseBridgeNumber();
+	}
 	
 	ComputePathToWin(0, firstPos, secondPos);
 
@@ -118,10 +121,7 @@ bool Game::RemoveBridge(Position firstPos, Position secondPos)
 {
 	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return false;
 
-	
-
 	NotifyRemoveBridge(firstPos, secondPos, m_turn);
-	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
 	m_turn == m_player1 ? m_player1->IncreaseBridgeNumber():
 						  m_player2->IncreaseBridgeNumber();
 	ComputePathToWin(1, firstPos, secondPos);
@@ -149,10 +149,31 @@ IPlayer* Game::GetSecondPlayer() const
 
 void Game::PreviewTable(int historyIndex)
 {
-	//const auto& moveRepresentation = m_parser->GetHistoryMovesPositions(historyIndex);
-	//if ()
-	//m_board.reset();
-	
+	m_notificationsDisabled = true;
+
+	const auto& movesRepresentation = m_parser->GetGamePreview(historyIndex);
+	m_board->Clear();
+	m_turn = m_player1;
+
+	for (auto move : movesRepresentation)
+	{
+		const auto& [firstPos, secondPos, removed] = move;
+		const auto& [firstPosRow, firstPosColumn] = firstPos;
+		const auto& [secondPosRow, secondPosColumn] = secondPos;
+
+		if (!secondPosRow && !secondPosColumn)
+		{
+			PlaceColumn(Position(firstPosRow, firstPosColumn));
+		}
+		else
+		{
+			removed ? RemoveBridge(Position(firstPosRow, firstPosColumn), Position(secondPosRow, secondPosColumn))
+					: MakeBridge  (Position(firstPosRow, firstPosColumn), Position(secondPosRow, secondPosColumn));
+		}
+	}
+
+	m_notificationsDisabled = false;
+
 }
 
 Game& Game::operator=(const Game& rhs)
@@ -239,6 +260,8 @@ void Game::RemoveObserver(ObserverPtr observer)
 
 void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
 {
+	if (m_notificationsDisabled) return;
+	m_parser->AddColumn(position.ToPair());
 	for (auto& observer : m_observers)
 	{
 		observer.lock()->OnColumnPlaced(position, player);
@@ -247,6 +270,8 @@ void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
 
 void Game::NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* player) const
 {
+	if (m_notificationsDisabled) return;
+	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
 	for (auto& observer : m_observers)
 	{
 		observer.lock()->OnBridgePlaced(firstPos, secondPos, player);
@@ -255,6 +280,8 @@ void Game::NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* play
 
 void Game::NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* player) const
 {
+	if (m_notificationsDisabled) return;
+	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
 	for (auto& observer : m_observers)
 	{
 		observer.lock()->OnBridgeRemoved(firstPos, secondPos, player);
