@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "IGame.h"
 #include "Board.h"
 #include "Player.h"
@@ -56,6 +58,7 @@ private:
 	IPlayer* m_turn;
 	Minimax* m_minimax;
 	MinedGame* m_minedGame;
+	EGamemode m_gamemode;
 	parser::TwixtParserPtr m_parser;
 
 	ObserverList m_observers;

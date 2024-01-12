@@ -56,7 +56,13 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 			else if (auto element{ m_gameBoard.GetElement(row, column) }; element)
 			{
 				color = ColorUtils::TwixtColorToQColor(element->GetPlayer()->GetColor());
-				radius = CalculateRadius(false);
+
+				if (color == Qt::transparent)
+				{
+					color = Qt::white;
+					radius = CalculateRadius(m_hovered.IsEqual(row, column) ? false : true);
+				}
+				else radius = CalculateRadius(false);
 			}
 			else if (m_hovered.IsEqual(row, column))
 			{
@@ -68,6 +74,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 				color = Qt::white;
 				radius = CalculateRadius(true);
 			}
+
 
 			painter.setPen(color);
 			painter.setBrush(color);

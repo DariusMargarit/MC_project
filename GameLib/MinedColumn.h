@@ -14,5 +14,6 @@ public:
 
 	IPlayer* GetPlayer() const noexcept override;
 private:
+	static Player* mineSpot;
 };
 

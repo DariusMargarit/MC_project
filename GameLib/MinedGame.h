@@ -16,10 +16,10 @@ public:
 	MinedGame& operator=(const MinedGame& rhs) = default;
 	MinedGame& operator=(MinedGame&& rhs) noexcept = default;
 
-	void PlaceMine(const Position& position);
+	void DestroyArea(const Position& position);
 	void AddMines();
 
-	void DestroyArea(const Position& position);
 private:
+	void PlaceMine(const Position& position);
 	BoardPtr m_board;
 };

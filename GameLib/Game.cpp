@@ -16,22 +16,16 @@ Game::Game(const IGameSettings& settings)
 	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor()) }
 	, m_boardSize{ settings.GetTableSize() }
 	, m_parser{ parser::ITwixtParser::Produce(settings.GetTableSize())}
+	, m_gamemode{ EGamemode::MinedColumns }
 {	
 	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
+	m_minedGame = new MinedGame(m_board);
+
+	if (m_gamemode == EGamemode::MinedColumns) m_minedGame->AddMines();
 	if (m_board->GetSize() <= 6)
 	{
 		m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
-	}
-
-	switch (settings.GetGamemode())
-	{
-	case EGamemode::Standard:
-		break;
-	case EGamemode::MinedColumns:
-		break;
-	case EGamemode::Bulldozer:
-		break;
 	}
 }
 
@@ -64,6 +58,11 @@ Game::Game(Game && other) noexcept
 
 bool Game::PlaceColumn(Position position)
 {
+	bool isMinedColumn = false;
+
+	if (dynamic_cast<const MinedColumn*>(m_board->GetElement(position)))
+		isMinedColumn = true;
+
 	bool isFirstPlayer = m_turn == m_player1;
 	if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) &&
 		!isFirstPlayer) return false;
@@ -76,6 +75,12 @@ bool Game::PlaceColumn(Position position)
 	NotifyPlaceColumn(position, m_turn);
 	m_parser->AddColumn(position.ToPair(), isFirstPlayer);
 	ChangeTurn();
+
+	if (m_gamemode == EGamemode::MinedColumns && isMinedColumn)
+	{
+		m_minedGame->DestroyArea(position);
+		isFirstPlayer ? m_player1->SetDoubleTurn(true) : m_player2->SetDoubleTurn(true);
+	}
 
 	return true;
 
@@ -229,6 +234,12 @@ void Game::NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* pl
 
 void Game::ChangeTurn()
 {
+	if (auto player = dynamic_cast<Player*>(m_turn); player && player->GetDoubleTurn())
+	{
+		player->SetDoubleTurn(false);
+		return;
+	}
+
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
 }
 

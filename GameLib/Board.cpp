@@ -502,6 +502,8 @@ const uint16_t Board::GetSize() const
 
 bool Board::PlaceColumn(const Position& position, IPlayer* player)
 {
+	auto columnOnPosition = GetElement(position);
+	if (columnOnPosition&& columnOnPosition->GetPlayer()->GetColor() == EColor::NoColor) return true;
 	if (ValidPlaceColumn(position)) {
 		IColumn* newColumn{ new Column(player) };
 		m_matrix[position.GetRow()][position.GetColumn()] = newColumn ;
