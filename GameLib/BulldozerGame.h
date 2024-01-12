@@ -1,27 +1,23 @@
 #pragma once
-#include "IGame.h"
 #include "Board.h"
-#include "Player.h"
+#include "BulldozerColumn.h"
 
 
-class BulldozerGame : public IGame
+class BulldozerGame : public std::monostate
 {
 public:
-	BulldozerGame(const BulldozerGame& rhs);
+	BulldozerGame(BoardPtr& rhs);
 	BulldozerGame(BulldozerGame&& rhs) = default;
-	~BulldozerGame();
-	BulldozerGame& operator=(const BulldozerGame& rhs);
+	~BulldozerGame() = default;
+	BulldozerGame& operator=(const BulldozerGame& rhs) = default;
 	BulldozerGame& operator=(BulldozerGame&& rhs) noexcept = default;
 	
 	
 
-
-
 private:
-	Board* m_board;
-	uint16_t m_boardSize;
-	IPlayer* m_player1, * m_player2, * m_turn, *m_bulldozer;
-	ObserverList m_observers;
+	void PlaceBulldozer(const Position& position);
+	BoardPtr m_board;
+	
 
 
 };

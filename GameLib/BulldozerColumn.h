@@ -4,18 +4,17 @@
 
 class BulldozerColumn : public IColumn
 {
-	
+
 public:
-	BulldozerColumn() noexcept;
-	BulldozerColumn(const BulldozerColumn& rhs) noexcept;
+	BulldozerColumn() noexcept = default;
+	BulldozerColumn(const BulldozerColumn& rhs) noexcept = default;
 	BulldozerColumn(BulldozerColumn&& rhs) noexcept = default;
-	~BulldozerColumn();
-	BulldozerColumn& operator=(const BulldozerColumn& rhs) noexcept;
+	~BulldozerColumn() = default;
+	BulldozerColumn& operator=(const BulldozerColumn& rhs) noexcept = default;
 	BulldozerColumn& operator=(BulldozerColumn&& rhs) noexcept = default;
 
 	IPlayer* GetPlayer() const noexcept override;
 private:
-	IPlayer* m_bulldozer;
-	
-};
+	static Player* m_bulldozer;
 
+};
