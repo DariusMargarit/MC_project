@@ -13,6 +13,8 @@ public:
 	BulldozerGame& operator=(BulldozerGame&& rhs) noexcept = default;
 	
 	bool CoinFlip();
+	void DestroyRandomColumn();
+	
 
 private:
 	void PlaceBulldozer(const Position& position);
