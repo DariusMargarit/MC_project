@@ -16,7 +16,7 @@ public:
 	MinedGame& operator=(const MinedGame& rhs) = default;
 	MinedGame& operator=(MinedGame&& rhs) noexcept = default;
 
-	void DestroyArea(const Position& position);
+	void DestroyArea(const Position& position, Player* firstPlayer, Player* secondPlayer);
 	void AddMines();
 
 private:

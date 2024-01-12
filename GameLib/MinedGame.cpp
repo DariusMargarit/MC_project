@@ -23,7 +23,7 @@ void MinedGame::AddMines()
 	}
 }
 
-void MinedGame::DestroyArea(const Position& position)
+void MinedGame::DestroyArea(const Position& position, Player* firstPlayer, Player* secondPlayer)
 {
 	uint16_t rowPosition{ position.GetRow() }, columnPosition{ position.GetColumn() };
 	
@@ -31,7 +31,15 @@ void MinedGame::DestroyArea(const Position& position)
 	{
 		for (uint16_t column{ (uint16_t)(columnPosition - 1) }; column <= columnPosition + 1; ++column)
 		{
-			m_board->RemoveColumn({ row,column });
+			uint16_t numberOfBridgesRemoved {m_board->RemoveColumn({ row,column })};
+
+			if(numberOfBridgesRemoved)
+			{
+				Player* playerUsed = m_board->GetElement(row, column)->GetPlayer() == firstPlayer
+				? firstPlayer : secondPlayer;
+				playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
+				playerUsed->IncreaseColumnNumber();
+			}
 		}
 	}
 }
