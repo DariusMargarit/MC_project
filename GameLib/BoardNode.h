@@ -7,7 +7,7 @@
 class BoardNode : public Board
 {
 public:
-	BoardNode(const Board& board, IPlayerPtr maximizingPlayer, IPlayerPtr minimizingPlayer);
+	BoardNode(const BoardPtr board, IPlayerPtr maximizingPlayer, IPlayerPtr minimizingPlayer);
 	BoardNode(const BoardNode& other);
 	~BoardNode() = default;
 

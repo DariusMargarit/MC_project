@@ -1,7 +1,7 @@
 #include "BoardNode.h"
 
-BoardNode::BoardNode(const Board& board, IPlayerPtr maximizingPlayer, IPlayerPtr minimizingPlayer)
-	: Board(board)
+BoardNode::BoardNode(const BoardPtr board, IPlayerPtr maximizingPlayer, IPlayerPtr minimizingPlayer)
+	: Board(*board.get())
     , m_maximizingPlayer{maximizingPlayer}
     , m_minimizingPlayer{minimizingPlayer}
 {

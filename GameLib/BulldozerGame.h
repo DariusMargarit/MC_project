@@ -8,7 +8,7 @@ class BulldozerGame
 public:
 	BulldozerGame(BoardPtr& rhs);
 	
-	void DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer);
+	Position DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer);
 	
 	
 

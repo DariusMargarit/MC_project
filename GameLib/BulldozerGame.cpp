@@ -60,7 +60,7 @@ void BulldozerGame::MoveToRandomEmptyPlace()
 
 	uint16_t randomRowIndex{ distribution(gen) };
 	uint16_t randomColumnIndex{ distribution(gen) };
-	Position position{ randomRowIndex ,randomRowIndex };
+	Position position{ randomRowIndex ,randomColumnIndex };
 
 	while (m_board->GetElement(position) != nullptr)
 	{
@@ -74,7 +74,7 @@ void BulldozerGame::MoveToRandomEmptyPlace()
 
 }
 
-void BulldozerGame::DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer)
+Position BulldozerGame::DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer)
 {
 	if (CoinFlip())
 	{
@@ -85,6 +85,7 @@ void BulldozerGame::DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer)
 		m_epsilon *= 0.97;
 		MoveToRandomEmptyPlace();
 	}
+	return m_currentPosition;
 
 
 }

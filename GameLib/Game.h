@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Minimax.h"
 #include "MinedGame.h"
+#include "BulldozerGame.h"
 
 #include "../TwixtTextParser/ITwixtParser.h"
 
@@ -61,6 +62,7 @@ private:
 	IPlayerPtr m_turn;
 	Minimax* m_minimax;
 	MinedGame* m_minedGame;
+	BulldozerGame* m_bulldozerGame;
 	EGamemode m_gamemode;
 	parser::TwixtParserPtr m_parser;
 	const IGameSettingsPtr m_settings;

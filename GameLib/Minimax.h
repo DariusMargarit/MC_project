@@ -6,13 +6,13 @@
 class Minimax 
 {
 public:
-	Minimax(Board& board, int16_t depth, IPlayerPtr firstPlayer, IPlayerPtr secondPlayer);
+	Minimax(BoardPtr board, int16_t depth, IPlayerPtr firstPlayer, IPlayerPtr secondPlayer);
 	~Minimax() = default;
 
 	std::pair<BridgeVector, Position> GetHint(int16_t depth, IPlayerPtr player);
 
 private:
-	void GenerateTree(Board& board, int16_t depth, std::shared_ptr<BoardNode> currentHead, IPlayerPtr firstPlayer, IPlayerPtr secondPlayer);
+	void GenerateTree(BoardPtr board, int16_t depth, std::shared_ptr<BoardNode> currentHead, IPlayerPtr firstPlayer, IPlayerPtr secondPlayer);
 	bool GameOver() const;
 	int16_t Evaluate() const;
 	std::shared_ptr<BoardNode> GetBoardNodeHint(int16_t depth, IPlayerPtr player);

@@ -107,6 +107,8 @@ void GameScreen::OnGameEnd(EGameResult result)
 
 void GameScreen::OnHistoryClicked(QListWidgetItem* item)
 {
+	if (IGameSettings::GetInstance()->GetGamemode() != EGamemode::Standard) return;
+
 	const auto& index = m_history->currentRow() + 1;
 	m_game->PreviewTable(index);
 	m_board->setEnabled(index == m_history->count());

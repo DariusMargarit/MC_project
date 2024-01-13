@@ -18,20 +18,23 @@ Game::Game(const IGameSettingsPtr settings)
 							settings->GetBridgeLimit(), settings->GetColumnLimit())}
 	, m_boardSize{ settings->GetTableSize() }
 	, m_parser{ parser::ITwixtParser::Produce()}
+	, m_board{ std::make_shared<Board>(settings->GetTableSize())}
 	, m_gamemode{ settings->GetGamemode()}
 	, m_notificationsDisabled{false}
 	, m_firstGameMove{false}
 	, m_gameEnded{false}
 	, m_settings{settings}
 {	
-	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
+
 	m_minedGame = new MinedGame(m_board);
+	m_bulldozerGame = new BulldozerGame(m_board);
 
 	if (m_gamemode == EGamemode::MinedColumns) m_minedGame->AddMines();
+	if (m_gamemode == EGamemode::Bulldozer) m_bulldozerGame->DestroyOrMove(m_player1, m_player2);
 	if (m_board->GetSize() <= 7)
 	{
-		m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
+		m_minimax = new Minimax(m_board, m_boardSize - 1, m_player1, m_player2);
 	}
 }
 
@@ -69,6 +72,12 @@ bool Game::PlaceColumn(const Position& position)
 		isFirstPlayer ? m_player1->DecreaseColumnNumber() : m_player2->DecreaseColumnNumber();
 	}
 
+	if (m_turn == m_player2 && m_gamemode == EGamemode::Bulldozer)
+	{
+		auto bulldozerPos = m_bulldozerGame->DestroyOrMove(m_player1, m_player2);
+		auto bulldozerPlayer = m_board->GetElement(bulldozerPos)->GetPlayer();
+		NotifyPlaceColumn(bulldozerPos, bulldozerPlayer);
+	}
 	ChangeTurn();
 
 	if (!m_firstGameMove)
