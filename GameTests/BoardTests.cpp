@@ -25,6 +25,32 @@ protected:
 
 };
 
+TEST_F(BoardTests, GetElementTest) {
+
+	// Place some columns on the board
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 2 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 7 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 4, 2 }, m_player1), true);
+
+	// Test valid positions
+	const IColumn* column1 = m_board->GetElement({ 2, 2 });
+	const IColumn* column2 = m_board->GetElement({ 2, 7 });
+	const IColumn* column3 = m_board->GetElement({ 4, 2 });
+
+	// Ensure columns at valid positions are not nullptr
+	EXPECT_NE(column1, nullptr);
+	EXPECT_NE(column2, nullptr);
+	EXPECT_NE(column3, nullptr);
+
+	// Test invalid positions
+	const IColumn* invalidColumn1 = m_board->GetElement({ 0, 0 });
+	const IColumn* invalidColumn2 = m_board->GetElement({ 0, 23 });
+
+	// Ensure columns at invalid positions are nullptr
+	EXPECT_EQ(invalidColumn1, nullptr);
+	EXPECT_EQ(invalidColumn2, nullptr);
+}
+
 TEST_F(BoardTests, PlaceColumnTest1) {
 
 	// the position should be valid before insertion
