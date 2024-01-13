@@ -66,6 +66,8 @@ TEST_F(BoardTests, PlaceWrongColumnTest) {
 
 }
 
+
+
 TEST_F(BoardTests, MakeValidBridgeTest)
 {
 	Position pos{ {8,10} };

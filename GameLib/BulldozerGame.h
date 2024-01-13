@@ -13,9 +13,9 @@ public:
 	BulldozerGame& operator=(BulldozerGame&& rhs) noexcept = default;
 	
 	bool CoinFlip();
-	void DestroyRandomColumn();
+	void DestroyRandomColumn(Player* firstPlayer, Player* secondPlayer);
 	void MoveToRandomEmptyPlace();
-	void DestroyOrMove();
+	void DestroyOrMove(Player* firstPlayer, Player* secondPlayer);
 	
 	
 

@@ -19,7 +19,7 @@ bool BulldozerGame::CoinFlip()
 	
 }
 
-void BulldozerGame::DestroyRandomColumn()
+void BulldozerGame::DestroyRandomColumn(Player* firstPlayer, Player* secondPlayer)
 {
 
 	std::random_device rd;
@@ -37,9 +37,17 @@ void BulldozerGame::DestroyRandomColumn()
 		position = { randomRowIndex ,randomColumnIndex };
 	}
 
-	m_board->RemoveColumn(position);
+	uint16_t numberOfBridgesRemoved = m_board->RemoveColumn(position);
+
+	if (numberOfBridgesRemoved)
+	{
+		Player* playerUsed = m_board->GetElement(position)->GetPlayer() == firstPlayer
+			? firstPlayer : secondPlayer;
+		playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
+		playerUsed->IncreaseColumnNumber();
+	}
 	PlaceBulldozer(position);
-	m_board->RemoveColumn(m_currentPosition);
+	numberOfBridgesRemoved = m_board->RemoveColumn(m_currentPosition);
 	m_currentPosition = position;
 
 }
@@ -61,16 +69,16 @@ void BulldozerGame::MoveToRandomEmptyPlace()
 		position = { randomRowIndex ,randomColumnIndex };
 	}
 	PlaceBulldozer(position);
-	m_board->RemoveColumn(m_currentPosition);
+	uint16_t numberOfBridgesRemoved = m_board->RemoveColumn(m_currentPosition);
 	m_currentPosition = position;
 
 }
 
-void BulldozerGame::DestroyOrMove()
+void BulldozerGame::DestroyOrMove(Player* firstPlayer, Player* secondPlayer)
 {
 	if (CoinFlip())
 	{
-		DestroyRandomColumn();
+		DestroyRandomColumn(firstPlayer, secondPlayer);
 	}
 	else
 	{
