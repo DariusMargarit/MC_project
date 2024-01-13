@@ -162,6 +162,29 @@ TEST_F(BoardTests, MakeBridgeIntersection2)
 	
 }
 
+TEST_F(BoardTests, ClearTest)
+{
+
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 2 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 7 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 4, 2 }, m_player1), true);
+
+	m_board->Clear();
+
+	for (uint16_t row{ 0 }; row < m_board->GetSize(); ++row)
+	{
+		for (uint16_t column{ 0 }; column < m_board->GetSize(); ++column)
+		{
+			const IColumn* columnPtr = m_board->GetElement({ row, column });
+			EXPECT_EQ(columnPtr, nullptr);
+		
+		}
+	}
+
+
+}
+
+
 
 
 
