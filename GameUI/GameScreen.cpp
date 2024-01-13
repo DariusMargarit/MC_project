@@ -1,19 +1,20 @@
 #include "GameScreen.h"
 #include "FileUtils.h"
+#include "Dialog.h"
 
 #include "IGameSettings.h"
 
 
 GameScreen::GameScreen(IGamePtr game, QWidget* parent)
-	: QWidget{parent}
-	, m_game{game}
-	, m_layout{new QGridLayout{this}}
-	, m_history{new HistoryWidget{this}}
-	, m_firstPlayerBar{new PlayerBar{*game->GetFirstPlayer(), true, this}}
-	, m_secondPlayerBar{new PlayerBar{*game->GetSecondPlayer(), false, this}}
-	, m_board{new BoardWidget{*game->GetBoard(), game->GetTurn(),
+	: QWidget{ parent }
+	, m_game{ game }
+	, m_layout{ new QGridLayout{this} }
+	, m_history{ new HistoryWidget{this} }
+	, m_firstPlayerBar{ new PlayerBar{*game->GetFirstPlayer(), true, this} }
+	, m_secondPlayerBar{ new PlayerBar{*game->GetSecondPlayer(), false, this} }
+	, m_board{ new BoardWidget{*game->GetBoard(), game->GetTurn(),
 			  game->GetFirstPlayer()->GetColor(), game->GetSecondPlayer()->GetColor(),
-			  this}}
+			  this} }
 {
 	m_layout->addWidget(m_firstPlayerBar, 0, 0, 1, 4);
 	m_layout->addWidget(m_board, 1, 0, 1, 3);
@@ -36,7 +37,7 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 
 void GameScreen::SetWindowFullScreen(bool isFullScreen)
 {
-	if (m_board) m_board->SetWindowFullScreen(isFullScreen);
+	m_board->SetWindowFullScreen(isFullScreen);
 }
 
 void GameScreen::OnColumnPlaced(Position& position, IPlayer* player)
@@ -56,12 +57,18 @@ void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlaye
 
 void GameScreen::OnSwapRequest()
 {
-	m_game->SwapResponse(true);
+	Dialog* dialog = new Dialog(this);
+	auto generatedText = dialog->LoadDialog(
+		"A swap request has been made",
+		"Do you want to swap with first player?"
+	);
+	auto response = dialog->ExecuteDialog(generatedText, true);
+	m_game->SwapResponse(response);
 }
 
 void GameScreen::OnSwapResponse(bool response)
 {
-	if (response) 
+	if (response)
 	{
 		update();
 	}

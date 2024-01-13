@@ -55,14 +55,17 @@ void GameUI::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::WindowStateChange)
 	{
-		if (windowState() && Qt::WindowFullScreen)
-		{
-            m_gameScreen->SetWindowFullScreen(true);
-		}
-		else
-		{
-            m_gameScreen->SetWindowFullScreen(false);
-		}
+        if (m_screens->currentWidget() == m_gameScreen.get())
+        {
+            if (windowState() && Qt::WindowFullScreen)
+            {
+                m_gameScreen->SetWindowFullScreen(true);
+            }
+            else
+            {
+                m_gameScreen->SetWindowFullScreen(false);
+            }
+        }
 	}
 }
 

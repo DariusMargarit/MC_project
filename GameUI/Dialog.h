@@ -1,29 +1,40 @@
 #pragma once
 
 #include <QDialog>
+#include <concepts>
 
 #include "Button.h"
+
+template<typename T>
+concept arithmetic = std::integral<T> or std::floating_point<T>;
 
 class Dialog : public QDialog
 {
 public:
 	Dialog(QWidget* parent = nullptr);
 
-	template<typename T>
-	void MakeDialog(T field)
+	template<typename T> requires arithmetic<T>
+	std::string LoadDialog(T field)
 	{
-		QLabel* label = new QLabel();
-		label->setText(QString(field));
-		m_layout->addWidget(label);
+		return std::to_string(field);
+	}
+
+	template<typename T>
+	std::string LoadDialog(T field)
+	{
+		return std::string(field);
 	}
 
 	template <typename T, typename...Ts>
-	void MakeDialog(T field, Ts...fields)
+	std::string LoadDialog(T field, Ts...fields)
 	{
-		MakeDialog(fields...);
+		 return field + std::string("\n") + LoadDialog(fields...);
 	}
+
+	bool ExecuteDialog(std::string result, bool buttons);
 
 private:
 	QGridLayout* m_layout;
+	QLabel* m_label;
 
 };
