@@ -22,13 +22,14 @@ Game::Game(const IGameSettingsPtr settings)
 	, m_notificationsDisabled{false}
 	, m_firstGameMove{false}
 	, m_gameEnded{false}
+	, m_settings{settings}
 {	
 	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
 	m_minedGame = new MinedGame(m_board);
 
 	if (m_gamemode == EGamemode::MinedColumns) m_minedGame->AddMines();
-	if (m_board->GetSize() <= 6)
+	if (m_board->GetSize() <= 7)
 	{
 		m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
 	}
@@ -45,8 +46,8 @@ bool Game::PlaceColumn(const Position& position)
 
 	if (!m_player1->HasColumnsToAdd() && !m_player2->HasColumnsToAdd())
 	{
-		NotifyGameEnd(EGameResult::Tie);
 		m_gameEnded = true;
+		NotifyGameEnd(EGameResult::Tie);
 	}
 
 	if (std::dynamic_pointer_cast<MinedColumnPtr>(m_board->GetElement(position)))
@@ -156,9 +157,9 @@ IPlayerPtr Game::GetSecondPlayer() const
 	return m_player2;
 }
 
-void Game::PreviewTable(int historyIndex)
+void Game::PreviewTable(int historyIndex, bool hideNotifications /* = true */)
 {
-	m_notificationsDisabled = true;
+	m_notificationsDisabled = hideNotifications;
 
 	const auto& movesRepresentation = m_parser->GetGamePreview(historyIndex);
 	m_board->Clear();
@@ -225,6 +226,23 @@ void Game::RemoveObserver(ObserverPtr observer)
 		[observer](ObserverPtr weakObserver) {
 			return weakObserver.expired() || weakObserver.lock() == observer.lock();
 		});
+}
+
+void Game::Restart()
+{
+	m_board->Clear();
+	m_turn = m_player1;
+	m_parser->Clear();
+
+	m_player1->SetName(m_settings->GetFirstPlayerName());
+	m_player2->SetName(m_settings->GetSecondPlayerName());
+	m_player1->IncreaseBridgeNumber(m_settings->GetBridgeLimit());
+	m_player2->IncreaseBridgeNumber(m_settings->GetBridgeLimit());
+	m_player1->IncreaseColumnNumber(m_settings->GetColumnLimit());
+	m_player2->IncreaseColumnNumber(m_settings->GetColumnLimit());
+
+	m_notificationsDisabled = m_firstGameMove = m_gameEnded = false;
+	if (m_gamemode == EGamemode::MinedColumns) m_minedGame->AddMines();
 }
 
 void Game::NotifyPlaceColumn(Position position, IPlayerPtr player) const
@@ -388,7 +406,7 @@ bool Game::LoadGame(const std::string_view path, StorageFormat format)
 	{
 		if (size_t size = m_parser->LoadPTG(path); size)
 		{
-			PreviewTable(size);
+			PreviewTable(size, false);
 			return true;
 		}
 		break;

@@ -22,6 +22,7 @@ public:
 
 public slots:
     void OnMainMenuButtonClicked(const EButtonPressed& button);
+    void OnReturnToMainMenuClicked();
 
 protected:
     void changeEvent(QEvent* event) override;

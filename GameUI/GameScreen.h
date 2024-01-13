@@ -26,6 +26,9 @@ private slots:
 	void OnHistoryClicked(QListWidgetItem* item);
 	void OnBoardClicked(const Position& position, const Qt::MouseButton& button);
 
+signals:
+	void ReturnToMainMenu();
+
 private:
 	QGridLayout* m_layout;
 	BoardWidget* m_board;

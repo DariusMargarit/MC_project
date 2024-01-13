@@ -30,6 +30,7 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
         IGameSettingsPtr settings = IGameSettings::GetInstance();
         const auto& game = IGame::Produce(settings);
         m_gameScreen = std::make_shared<GameScreen>(game, this);
+        connect(m_gameScreen.get(), SIGNAL(ReturnToMainMenu()), SLOT(OnReturnToMainMenuClicked()));
         game->AddObserver(m_gameScreen);
         resize(1050, 800);
         m_screens->addWidget(m_gameScreen.get());
@@ -49,6 +50,11 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
         // And then execute the dialog to prevent user press other menu buttons
         m_settingsScreen->exec();
     }
+}
+
+void GameUI::OnReturnToMainMenuClicked()
+{
+    m_screens->setCurrentWidget(m_mainMenuScreen);
 }
 
 void GameUI::changeEvent(QEvent* event)

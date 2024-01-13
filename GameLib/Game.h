@@ -24,7 +24,7 @@ public:
 	IPlayerPtr GetFirstPlayer() const override;
 	IPlayerPtr GetSecondPlayer() const override;
 
-	void PreviewTable(int historyIndex) override;
+	void PreviewTable(int historyIndex, bool hideNotifications = true) override;
 	bool PlaceColumn(const Position& position) override;
 	bool MakeBridge(const Position& firstPos, const Position& secondPos) override;
 	bool RemoveBridge(const Position& firstPos, const Position& secondPos) override;
@@ -35,6 +35,7 @@ public:
 	void AddObserver(ObserverPtr observer) override;
 	void RemoveObserver(ObserverPtr observer) override;
 
+	void Restart();
 	bool SaveGame(const std::string_view path, StorageFormat format) override;
 	bool LoadGame(const std::string_view path, StorageFormat format) override;
 
@@ -62,6 +63,7 @@ private:
 	MinedGame* m_minedGame;
 	EGamemode m_gamemode;
 	parser::TwixtParserPtr m_parser;
+	const IGameSettingsPtr m_settings;
 
 	bool m_notificationsDisabled, m_firstGameMove, m_gameEnded;
 

@@ -100,6 +100,9 @@ void GameScreen::OnGameEnd(EGameResult result)
 		"Do you want to start a new game?"
 	);
 	auto response = dialog->ExecuteDialog(generatedText, true);
+	m_game->Restart();
+	if (!response) emit(ReturnToMainMenu());
+	m_history->clear();
 }
 
 void GameScreen::OnHistoryClicked(QListWidgetItem* item)

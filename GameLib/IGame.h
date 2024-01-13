@@ -28,13 +28,14 @@ struct IGame
 	virtual IPlayerPtr GetFirstPlayer() const = 0;
 	virtual IPlayerPtr GetSecondPlayer() const = 0;
 
-	virtual void PreviewTable(int historyIndex) = 0;
+	virtual void PreviewTable(int historyIndex, bool hideNotifications = true) = 0;
 	virtual bool PlaceColumn(const Position& position) = 0;
 	virtual bool MakeBridge(const Position& firstPos, const Position& secondPos) = 0;
 	virtual bool RemoveBridge(const Position& firstPos , const Position& secondPos) = 0;
 
 	virtual void SwapResponse(bool response) = 0;
 
+	virtual void Restart() = 0;
 	virtual bool SaveGame(const std::string_view path, StorageFormat format) = 0;
 	virtual bool LoadGame(const std::string_view path, StorageFormat format) = 0;
 
