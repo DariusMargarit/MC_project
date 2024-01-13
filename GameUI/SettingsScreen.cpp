@@ -46,6 +46,15 @@ void SettingsScreen::OnUpdateButtonClicked()
 	m_gameSettings->SetFirstPlayerColor(ColorUtils::StringToTwixtColor(m_firstPlayerColor->currentText()));
 	m_gameSettings->SetSecondPlayerName(m_secondPlayerName->text().toStdString());
 	m_gameSettings->SetSecondPlayerColor(ColorUtils::StringToTwixtColor(m_secondPlayerColor->currentText()));
+
+	QString gamemodeText = m_gamemode->currentText();
+	EGamemode selectedGamemode;
+
+	if (gamemodeText == "Standard") selectedGamemode = EGamemode::Standard;
+	else if (gamemodeText == "Mined Columns") selectedGamemode = EGamemode::MinedColumns;
+	else if (gamemodeText == "Bulldozer") selectedGamemode = EGamemode::Bulldozer;
+	m_gameSettings->SetGamemode(selectedGamemode);
+
 	close();
 }
 
@@ -136,6 +145,8 @@ void SettingsScreen::InitializeGamemodes()
 	m_gamemode->addItem("Standard");
 	m_gamemode->addItem("Mined Columns");
 	m_gamemode->addItem("Bulldozer");
+
+	m_gamemode->setCurrentIndex(static_cast<int>(m_gameSettings->GetGamemode()));
 }
 
 void SettingsScreen::InitializeLayout()
