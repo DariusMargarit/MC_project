@@ -3,7 +3,7 @@
 #include "BulldozerColumn.h"
 
 
-class BulldozerGame : public std::monostate
+class BulldozerGame
 {
 public:
 	BulldozerGame(BoardPtr& rhs);
@@ -22,7 +22,8 @@ public:
 private:
 	void PlaceBulldozer(const Position& position);
 	BoardPtr m_board;
-	float epsilon = 0.99;
+	float m_epsilon;
+	Position m_currentPosition;
 	
 
 

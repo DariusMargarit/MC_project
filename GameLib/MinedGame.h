@@ -6,7 +6,7 @@
 #include "MinedColumn.h"
 #include "Board.h"
 
-class MinedGame : public std::monostate
+class MinedGame
 {
 public:
 	MinedGame(BoardPtr board);

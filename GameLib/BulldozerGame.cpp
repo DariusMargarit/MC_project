@@ -2,7 +2,9 @@
 #include <random>
 
 BulldozerGame::BulldozerGame(BoardPtr& board)
-	:m_board{ board }
+	: m_board{ board }
+	, m_epsilon{0.99}
+	, m_currentPosition{ {0,0} }
 {
 	// Empty
 }
@@ -13,7 +15,7 @@ bool BulldozerGame::CoinFlip()
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dis(0.0, 1.0);
 
-	return dis(gen) < epsilon;
+	return dis(gen) > m_epsilon;
 	
 }
 
@@ -37,6 +39,8 @@ void BulldozerGame::DestroyRandomColumn()
 
 	m_board->RemoveColumn(position);
 	PlaceBulldozer(position);
+	m_board->RemoveColumn(m_currentPosition);
+	m_currentPosition = position;
 
 }
 
@@ -57,6 +61,8 @@ void BulldozerGame::MoveToRandomEmptyPlace()
 		position = { randomRowIndex ,randomColumnIndex };
 	}
 	PlaceBulldozer(position);
+	m_board->RemoveColumn(m_currentPosition);
+	m_currentPosition = position;
 
 }
 
@@ -68,7 +74,7 @@ void BulldozerGame::DestroyOrMove()
 	}
 	else
 	{
-		epsilon *= 0.97;
+		m_epsilon *= 0.97;
 		MoveToRandomEmptyPlace();
 	}
 
