@@ -10,8 +10,8 @@ protected:
 	void SetUp() override
 	{
 		m_board = std::make_shared<Board>(24);
-		m_player1 = new Player("player1", EColor::Blue, 50, 50);
-		m_player2 = new Player("player2", EColor::Red, 50, 50);
+		m_player1 = std::make_shared<Player>("player1", EColor::Blue, 50, 50);
+		m_player2 = std::make_shared<Player>("player2", EColor::Red, 50, 50);
 	}
 
 	void TearDown() override
@@ -21,7 +21,7 @@ protected:
 
 protected:
 	BoardPtr m_board;
-	Player* m_player1, *m_player2;
+	PlayerPtr m_player1, m_player2;
 
 };
 
@@ -33,9 +33,9 @@ TEST_F(BoardTests, GetElementTest) {
 	EXPECT_EQ(m_board->PlaceColumn({ 4, 2 }, m_player1), true);
 
 	// Test valid positions
-	const IColumn* column1 = m_board->GetElement({ 2, 2 });
-	const IColumn* column2 = m_board->GetElement({ 2, 7 });
-	const IColumn* column3 = m_board->GetElement({ 4, 2 });
+	const IColumnPtr column1 = m_board->GetElement({ 2, 2 });
+	const IColumnPtr column2 = m_board->GetElement({ 2, 7 });
+	const IColumnPtr column3 = m_board->GetElement({ 4, 2 });
 
 	// Ensure columns at valid positions are not nullptr
 	EXPECT_NE(column1, nullptr);
@@ -43,8 +43,8 @@ TEST_F(BoardTests, GetElementTest) {
 	EXPECT_NE(column3, nullptr);
 
 	// Test invalid positions
-	const IColumn* invalidColumn1 = m_board->GetElement({ 0, 0 });
-	const IColumn* invalidColumn2 = m_board->GetElement({ 0, 23 });
+	const IColumnPtr invalidColumn1 = m_board->GetElement({ 0, 0 });
+	const IColumnPtr invalidColumn2 = m_board->GetElement({ 0, 23 });
 
 	// Ensure columns at invalid positions are nullptr
 	EXPECT_EQ(invalidColumn1, nullptr);
@@ -98,7 +98,7 @@ TEST_F(BoardTests, RemoveColumnTest) {
 	EXPECT_EQ(m_board->PlaceColumn(positionToRemove, m_player1), true);
 
 	uint16_t columnsBeforeRemoval = m_board->RemoveColumn(positionToRemove);
-	const IColumn* removedColumn = m_board->GetElement(positionToRemove);
+	const IColumnPtr removedColumn = m_board->GetElement(positionToRemove);
 	EXPECT_EQ(removedColumn, nullptr);
 
 
@@ -201,7 +201,7 @@ TEST_F(BoardTests, ClearTest)
 	{
 		for (uint16_t column{ 0 }; column < m_board->GetSize(); ++column)
 		{
-			const IColumn* columnPtr = m_board->GetElement({ row, column });
+			const IColumnPtr columnPtr = m_board->GetElement({ row, column });
 			EXPECT_EQ(columnPtr, nullptr);
 		
 		}

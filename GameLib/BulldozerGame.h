@@ -7,15 +7,11 @@ class BulldozerGame
 {
 public:
 	BulldozerGame(BoardPtr& rhs);
-	BulldozerGame(BulldozerGame&& rhs) = default;
-	~BulldozerGame() = default;
-	BulldozerGame& operator=(const BulldozerGame& rhs) = default;
-	BulldozerGame& operator=(BulldozerGame&& rhs) noexcept = default;
 	
 	bool CoinFlip();
-	void DestroyRandomColumn(Player* firstPlayer, Player* secondPlayer);
+	void DestroyRandomColumn(PlayerPtr firstPlayer, PlayerPtr secondPlayer);
 	void MoveToRandomEmptyPlace();
-	void DestroyOrMove(Player* firstPlayer, Player* secondPlayer);
+	void DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer);
 	
 	
 

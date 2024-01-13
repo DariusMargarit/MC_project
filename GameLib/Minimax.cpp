@@ -1,6 +1,6 @@
 #include "Minimax.h"
 
-Minimax::Minimax(Board& board, int16_t depth, IPlayer* firstPlayer, IPlayer* secondPlayer)
+Minimax::Minimax(Board& board, int16_t depth, IPlayerPtr firstPlayer, IPlayerPtr secondPlayer)
 	: m_initialDepth{depth}
 	, m_firstPlayer{firstPlayer}
 	, m_secondPlayer{secondPlayer}
@@ -16,7 +16,7 @@ Minimax::Minimax(Board& board, int16_t depth, IPlayer* firstPlayer, IPlayer* sec
 	GenerateTree(newBoard, depth - 2, currentHead, firstPlayer, secondPlayer);
 }
 
-std::pair<BridgeVector, Position> Minimax::GetHint(int16_t depth, IPlayer* player)
+std::pair<BridgeVector, Position> Minimax::GetHint(int16_t depth, IPlayerPtr player)
 {
 	auto boardNode = GetBoardNodeHint(depth, player);
 	auto boardNodeBridges = boardNode->GetBridgesPositions();
@@ -52,7 +52,7 @@ std::pair<BridgeVector, Position> Minimax::GetHint(int16_t depth, IPlayer* playe
 	}
 }
 
-std::shared_ptr<BoardNode> Minimax::GetBoardNodeHint(int16_t depth, IPlayer* player)
+std::shared_ptr<BoardNode> Minimax::GetBoardNodeHint(int16_t depth, IPlayerPtr player)
 {
 	auto children = m_treeHead->GetChildren();
 	int16_t maxEvaluation = std::numeric_limits<int16_t>::lowest();
@@ -69,7 +69,7 @@ std::shared_ptr<BoardNode> Minimax::GetBoardNodeHint(int16_t depth, IPlayer* pla
 	return nodeToReturn;
 }
 
-void Minimax::GenerateTree(Board& board, int16_t depth, std::shared_ptr<BoardNode> currentHead, IPlayer* firstPlayer, IPlayer* secondPlayer)
+void Minimax::GenerateTree(Board& board, int16_t depth, std::shared_ptr<BoardNode> currentHead, IPlayerPtr firstPlayer, IPlayerPtr secondPlayer)
 {
 	if (depth == 0)
 	{
@@ -133,7 +133,7 @@ int16_t Minimax::Evaluate() const
 	return m_treeHead->Evaluate();
 }
 
-int16_t Minimax::minimax(std::shared_ptr<BoardNode> boardNode, int16_t depth, IPlayer* maximizingPlayer, int16_t alpha, int16_t beta)
+int16_t Minimax::minimax(std::shared_ptr<BoardNode> boardNode, int16_t depth, IPlayerPtr maximizingPlayer, int16_t alpha, int16_t beta)
 {
 	return 0;
 }

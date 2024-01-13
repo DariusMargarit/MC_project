@@ -14,7 +14,7 @@ class SettingsScreen : public QDialog
 	Q_OBJECT
 
 public:
-	SettingsScreen(IGameSettings& settings, QWidget* parent = nullptr);
+	SettingsScreen(IGameSettingsPtr settings, QWidget* parent = nullptr);
 
 private slots:
 	void OnUpdateButtonClicked();
@@ -31,7 +31,7 @@ private:
 	
 
 private:
-	IGameSettings& m_gameSettings;
+	IGameSettingsPtr m_gameSettings;
 	QGridLayout* m_layout;
 	Slider* m_tableSizeSlider, * m_columnLimitSlider, * m_bridgeLimitSlider;
 	QLineEdit* m_firstPlayerName, * m_secondPlayerName;

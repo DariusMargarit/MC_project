@@ -2,20 +2,16 @@
 
 #include "IColumn.h"
 
+using BridgePtr = std::shared_ptr<class Bridge>;
+
 class Bridge
 {
 public:
-	Bridge(IColumn* lhs, IColumn* rhs);
-	Bridge(const Bridge& rhs);
-	Bridge(Bridge&& rhs) noexcept;
-	~Bridge() = default;
+	Bridge(IColumnPtr firstColumn, IColumnPtr secondColumn);
 
-    IColumn* GetFirstColumn() const noexcept;
-	IColumn* GetSecondColumn() const noexcept;
-
-	Bridge& operator=(const Bridge& rhs) noexcept;
-	Bridge& operator=(Bridge&& rhs ) noexcept;
+    IColumnPtr GetFirstColumn() const noexcept;
+	IColumnPtr GetSecondColumn() const noexcept;
 
 private:
-	IColumn* m_firstColumn, * m_secondColumn;
+	IColumnPtr m_firstColumn, m_secondColumn;
 };

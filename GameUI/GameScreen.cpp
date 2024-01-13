@@ -10,9 +10,9 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 	, m_game{ game }
 	, m_layout{ new QGridLayout{this} }
 	, m_history{ new HistoryWidget{this} }
-	, m_firstPlayerBar{ new PlayerBar{*game->GetFirstPlayer(), true, this} }
-	, m_secondPlayerBar{ new PlayerBar{*game->GetSecondPlayer(), false, this} }
-	, m_board{ new BoardWidget{*game->GetBoard(), game->GetTurn(),
+	, m_firstPlayerBar{ new PlayerBar{game->GetFirstPlayer(), true, this} }
+	, m_secondPlayerBar{ new PlayerBar{game->GetSecondPlayer(), false, this} }
+	, m_board{ new BoardWidget{game->GetBoard(), game->GetTurn(),
 			  game->GetFirstPlayer()->GetColor(), game->GetSecondPlayer()->GetColor(),
 			  this} }
 {
@@ -40,17 +40,17 @@ void GameScreen::SetWindowFullScreen(bool isFullScreen)
 	m_board->SetWindowFullScreen(isFullScreen);
 }
 
-void GameScreen::OnColumnPlaced(Position& position, IPlayer* player)
+void GameScreen::OnColumnPlaced(Position& position, IPlayerPtr player)
 {
 	m_history->AddColumnItem(player, position);
 }
 
-void GameScreen::OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayer* player)
+void GameScreen::OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayerPtr player)
 {
 	m_history->AddBridgeItem(player, firstPos, secondPos, false);
 }
 
-void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player)
+void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayerPtr player)
 {
 	m_history->AddBridgeItem(player, firstPos, secondPos, true);
 }

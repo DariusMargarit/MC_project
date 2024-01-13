@@ -11,6 +11,6 @@ class HistoryWidget : public QListWidget
 public:
 	HistoryWidget(QWidget* parent = nullptr);
 
-	void AddColumnItem(IPlayer* player, const Position& position);
-	void AddBridgeItem(IPlayer* player, Position& firstPosition, Position& secondPosition, bool removed = false);
+	void AddColumnItem(IPlayerPtr player, const Position& position);
+	void AddBridgeItem(IPlayerPtr player, Position& firstPosition, Position& secondPosition, bool removed = false);
 };

@@ -9,7 +9,7 @@ HistoryWidget::HistoryWidget(QWidget* parent)
 	// Empty
 }
 
-void HistoryWidget::AddColumnItem(IPlayer* player, const Position& position)
+void HistoryWidget::AddColumnItem(IPlayerPtr player, const Position& position)
 {
 	QIcon icon = ColorUtils::ColoredIconFromImage(":/GameUI/images/profile.png", player->GetColor());
 
@@ -20,7 +20,7 @@ void HistoryWidget::AddColumnItem(IPlayer* player, const Position& position)
 	addItem(item);
 }
 
-void HistoryWidget::AddBridgeItem(IPlayer* player, Position& firstPosition, Position& secondPosition, bool removed)
+void HistoryWidget::AddBridgeItem(IPlayerPtr player, Position& firstPosition, Position& secondPosition, bool removed)
 {
 	QIcon icon = ColorUtils::ColoredIconFromImage(":/GameUI/images/profile.png", player->GetColor());
 

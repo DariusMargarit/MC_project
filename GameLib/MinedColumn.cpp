@@ -1,8 +1,8 @@
 #include "MinedColumn.h"
 
-Player* MinedColumn::mineSpot{ new Player("", EColor::NoColor, 0, 0)};
+PlayerPtr MinedColumn::mineSpot{ std::make_shared<Player>("", EColor::NoColor, 0, 0)};
 
-IPlayer* MinedColumn::GetPlayer() const noexcept
+IPlayerPtr MinedColumn::GetPlayer() const noexcept
 {
     return mineSpot;
 }

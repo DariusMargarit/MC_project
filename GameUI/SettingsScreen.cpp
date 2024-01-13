@@ -7,7 +7,7 @@ const uint16_t SettingsScreen::minTableSize{5}, SettingsScreen::maxTableSize{50}
 const uint16_t SettingsScreen::minColumnLimit{20}, SettingsScreen::maxColumnLimit{100};
 const uint16_t SettingsScreen::minBridgeLimit{20}, SettingsScreen::maxBridgeLimit{100};
 
-SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
+SettingsScreen::SettingsScreen(IGameSettingsPtr settings, QWidget* parent)
 	: QDialog{parent}
 	, m_gameSettings{settings}
 	, m_layout{new QGridLayout{this}}
@@ -39,13 +39,13 @@ SettingsScreen::SettingsScreen(IGameSettings& settings, QWidget* parent)
 
 void SettingsScreen::OnUpdateButtonClicked()
 {
-	m_gameSettings.SetTableSize(m_tableSizeSlider->GetValue());
-	m_gameSettings.SetColumnLimit(m_columnLimitSlider->GetValue());
-	m_gameSettings.SetBridgeLimit(m_bridgeLimitSlider->GetValue());
-	m_gameSettings.SetFirstPlayerName(m_firstPlayerName->text().toStdString());
-	m_gameSettings.SetFirstPlayerColor(ColorUtils::StringToTwixtColor(m_firstPlayerColor->currentText()));
-	m_gameSettings.SetSecondPlayerName(m_secondPlayerName->text().toStdString());
-	m_gameSettings.SetSecondPlayerColor(ColorUtils::StringToTwixtColor(m_secondPlayerColor->currentText()));
+	m_gameSettings->SetTableSize(m_tableSizeSlider->GetValue());
+	m_gameSettings->SetColumnLimit(m_columnLimitSlider->GetValue());
+	m_gameSettings->SetBridgeLimit(m_bridgeLimitSlider->GetValue());
+	m_gameSettings->SetFirstPlayerName(m_firstPlayerName->text().toStdString());
+	m_gameSettings->SetFirstPlayerColor(ColorUtils::StringToTwixtColor(m_firstPlayerColor->currentText()));
+	m_gameSettings->SetSecondPlayerName(m_secondPlayerName->text().toStdString());
+	m_gameSettings->SetSecondPlayerColor(ColorUtils::StringToTwixtColor(m_secondPlayerColor->currentText()));
 	close();
 }
 
@@ -88,12 +88,12 @@ void SettingsScreen::InitializeButtons()
 
 void SettingsScreen::InitializeValues()
 {
-	m_tableSizeSlider->SetValue(m_gameSettings.GetTableSize());
-	m_columnLimitSlider->SetValue(m_gameSettings.GetColumnLimit());
-	m_bridgeLimitSlider->SetValue(m_gameSettings.GetBridgeLimit());
+	m_tableSizeSlider->SetValue(m_gameSettings->GetTableSize());
+	m_columnLimitSlider->SetValue(m_gameSettings->GetColumnLimit());
+	m_bridgeLimitSlider->SetValue(m_gameSettings->GetBridgeLimit());
 
-	m_firstPlayerName->setText(QString::fromStdString(m_gameSettings.GetFirstPlayerName().data()));
-	m_secondPlayerName->setText(QString::fromStdString(m_gameSettings.GetSecondPlayerName().data()));
+	m_firstPlayerName->setText(QString::fromStdString(m_gameSettings->GetFirstPlayerName().data()));
+	m_secondPlayerName->setText(QString::fromStdString(m_gameSettings->GetSecondPlayerName().data()));
 
 	InitializePlayerColorPick(true);
 	InitializePlayerColorPick(false);
@@ -108,12 +108,12 @@ void SettingsScreen::InitializePlayerColorPick(bool isFirstPlayerBox)
 	if (isFirstPlayerBox)
 	{
 		currentBox = m_firstPlayerColor;
-		initialColor = m_gameSettings.GetFirstPlayerColor();
+		initialColor = m_gameSettings->GetFirstPlayerColor();
 	}
 	else
 	{
 		currentBox = m_secondPlayerColor;
-		initialColor = m_gameSettings.GetSecondPlayerColor();
+		initialColor = m_gameSettings->GetSecondPlayerColor();
 	}
 
 	for (auto color : m_colors)

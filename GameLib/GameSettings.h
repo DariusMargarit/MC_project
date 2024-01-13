@@ -2,11 +2,13 @@
 
 #include "IGameSettings.h"
 
+using GameSettingsPtr = std::shared_ptr<class GameSettings>;
+
 class GameSettings : public IGameSettings
 {
 public:
 // Make a new instance of GameSettings with singleton
-	static GameSettings* ObtainInstance();
+	static GameSettingsPtr ObtainInstance();
 
 // Board settings
 
@@ -34,14 +36,14 @@ public:
 	void SetSecondPlayerName(std::string_view name) override;
 	void SetSecondPlayerColor(EColor color) override;
 
-private:
 	GameSettings();
+private:
 	uint16_t m_tableSize, m_columnLimit, m_bridgeLimit;
 	std::string m_firstPlayerName, m_secondPlayerName;
 	EColor m_firstPlayerColor, m_secondPlayerColor;
 	EGamemode m_gamemode;
+	static GameSettingsPtr instance;
 
-	static GameSettings* instance;
 
 
 };

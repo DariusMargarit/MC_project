@@ -9,19 +9,19 @@ const std::string IGameSettings::defaultSecondPlayerName{"Player2"};
 const EColor IGameSettings::defaultSecondPlayerColor{EColor::Red};
 const EGamemode IGameSettings::defaultGamemode{EGamemode::Standard};
 
-GameSettings* GameSettings::instance{nullptr};
+GameSettingsPtr GameSettings::instance{nullptr};
 
-IGameSettings* IGameSettings::GetInstance()
+IGameSettingsPtr IGameSettings::GetInstance()
 {
 
 	return GameSettings::ObtainInstance();
 }
 
-GameSettings* GameSettings::ObtainInstance()
+GameSettingsPtr GameSettings::ObtainInstance()
 {
 	if (!instance)
 	{
-		instance = new GameSettings();
+		instance = std::make_shared<GameSettings>();
 	}
 	return instance;
 }

@@ -16,17 +16,17 @@ enum class StorageFormat
 
 struct IGame
 {
-	static IGamePtr Produce(const IGameSettings& settings);
+	static IGamePtr Produce(const IGameSettingsPtr settings);
 
 	virtual void AddObserver(ObserverPtr observer) = 0;
 	virtual void RemoveObserver(ObserverPtr observer) = 0;
 
-	virtual IPlayer* GetTurn() const = 0;
+	virtual IPlayerPtr GetTurn() const = 0;
 	virtual IBoardPtr GetBoard() const = 0;
-	virtual IPlayer* CheckWinner() const = 0;
+	virtual IPlayerPtr CheckWinner() const = 0;
 
-	virtual IPlayer* GetFirstPlayer() const = 0;
-	virtual IPlayer* GetSecondPlayer() const = 0;
+	virtual IPlayerPtr GetFirstPlayer() const = 0;
+	virtual IPlayerPtr GetSecondPlayer() const = 0;
 
 	virtual void PreviewTable(int historyIndex) = 0;
 	virtual bool PlaceColumn(const Position& position) = 0;

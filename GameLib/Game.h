@@ -10,20 +10,19 @@
 
 #include "../TwixtTextParser/ITwixtParser.h"
 
+using GamePtr = std::shared_ptr<class Game>;
+
 class Game : public IGame
 {
 public:
-	Game(const IGameSettings& settings);
-	Game(const Game & other);
-	Game(Game && other) noexcept;
-	~Game() = default;
+	Game(const IGameSettingsPtr settings);
 
-	IPlayer* GetTurn() const override;
+	IPlayerPtr GetTurn() const override;
 	IBoardPtr GetBoard() const override;
-	IPlayer* CheckWinner() const override;
+	IPlayerPtr CheckWinner() const override;
 
-	IPlayer* GetFirstPlayer() const override;
-	IPlayer* GetSecondPlayer() const override;
+	IPlayerPtr GetFirstPlayer() const override;
+	IPlayerPtr GetSecondPlayer() const override;
 
 	void PreviewTable(int historyIndex) override;
 	bool PlaceColumn(const Position& position) override;
@@ -39,15 +38,12 @@ public:
 	bool SaveGame(const std::string_view path, StorageFormat format) override;
 	bool LoadGame(const std::string_view path, StorageFormat format) override;
 
-	std::pair<BridgeVector, Position> GetHint(int16_t depth, IPlayer* player) const;
-
-	Game& operator=(const Game& rhs);
-	Game& operator=(Game&& rhs) noexcept;
+	std::pair<BridgeVector, Position> GetHint(int16_t depth, IPlayerPtr player) const;
 
 private:
-	void NotifyPlaceColumn(Position position, IPlayer* player) const;
-	void NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* player) const;
-	void NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* player) const;
+	void NotifyPlaceColumn(Position position, IPlayerPtr player) const;
+	void NotifyMakeBridge(Position firstPos, Position secondPos, IPlayerPtr player) const;
+	void NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayerPtr player) const;
 	void NotifySwapEvent() const;
 	void NotifySwapResponse(bool response) const;
 	void NotifyGameEnd(EGameResult result) const;
@@ -60,8 +56,8 @@ private:
 private:
 	BoardPtr m_board;
 	uint16_t m_boardSize;
-	Player* m_player1, * m_player2;
-	IPlayer* m_turn;
+	PlayerPtr m_player1, m_player2;
+	IPlayerPtr m_turn;
 	Minimax* m_minimax;
 	MinedGame* m_minedGame;
 	EGamemode m_gamemode;

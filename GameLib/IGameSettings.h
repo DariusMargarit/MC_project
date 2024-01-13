@@ -6,11 +6,13 @@
 
 enum class EGamemode { Standard, MinedColumns, Bulldozer };
 
+using IGameSettingsPtr = std::shared_ptr<struct IGameSettings>;
+
 struct IGameSettings
 {
 
 // Make a new instance of GameSettings with singleton
-	static IGameSettings* GetInstance();
+	static IGameSettingsPtr GetInstance();
 
 // Board settings
 

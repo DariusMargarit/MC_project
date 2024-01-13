@@ -18,7 +18,7 @@ class BoardWidget : public QWidget
 	Q_OBJECT
 
 public:
-	BoardWidget(const IBoard& gameBoard, IPlayer* currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
+	BoardWidget(const IBoardPtr gameBoard, IPlayerPtr currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent = nullptr);
 	void ChangeSelectedColumn(const Position& selectedColumn);
 	void SetWindowFullScreen(bool isFullScreen);
 
@@ -45,8 +45,8 @@ private:
 private:
 	bool m_isFullScreen;
 
-	const IBoard& m_gameBoard;
-	IPlayer* m_currentPlayer;
+	const IBoardPtr m_gameBoard;
+	IPlayerPtr m_currentPlayer;
 	EColor m_firstPlayerColor, m_secondPlayerColor;
 
 	static const size_t smallCircleScalingFactor{12};

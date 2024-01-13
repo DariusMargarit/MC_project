@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string_view>
+#include <memory>
+
+using IPlayerPtr = std::shared_ptr<struct IPlayer>;
 
 enum class EColor 
 {

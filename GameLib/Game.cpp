@@ -6,19 +6,19 @@
 #include "MinedGame.h"
 #include "BulldozerGame.h"
 
-IGamePtr IGame::Produce(const IGameSettings& settings)
+IGamePtr IGame::Produce(const IGameSettingsPtr settings)
 {
 	return std::make_shared<Game>(settings);
 }
 
-Game::Game(const IGameSettings& settings)
-	: m_player1{ new Player(settings.GetFirstPlayerName(), settings.GetFirstPlayerColor(),
-							settings.GetBridgeLimit(), settings.GetColumnLimit())}
-	, m_player2{ new Player(settings.GetSecondPlayerName(), settings.GetSecondPlayerColor(),
-							settings.GetBridgeLimit(), settings.GetColumnLimit())}
-	, m_boardSize{ settings.GetTableSize() }
+Game::Game(const IGameSettingsPtr settings)
+	: m_player1{ std::make_shared<Player>(settings->GetFirstPlayerName(), settings->GetFirstPlayerColor(),
+							settings->GetBridgeLimit(), settings->GetColumnLimit())}
+	, m_player2{ std::make_shared<Player>(settings->GetSecondPlayerName(), settings->GetSecondPlayerColor(),
+							settings->GetBridgeLimit(), settings->GetColumnLimit())}
+	, m_boardSize{ settings->GetTableSize() }
 	, m_parser{ parser::ITwixtParser::Produce()}
-	, m_gamemode{ settings.GetGamemode()}
+	, m_gamemode{ settings->GetGamemode()}
 	, m_notificationsDisabled{false}
 	, m_firstGameMove{false}
 	, m_gameEnded{false}
@@ -34,32 +34,6 @@ Game::Game(const IGameSettings& settings)
 	}
 }
 
-Game::Game(const Game & other)
-	: m_boardSize{other.m_boardSize}
-{
-	m_player1 = new Player(dynamic_cast<Player*>(other.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
-	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
-	m_board = std::make_shared<Board>(*other.m_board);
-	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
-}
-
-Game::Game(Game && other) noexcept
-	: m_boardSize{ other.m_boardSize }
- {
-	m_player1 = new Player(dynamic_cast<Player*>(other.m_player1));
-	m_player2 = new Player(dynamic_cast<Player*>(other.m_player2));
-	m_turn = (other.m_turn == other.m_player1) ? m_player1 : m_player2;
-	m_board = std::make_shared<Board>(*other.m_board);
-	m_minimax = new Minimax(*m_board, m_boardSize - 1, m_player1, m_player2);
-
-	other.m_board = nullptr;
-	other.m_boardSize = 0;
-	other.m_player1 = nullptr;
-	other.m_player2 = nullptr;
-	other.m_turn = nullptr;
-	other.m_minimax = nullptr;
-}
 
 bool Game::PlaceColumn(const Position& position)
 {
@@ -75,7 +49,7 @@ bool Game::PlaceColumn(const Position& position)
 		m_gameEnded = true;
 	}
 
-	if (dynamic_cast<const MinedColumn*>(m_board->GetElement(position)))
+	if (std::dynamic_pointer_cast<MinedColumnPtr>(m_board->GetElement(position)))
 		isMinedColumn = true;
 
 	if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) &&
@@ -172,12 +146,12 @@ void Game::SwapPlayers()
 	m_player2->SetName(auxiliarName);
 }
 
-IPlayer* Game::GetFirstPlayer() const
+IPlayerPtr Game::GetFirstPlayer() const
 {
 	return m_player1;
 }
 
-IPlayer* Game::GetSecondPlayer() const
+IPlayerPtr Game::GetSecondPlayer() const
 {
 	return m_player2;
 }
@@ -211,47 +185,7 @@ void Game::PreviewTable(int historyIndex)
 
 }
 
-Game& Game::operator=(const Game& rhs)
-{
-	if (this != &rhs) {
-		
-		delete m_player1;
-		delete m_player2;
-
-		m_boardSize = rhs.m_boardSize;
-		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
-		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
-		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-		m_board = std::make_shared<Board>(*rhs.m_board);
-
-	}
-	return *this;
-}
-
-Game& Game::operator=(Game&& rhs) noexcept {
-	if (this == &rhs)
-	{
-		return *this;
-	}
-		delete m_player1;
-		delete m_player2;
-
-		m_boardSize = rhs.m_boardSize;
-		m_player1 = new Player(dynamic_cast<Player*>(rhs.m_player1));
-		m_player2 = new Player(dynamic_cast<Player*>(rhs.m_player2));
-		m_turn = (rhs.m_turn == rhs.m_player1) ? m_player1 : m_player2;
-		m_board = std::make_shared<Board>(*rhs.m_board);
-
-		rhs.m_board = nullptr;
-		rhs.m_boardSize = 0;
-	    rhs.m_player1 = nullptr;
-	    rhs.m_player2 = nullptr;
-	    rhs.m_turn = nullptr;
-
-	return *this;
-}
-
-IPlayer* Game::GetTurn() const 
+IPlayerPtr Game::GetTurn() const
 {
 	return m_turn;
 }
@@ -261,7 +195,7 @@ IBoardPtr Game::GetBoard() const
 	return m_board;
 }
 
-IPlayer* Game::CheckWinner() const
+IPlayerPtr Game::CheckWinner() const
 {
 	if (m_turn == m_player1)
 	{
@@ -293,7 +227,7 @@ void Game::RemoveObserver(ObserverPtr observer)
 		});
 }
 
-void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
+void Game::NotifyPlaceColumn(Position position, IPlayerPtr player) const
 {
 	if (m_notificationsDisabled) return;
 	m_parser->AddColumn(position.ToPair());
@@ -303,7 +237,7 @@ void Game::NotifyPlaceColumn(Position position, IPlayer* player) const
 	}
 }
 
-void Game::NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* player) const
+void Game::NotifyMakeBridge(Position firstPos, Position secondPos, IPlayerPtr player) const
 {
 	if (m_notificationsDisabled) return;
 	m_parser->AddBridge(false, firstPos.ToPair(), secondPos.ToPair());
@@ -313,7 +247,7 @@ void Game::NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* play
 	}
 }
 
-void Game::NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* player) const
+void Game::NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayerPtr player) const
 {
 	if (m_notificationsDisabled) return;
 	m_parser->AddBridge(true, firstPos.ToPair(), secondPos.ToPair());
@@ -352,7 +286,7 @@ void Game::NotifyGameEnd(EGameResult result) const
 
 void Game::ChangeTurn()
 {
-	if (auto player = dynamic_cast<Player*>(m_turn); player && player->GetDoubleTurn())
+	if (auto player = dynamic_cast<Player*>(m_turn.get()); player && player->GetDoubleTurn())
 	{
 		player->SetDoubleTurn(false);
 		return;
@@ -408,7 +342,7 @@ Board Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& ga
 		for (uint16_t column = 0; column < boardRepresentation.size(); column++)
 		{
 			if (boardRepresentation[row][column] == parser::Piece::Empty) continue;
-			IPlayer* currentPlayer = boardRepresentation[row][column] == parser::Piece::FirstPlayer ? m_player1 : m_player2;
+			IPlayerPtr currentPlayer = boardRepresentation[row][column] == parser::Piece::FirstPlayer ? m_player1 : m_player2;
 			board.PlaceColumn({ row, column }, currentPlayer);
 		}
 	}
@@ -418,7 +352,7 @@ Board Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& ga
 		const auto& [firstPos, secondPos] = move;
 		const auto& [firstPosRow, firstPosColumn] = firstPos;
 		const auto& [secondPosRow, secondPosColumn] = secondPos;
-		IPlayer* currentPlayer = board.GetElement(firstPosRow, firstPosColumn)->GetPlayer();
+		IPlayerPtr currentPlayer = board.GetElement(firstPosRow, firstPosColumn)->GetPlayer();
 
 		board.MakeBridge({ firstPosRow, firstPosColumn }, { secondPosRow, secondPosColumn }, currentPlayer);
 	}
@@ -460,7 +394,7 @@ bool Game::LoadGame(const std::string_view path, StorageFormat format)
 	return false;
 }
 
-std::pair<BridgeVector, Position> Game::GetHint(int16_t depth, IPlayer* player) const
+std::pair<BridgeVector, Position> Game::GetHint(int16_t depth, IPlayerPtr player) const
 {
 	return m_minimax->GetHint(depth, player);
 }

@@ -27,8 +27,8 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     // Load game screen when button pressed 
     if (button == EButtonPressed::playButton)
     {
-        IGameSettings* settings = IGameSettings::GetInstance();
-        const auto& game = IGame::Produce(*settings);
+        IGameSettingsPtr settings = IGameSettings::GetInstance();
+        const auto& game = IGame::Produce(settings);
         m_gameScreen = std::make_shared<GameScreen>(game, this);
         game->AddObserver(m_gameScreen);
         resize(1050, 800);
@@ -38,8 +38,8 @@ void GameUI::OnMainMenuButtonClicked(const EButtonPressed& button)
     }
     else if (button == EButtonPressed::settingsButton)
     {
-        IGameSettings* settings{ IGameSettings::GetInstance() };
-		m_settingsScreen = new SettingsScreen(*settings);
+        IGameSettingsPtr settings{ IGameSettings::GetInstance() };
+		m_settingsScreen = new SettingsScreen(settings);
 
         // Call show function to resize properly for centering on main menu and then hide
         m_settingsScreen->show();

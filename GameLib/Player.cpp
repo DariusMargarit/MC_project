@@ -11,59 +11,6 @@ Player::Player(const std::string_view& name, const EColor& color,
 	// Empty
 }
 
-Player::Player(const Player*other)
-	: m_color{other->m_color}
-	, m_name{other->m_name}
-	, m_doubleTurn{other->m_doubleTurn}
-	, m_BridgeCounter{other->m_BridgeCounter}
-	, m_ColumnCounter{other->m_ColumnCounter}
-{
-	// Empty
-}
-
-Player::Player(Player&&other) noexcept
-	: m_color{other.m_color}
-	, m_name{other.m_name}
-	, m_doubleTurn{other.m_doubleTurn}
-	, m_BridgeCounter{other.m_BridgeCounter}
-	, m_ColumnCounter{other.m_ColumnCounter}
-{
-	other.m_color = EColor::NoColor;
-	other.m_name = "";
-	other.m_BridgeCounter = NULL;
-	other.m_ColumnCounter = NULL;
-}
-
-Player& Player::operator=(const Player* rhs) noexcept
-{
-	if (this == rhs)
-		return *this;
-
-	m_name = rhs->m_name;
-	m_color = rhs->m_color;
-	m_BridgeCounter = rhs->m_BridgeCounter;
-	m_ColumnCounter = rhs->m_ColumnCounter;
-
-	return *this;
-}
-
-Player& Player::operator=(Player&& rhs) noexcept
-{
-	if (this == &rhs)
-		return *this;
-	m_name = rhs.m_name;
-	m_color = rhs.m_color;
-	m_BridgeCounter = rhs.m_BridgeCounter;
-	m_ColumnCounter = rhs.m_ColumnCounter;
-
-	rhs.m_color = EColor::NoColor;
-	rhs.m_name = "";
-	rhs.m_BridgeCounter = NULL;
-	rhs.m_ColumnCounter = NULL;
-
-	return *this;
-}
-
 EColor Player::GetColor() const noexcept
 {
 	return m_color;

@@ -4,7 +4,7 @@
 #include "PlayerBar.h"
 #include "ColorUtils.h"
 
-PlayerBar::PlayerBar(const IPlayer& player, bool turn, QWidget* parent) 
+PlayerBar::PlayerBar(const IPlayerPtr player, bool turn, QWidget* parent) 
 	: QWidget{parent}
 	, m_player{player}
 	, m_layout{new QGridLayout{this}}
@@ -28,9 +28,9 @@ PlayerBar::PlayerBar(const IPlayer& player, bool turn, QWidget* parent)
 void PlayerBar::Update(bool playerTurn)
 {
 	QPixmap profilePicture(":/GameUI/images/profile.png");
-	ColorUtils::FillPixmapBackground(profilePicture, m_player.GetColor());
+	ColorUtils::FillPixmapBackground(profilePicture, m_player->GetColor());
 	m_profilePicture->setPixmap(profilePicture);
-	m_playerName->setText(QString(m_player.GetName().data()) + (playerTurn ? " (turn)" : ""));
+	m_playerName->setText(QString(m_player->GetName().data()) + (playerTurn ? " (turn)" : ""));
 
 	setLayout(m_layout);
 }

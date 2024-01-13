@@ -15,9 +15,9 @@ public:
 	GameScreen(IGamePtr game, QWidget* parent = nullptr);
 	void SetWindowFullScreen(bool isFullScreen);
 
-	void OnColumnPlaced(Position& position, IPlayer* player) override;
-	void OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayer* player) override;
-	void OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayer* player) override;
+	void OnColumnPlaced(Position& position, IPlayerPtr player) override;
+	void OnBridgePlaced(Position& firstPos, Position& secondPos, IPlayerPtr player) override;
+	void OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlayerPtr player) override;
 	void OnSwapRequest() override;
 	void OnSwapResponse(bool response) override;
 	void OnGameEnd(EGameResult result) override;

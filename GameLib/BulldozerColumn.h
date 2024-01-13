@@ -2,19 +2,17 @@
 #include "IColumn.h"
 #include "Player.h"
 
+using BulldozerColumnPtr = std::shared_ptr<class BulldozerColumn>;
+
 class BulldozerColumn : public IColumn
 {
 
 public:
 	BulldozerColumn() noexcept = default;
-	BulldozerColumn(const BulldozerColumn& other) noexcept = default;
-	BulldozerColumn(BulldozerColumn&& other) noexcept = default;
-	~BulldozerColumn() = default;
-	BulldozerColumn& operator=(const BulldozerColumn& rhs) noexcept = default;
-	BulldozerColumn& operator=(BulldozerColumn&& rhs) noexcept = default;
 
-	IPlayer* GetPlayer() const noexcept override;
+	IPlayerPtr GetPlayer() const noexcept override;
+
 private:
-	static Player* m_bulldozer;
+	static PlayerPtr m_bulldozer;
 
 };

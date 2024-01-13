@@ -1,6 +1,6 @@
 #include "BoardNode.h"
 
-BoardNode::BoardNode(const Board& board, IPlayer* maximizingPlayer, IPlayer* minimizingPlayer)
+BoardNode::BoardNode(const Board& board, IPlayerPtr maximizingPlayer, IPlayerPtr minimizingPlayer)
 	: Board(board)
     , m_maximizingPlayer{maximizingPlayer}
     , m_minimizingPlayer{minimizingPlayer}
@@ -31,7 +31,7 @@ void BoardNode::InsertChildren(std::shared_ptr<BoardNode> children)
 
 bool BoardNode::GameOver() const
 {
-    if (CheckWinner(m_maximizingPlayer) || CheckWinner(m_minimizingPlayer))
+    if (CheckWinner(0) || CheckWinner(1))
     {
         return true;
     }

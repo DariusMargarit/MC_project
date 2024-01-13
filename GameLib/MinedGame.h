@@ -10,13 +10,8 @@ class MinedGame
 {
 public:
 	MinedGame(BoardPtr board);
-	MinedGame(const MinedGame& rhs) = default;
-	MinedGame(MinedGame&& rhs) = default;
-	~MinedGame() = default;
-	MinedGame& operator=(const MinedGame& rhs) = default;
-	MinedGame& operator=(MinedGame&& rhs) noexcept = default;
 
-	void DestroyArea(const Position& position, Player* firstPlayer, Player* secondPlayer);
+	void DestroyArea(const Position& position, PlayerPtr firstPlayer, PlayerPtr secondPlayer);
 	void AddMines();
 
 private:

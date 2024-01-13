@@ -2,15 +2,13 @@
 
 #include "IPlayer.h"
 
+using PlayerPtr = std::shared_ptr<class Player>;
+
 class Player : public IPlayer
 {
 public:
 	Player(const std::string_view& name, const EColor& color,
 		   const uint16_t& BridgeCounter, const uint16_t& ColumnCounter);
-	Player(const Player* rhs);
-	Player(Player&& rhs) noexcept;
-	Player& operator= (const Player* rhs) noexcept;
-	Player& operator= (Player&& rhs) noexcept;
 
 	EColor GetColor() const noexcept override;
 	std::string_view GetName() const noexcept override;

@@ -5,6 +5,12 @@
     <ClCompile Include="BoardTests.cpp">
       <Filter>Unit Tests</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerTests.cpp">
+      <Filter>Unit Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTests.cpp">
+      <Filter>Unit Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

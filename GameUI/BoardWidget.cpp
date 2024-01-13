@@ -4,7 +4,7 @@
 #include "BoardWidget.h"
 #include "ColorUtils.h"
 
-BoardWidget::BoardWidget(const IBoard& gameBoard, IPlayer* currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) 
+BoardWidget::BoardWidget(const IBoardPtr gameBoard, IPlayerPtr currentPlayer, EColor firstPlayerColor, EColor secondPlayerColor, QWidget* parent) 
 	: QWidget{ parent }
 	, m_gameBoard{ gameBoard }
 	, m_currentPlayer{currentPlayer}
@@ -40,7 +40,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	QColor color;
 
 	float radius;
-	const auto boardSize{ m_gameBoard.GetSize() };
+	const auto boardSize{ m_gameBoard->GetSize() };
 
 	for (uint16_t row{ 0 }; row < boardSize; ++row)
 	{
@@ -53,7 +53,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 				color = Qt::white;
 				radius = CalculateRadius(false);
 			}
-			else if (auto element{ m_gameBoard.GetElement(row, column) }; element)
+			else if (auto element{ m_gameBoard->GetElement(row, column) }; element)
 			{
 				color = ColorUtils::TwixtColorToQColor(element->GetPlayer()->GetColor());
 
@@ -84,13 +84,13 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	}
 
 	pen.setWidth(3);
-	for (auto bridge : m_gameBoard.GetBridgesPositions())
+	for (auto bridge : m_gameBoard->GetBridgesPositions())
 	{
 		auto& [pos1, pos2] {bridge};
 		QPointF firstPoint{ PositionToCoordinates(pos1.GetRow(), pos1.GetColumn()) };
 		QPointF secondPoint{ PositionToCoordinates(pos2.GetRow(), pos2.GetColumn()) };
 		QPointF firstPointOffset{ PointTranslation(firstPoint, secondPoint) };
-		const auto playerColor {m_gameBoard.GetElement(pos1)->GetPlayer()->GetColor()};
+		const auto playerColor {m_gameBoard->GetElement(pos1)->GetPlayer()->GetColor()};
 		color = ColorUtils::TwixtColorToQColor(playerColor);
 
 		pen.setColor(color);
@@ -148,7 +148,7 @@ void BoardWidget::resizeEvent(QResizeEvent* event)
 
 Position BoardWidget::CoordinatesToPosition(QPointF pos) const
 {
-	const auto boardSize{ m_gameBoard.GetSize() };
+	const auto boardSize{ m_gameBoard->GetSize() };
 	const auto circleWidth{ static_cast<float>(width()) / boardSize };
 	const auto circleHeight{ static_cast<float>(height()) / boardSize };
 
@@ -161,7 +161,7 @@ Position BoardWidget::CoordinatesToPosition(QPointF pos) const
 
 QPointF BoardWidget::PositionToCoordinates(uint16_t row, uint16_t column) const
 {
-	const auto boardSize{ m_gameBoard.GetSize() };
+	const auto boardSize{ m_gameBoard->GetSize() };
 	const auto circleWidth{ static_cast<float>(width()) / boardSize };
 	const auto circleHeight{ static_cast<float>(height()) / boardSize };
 
@@ -171,7 +171,7 @@ QPointF BoardWidget::PositionToCoordinates(uint16_t row, uint16_t column) const
 
 bool BoardWidget::IsCorner(int row, int column) const
 {
-	const auto boardSize{ m_gameBoard.GetSize() };
+	const auto boardSize{ m_gameBoard->GetSize() };
 	return (row == 0 && column == 0) ||
 		(row == 0 && column == boardSize - 1) ||
 		(row == boardSize - 1 && column == 0) ||
@@ -180,7 +180,7 @@ bool BoardWidget::IsCorner(int row, int column) const
 
 QLineF BoardWidget::GetLineDelimiter(EDirection direction) const
 {
-	const auto boardSize{ m_gameBoard.GetSize() };
+	const auto boardSize{ m_gameBoard->GetSize() };
 	const auto circleWidth{ static_cast<float>(width()) / boardSize };
 	const auto circleHeight{ static_cast<float>(height()) / boardSize };
 	QPointF lineStart, lineStop;
@@ -222,7 +222,7 @@ QLineF BoardWidget::GetLineDelimiter(EDirection direction) const
 
 float BoardWidget::CalculateRadius(bool isSmallCircle) const
 {
-	const auto boardSize{ m_gameBoard.GetSize() };
+	const auto boardSize{ m_gameBoard->GetSize() };
 	const auto circleWidth{ static_cast<float>(width()) / boardSize };
 	const auto circleHeight{ static_cast<float>(height()) / boardSize };
 

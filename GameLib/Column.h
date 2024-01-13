@@ -2,17 +2,15 @@
 
 #include "IColumn.h"
 
+using ColumnPtr = std::shared_ptr<class Column>;
+
 class Column : public IColumn
 {
 public:
-	Column(IPlayer* player);
-	Column(const Column& rhs);
-	Column(Column&& other) noexcept;
-	Column& operator=(const Column& rhs) noexcept;
-	Column& operator=(Column&& rhs) noexcept;
+	Column(IPlayerPtr player);
 
-	IPlayer* GetPlayer() const noexcept override;
+	IPlayerPtr GetPlayer() const noexcept override;
 
 private:
-	IPlayer* m_player;
+	IPlayerPtr m_player;
 };

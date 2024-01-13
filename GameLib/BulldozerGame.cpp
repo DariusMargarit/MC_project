@@ -19,7 +19,7 @@ bool BulldozerGame::CoinFlip()
 	
 }
 
-void BulldozerGame::DestroyRandomColumn(Player* firstPlayer, Player* secondPlayer)
+void BulldozerGame::DestroyRandomColumn(PlayerPtr firstPlayer, PlayerPtr secondPlayer)
 {
 
 	std::random_device rd;
@@ -41,7 +41,7 @@ void BulldozerGame::DestroyRandomColumn(Player* firstPlayer, Player* secondPlaye
 
 	if (numberOfBridgesRemoved)
 	{
-		Player* playerUsed = m_board->GetElement(position)->GetPlayer() == firstPlayer
+		PlayerPtr playerUsed = m_board->GetElement(position)->GetPlayer() == firstPlayer
 			? firstPlayer : secondPlayer;
 		playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
 		playerUsed->IncreaseColumnNumber();
@@ -74,7 +74,7 @@ void BulldozerGame::MoveToRandomEmptyPlace()
 
 }
 
-void BulldozerGame::DestroyOrMove(Player* firstPlayer, Player* secondPlayer)
+void BulldozerGame::DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPlayer)
 {
 	if (CoinFlip())
 	{
@@ -91,6 +91,6 @@ void BulldozerGame::DestroyOrMove(Player* firstPlayer, Player* secondPlayer)
 
 void BulldozerGame::PlaceBulldozer(const Position& position)
 {
-	m_board->PlaceColumn(position, new BulldozerColumn);
+	m_board->PlaceColumn(position, std::make_shared<BulldozerColumn>());
 }
 

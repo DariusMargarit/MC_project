@@ -7,7 +7,7 @@
 class BoardNode : public Board
 {
 public:
-	BoardNode(const Board& board, IPlayer* maximizingPlayer, IPlayer* minimizingPlayer);
+	BoardNode(const Board& board, IPlayerPtr maximizingPlayer, IPlayerPtr minimizingPlayer);
 	BoardNode(const BoardNode& other);
 	~BoardNode() = default;
 
@@ -21,6 +21,6 @@ public:
 
 private:
 	std::vector<std::shared_ptr<BoardNode>> m_children;
-	IPlayer* m_maximizingPlayer;
-	IPlayer* m_minimizingPlayer;
+	IPlayerPtr m_maximizingPlayer;
+	IPlayerPtr m_minimizingPlayer;
 };
