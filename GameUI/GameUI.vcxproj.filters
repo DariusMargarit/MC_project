@@ -79,6 +79,9 @@
     <ClCompile Include="PlayerBar.cpp">
       <Filter>Screens\Game\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>Screens\Game\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileUtils.h">
@@ -91,6 +94,9 @@
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PlayerBar.h">
+      <Filter>Screens\Game\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
       <Filter>Screens\Game\Widgets</Filter>
     </ClInclude>
   </ItemGroup>

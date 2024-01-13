@@ -99,9 +99,14 @@ const uint16_t& Player::GetColumnNumber() const noexcept
 	return m_ColumnCounter;
 }
 
-void Player::SetColor(EColor rhs)
+void Player::SetColor(EColor color)
 {
-	m_color = rhs;
+	m_color = color;
+}
+
+void Player::SetName(std::string_view name)
+{
+	m_name = name;
 }
 
 void Player::SetDoubleTurn(bool hasDoubleTurn)

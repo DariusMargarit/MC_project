@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ColorUtils.cpp" />
+    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="HistoryWidget.cpp" />
@@ -152,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HistoryWidget.h" />
+    <ClInclude Include="Dialog.h" />
     <ClInclude Include="PlayerBar.h" />
     <ClInclude Include="WidgetUtils.h" />
     <QtMoc Include="Slider.h" />

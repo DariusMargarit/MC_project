@@ -33,6 +33,8 @@ struct IGame
 	virtual bool MakeBridge(Position firstPos, Position secondPos) = 0;
 	virtual bool RemoveBridge(Position firstPos , Position secondPos) = 0;
 
+	virtual void SwapResponse(bool response) = 0;
+
 	virtual bool SaveGame(const std::string_view path, StorageFormat format) = 0;
 	virtual bool LoadGame(const std::string_view path, StorageFormat format) = 0;
 

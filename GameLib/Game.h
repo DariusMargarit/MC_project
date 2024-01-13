@@ -29,6 +29,8 @@ public:
 	bool PlaceColumn(Position position) override;
 	bool MakeBridge(Position firstPos, Position secondPos) override;
 	bool RemoveBridge(Position firstPos, Position secondPos) override;
+
+	void SwapResponse(bool response) override;
 	void SwapPlayers();
 
 	void AddObserver(ObserverPtr observer) override;
@@ -46,6 +48,9 @@ private:
 	void NotifyPlaceColumn(Position position, IPlayer* player) const;
 	void NotifyMakeBridge(Position firstPos, Position secondPos, IPlayer* player) const;
 	void NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* player) const;
+	void NotifySwapEvent() const;
+	void NotifySwapResponse(bool response) const;
+	void NotifyGameEnd(EGameResult result) const;
 
 	void ChangeTurn();
 	void ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const; // action = 0 - make, 1 - remove
@@ -62,7 +67,7 @@ private:
 	EGamemode m_gamemode;
 	parser::TwixtParserPtr m_parser;
 
-	bool m_notificationsDisabled;
+	bool m_notificationsDisabled, m_firstGameMove;
 
 	ObserverList m_observers;
 

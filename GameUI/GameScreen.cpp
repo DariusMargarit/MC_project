@@ -9,8 +9,8 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 	, m_game{game}
 	, m_layout{new QGridLayout{this}}
 	, m_history{new HistoryWidget{this}}
-	, m_firstPlayerBar{new PlayerBar{*game->GetFirstPlayer(), this}}
-	, m_secondPlayerBar{new PlayerBar{*game->GetSecondPlayer(), this}}
+	, m_firstPlayerBar{new PlayerBar{*game->GetFirstPlayer(), true, this}}
+	, m_secondPlayerBar{new PlayerBar{*game->GetSecondPlayer(), false, this}}
 	, m_board{new BoardWidget{*game->GetBoard(), game->GetTurn(),
 			  game->GetFirstPlayer()->GetColor(), game->GetSecondPlayer()->GetColor(),
 			  this}}
@@ -54,6 +54,24 @@ void GameScreen::OnBridgeRemoved(Position& firstPos, Position& secondPos, IPlaye
 	m_history->AddBridgeItem(player, firstPos, secondPos, true);
 }
 
+void GameScreen::OnSwapRequest()
+{
+	m_game->SwapResponse(true);
+}
+
+void GameScreen::OnSwapResponse(bool response)
+{
+	if (response) 
+	{
+		update();
+	}
+}
+
+void GameScreen::OnGameEnd(EGameResult result)
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
+
 void GameScreen::OnHistoryClicked(QListWidgetItem* item)
 {
 	const auto& index = m_history->currentRow() + 1;
@@ -68,6 +86,10 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 	if (button == Qt::LeftButton)
 	{
 		m_game->PlaceColumn(position);
+		bool isFirstPlayerTurn = m_game->GetTurn() == m_game->GetFirstPlayer();
+		bool isSecondPlayerTurn = m_game->GetTurn() == m_game->GetSecondPlayer();
+		m_firstPlayerBar->Update(isFirstPlayerTurn);
+		m_secondPlayerBar->Update(isSecondPlayerTurn);
 	}
 	else if (button == Qt::RightButton)
 	{

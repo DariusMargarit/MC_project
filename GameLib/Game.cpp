@@ -20,6 +20,7 @@ Game::Game(const IGameSettings& settings)
 	, m_parser{ parser::ITwixtParser::Produce()}
 	, m_gamemode{ settings.GetGamemode()}
 	, m_notificationsDisabled{false}
+	, m_firstGameMove{false}
 {	
 	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
@@ -85,6 +86,12 @@ bool Game::PlaceColumn(Position position)
 	}
 	ChangeTurn();
 
+	if (!m_firstGameMove)
+	{
+		m_firstGameMove = true;
+		NotifySwapEvent();
+	}
+
 	if (m_gamemode == EGamemode::MinedColumns && isMinedColumn)
 	{
 		m_minedGame->DestroyArea(position, m_player1, m_player2);
@@ -131,12 +138,17 @@ bool Game::RemoveBridge(Position firstPos, Position secondPos)
 	return true;
 }
 
+void Game::SwapResponse(bool response)
+{
+	if (response) SwapPlayers();
+	NotifySwapResponse(response);
+}
+
 void Game::SwapPlayers()
 {
-	EColor auxiliarColor = m_player1->GetColor();
-	m_player1->SetColor(m_player2->GetColor());
-	m_player2->SetColor(auxiliarColor);
-	ChangeTurn();
+	std::string auxiliarName = m_player1->GetName().data();
+	m_player1->SetName(m_player2->GetName());
+	m_player2->SetName(auxiliarName);
 }
 
 IPlayer* Game::GetFirstPlayer() const
@@ -287,6 +299,33 @@ void Game::NotifyRemoveBridge(Position firstPos, Position secondPos, IPlayer* pl
 	for (auto& observer : m_observers)
 	{
 		observer.lock()->OnBridgeRemoved(firstPos, secondPos, player);
+	}
+}
+
+void Game::NotifySwapEvent() const
+{
+	if (m_notificationsDisabled) return;
+	for (auto& observer : m_observers)
+	{
+		observer.lock()->OnSwapRequest();
+	}
+}
+
+void Game::NotifySwapResponse(bool response) const
+{
+	if (m_notificationsDisabled) return;
+	for (auto& observer : m_observers)
+	{
+		observer.lock()->OnSwapResponse(response);
+	}
+}
+
+void Game::NotifyGameEnd(EGameResult result) const
+{
+	if (m_notificationsDisabled) return;
+	for (auto& observer : m_observers)
+	{
+		observer.lock()->OnGameEnd(result);
 	}
 }
 

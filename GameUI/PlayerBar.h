@@ -9,8 +9,10 @@
 class PlayerBar : public QWidget
 {
 public:
-	PlayerBar(const IPlayer& player, QWidget* parent = nullptr);
+	PlayerBar(const IPlayer& player, bool turn, QWidget* parent = nullptr);
+	void Update(bool playerTurn);
 
+private:
 	const IPlayer& m_player;
 	QGridLayout* m_layout;
 	QLabel* m_profilePicture, * m_playerName;

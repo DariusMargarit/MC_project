@@ -21,7 +21,9 @@ public:
 	bool HasBridgesToAdd() const;
 	bool HasColumnsToAdd() const;
 
-	void SetColor(EColor rhs) override;
+	void SetColor(EColor color) override;
+	void SetName(std::string_view name) override;
+
 	void SetDoubleTurn(bool hasDoubleTurn);
 	void IncreaseBridgeNumber(const uint16_t& number = 1);
 	void IncreaseColumnNumber(const uint16_t& number = 1);
