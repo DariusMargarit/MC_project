@@ -11,7 +11,7 @@ export namespace parser
 		TwixtParser() = default;
 		TwixtParser(const TwixtParser& other) = default;
 
-		bool LoadPTG(std::string_view path) override;
+		size_t LoadPTG(std::string_view path) override;
 		bool SavePTG(std::string_view path) override;
 
 		void AddColumn(const Position& position) override;

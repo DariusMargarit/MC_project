@@ -30,7 +30,7 @@ namespace parser
 
 		static TwixtParserPtr Produce();
 
-		virtual bool LoadPTG(std::string_view path) = 0;
+		virtual size_t LoadPTG(std::string_view path) = 0;
 		virtual bool SavePTG(std::string_view path) = 0;
 
 		static STNGameRepresentation LoadSTN(std::string_view path);

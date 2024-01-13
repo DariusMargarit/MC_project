@@ -333,17 +333,17 @@ parser::STNGameRepresentation Game::GetSTNGameRepresentation() const
 	return std::make_pair(boardRepresentation, movesRepresentation);
 }
 
-Board Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const
+BoardPtr Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const
 {
 	const auto& [boardRepresentation, moves] = game;
-	Board board(static_cast<uint16_t>(boardRepresentation.size()));
+	BoardPtr board = std::make_shared<Board>(static_cast<uint16_t>(boardRepresentation.size()));
 	for (uint16_t row = 0; row < boardRepresentation.size(); row++)
 	{
 		for (uint16_t column = 0; column < boardRepresentation.size(); column++)
 		{
 			if (boardRepresentation[row][column] == parser::Piece::Empty) continue;
 			IPlayerPtr currentPlayer = boardRepresentation[row][column] == parser::Piece::FirstPlayer ? m_player1 : m_player2;
-			board.PlaceColumn({ row, column }, currentPlayer);
+			board->PlaceColumn({ row, column }, currentPlayer);
 		}
 	}
 
@@ -352,9 +352,9 @@ Board Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& ga
 		const auto& [firstPos, secondPos] = move;
 		const auto& [firstPosRow, firstPosColumn] = firstPos;
 		const auto& [secondPosRow, secondPosColumn] = secondPos;
-		IPlayerPtr currentPlayer = board.GetElement(firstPosRow, firstPosColumn)->GetPlayer();
+		IPlayerPtr currentPlayer = board->GetElement(firstPosRow, firstPosColumn)->GetPlayer();
 
-		board.MakeBridge({ firstPosRow, firstPosColumn }, { secondPosRow, secondPosColumn }, currentPlayer);
+		board->MakeBridge({ firstPosRow, firstPosColumn }, { secondPosRow, secondPosColumn }, currentPlayer);
 	}
 
 	return std::move(board);
@@ -374,23 +374,26 @@ bool Game::SaveGame(const std::string_view path, StorageFormat format)
 
 bool Game::LoadGame(const std::string_view path, StorageFormat format)
 {
-	//switch (format)
-	//{
-	//case StorageFormat::STN:
-	//{
-	//	auto representation = parser::ITwixtParser::LoadSTN(path);
-	//	const auto& [board, moves] = representation;
-	//	if (board.empty()) return false;
-
-	//}
-	//case StorageFormat::PTG:
-	//{
-	//	if (m_parser->LoadPTG(path))
-	//	{
-
-	//	}
-	//}
-	//}
+	switch (format)
+	{
+	case StorageFormat::STN:
+	{
+		auto representation = parser::ITwixtParser::LoadSTN(path);
+		const auto& [board, moves] = representation;
+		if (board.empty()) return false;
+		m_board = STNGameRepresentationToBoard(representation);
+		return true;
+	}
+	case StorageFormat::PTG:
+	{
+		if (size_t size = m_parser->LoadPTG(path); size)
+		{
+			PreviewTable(size);
+			return true;
+		}
+		break;
+	}
+	}
 	return false;
 }
 

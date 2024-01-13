@@ -98,13 +98,13 @@ bool parser::ITwixtParser::SaveSTN(const STNGameRepresentation& game, std::strin
 	return true;
 }
 
-bool TwixtParser::LoadPTG(std::string_view path)
+size_t TwixtParser::LoadPTG(std::string_view path)
 {
-	if (!HasExtension(path, "ptg")) return false;
+	if (!HasExtension(path, "ptg")) return 0;
 	Clear();
 	
 	std::ifstream file(std::string(std::move(path)));
-	if (!file.is_open()) return false;
+	if (!file.is_open()) return 0;
 
 	std::regex pattern{ R"(\b\d+)" };
 	std::string line;
@@ -135,7 +135,7 @@ bool TwixtParser::LoadPTG(std::string_view path)
 
 	file.close();
 	
-	return true;
+	return m_representation.size();
 }
 
 bool TwixtParser::SavePTG(std::string_view path)
