@@ -82,7 +82,8 @@ Position BulldozerGame::DestroyOrMove(PlayerPtr firstPlayer, PlayerPtr secondPla
 	}
 	else
 	{
-		m_epsilon *= 0.97;
+		double gamma = (m_epsilon * m_board->GetSize()) * 1.0 / (m_board->GetSize() + 0.5);
+		m_epsilon *= gamma;
 		MoveToRandomEmptyPlace();
 	}
 	return m_currentPosition;

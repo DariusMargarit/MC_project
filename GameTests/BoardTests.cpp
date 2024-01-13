@@ -188,6 +188,20 @@ TEST_F(BoardTests, MakeBridgeIntersection2)
 	
 }
 
+TEST_F(BoardTests, MakeBridgeIntersection3)
+{
+	Position pos1{ 15,18 }, pos2{ 16,20 }, pos3{ 16,18 }, pos4{ 15,20 };
+
+	EXPECT_EQ(m_board->PlaceColumn(pos1, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos2, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos3, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos4, m_player2), true);
+
+	EXPECT_EQ(m_board->MakeBridge(pos1, pos2, m_player1), true);
+	EXPECT_EQ(m_board->MakeBridge(pos3, pos4, m_player2), false);
+}
+
+
 TEST_F(BoardTests, ClearTest)
 {
 
