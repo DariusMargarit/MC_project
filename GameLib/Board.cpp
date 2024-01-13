@@ -52,7 +52,7 @@ bool Board::ValidPlaceColumn(const Position& position) const
 	return true;
 }
 
-std::vector<std::string> Board::GetColumnConnections(Position position) const
+std::vector<std::string> Board::GetColumnConnections(const Position& position) const
 {
 	std::vector<std::string> bridgeKeyList;
 	std::pair<uint16_t, uint16_t> start, end;
@@ -250,7 +250,7 @@ const std::pair<Position, Position> Board::ExtractPositionFromKey(const std::str
 	return std::move(std::make_pair(firstPosition, secondPosition));
 }
 
-void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath)
+void Board::MarkPathWithOnes(const Position& startPosition, std::vector<std::vector<bool>>* playerPath)
 {
 	std::array<int16_t, 8> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
 	std::array<int16_t, 8> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };
@@ -287,7 +287,7 @@ void Board::MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bo
 	}
 }
 
-void Board::ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos)
+void Board::ComputePathToWin(bool player, bool action, const Position& firstPos, const Position& secondPos)
 {
 	std::vector<std::vector<bool>>* playerPath{ nullptr };
 	if (player == 0)

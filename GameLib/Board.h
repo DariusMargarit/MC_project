@@ -28,7 +28,7 @@ public:
 	const IColumn* GetElement(const uint16_t& row, const uint16_t& column) const override;
 	const BridgeVector GetBridgesPositions() const override;
 	bool BridgeExists(const Position& firstPos, const Position& secondPos) const override;
-	void ComputePathToWin(bool player, bool action, Position& firstPos, Position& secondPos);
+	void ComputePathToWin(bool player, bool action, const Position& firstPos, const Position& secondPos);
 	bool CheckWinner(bool player) const;
 
 	bool ValidPosibleBridge(const Position& firstPos, const Position& secondPos) const;
@@ -50,13 +50,13 @@ public:
 	bool operator==(const Board& rhs) const;
 
 private:
-	std::vector<std::string> GetColumnConnections(Position position) const;
+	std::vector<std::string> GetColumnConnections(const Position& position) const;
 	bool FindObstacleBridge(const Position& firstPos, const Position& secondPos) const;
 	bool Orientation(const Position& A, const Position& B, const Position& C) const;
 	bool doIntersect(const Position& A1, const Position& B1, const Position& A2, const Position& B2) const;
 	const std::string MakeKey(const Position& firstPos, const Position& secondPos) const;
 	const std::pair<Position, Position> ExtractPositionFromKey(const std::string& key) const;
-	void MarkPathWithOnes(Position& startPosition, std::vector<std::vector<bool>>* playerPath);
+	void MarkPathWithOnes(const Position& startPosition, std::vector<std::vector<bool>>* playerPath);
 
 private:
 	std::unordered_map<std::string,Bridge*> m_bridges;

@@ -21,6 +21,7 @@ Game::Game(const IGameSettings& settings)
 	, m_gamemode{ settings.GetGamemode()}
 	, m_notificationsDisabled{false}
 	, m_firstGameMove{false}
+	, m_gameEnded{false}
 {	
 	m_board = std::make_shared<Board>(m_boardSize);
 	m_turn = m_player1;
@@ -60,21 +61,29 @@ Game::Game(Game && other) noexcept
 	other.m_minimax = nullptr;
 }
 
-bool Game::PlaceColumn(Position position)
+bool Game::PlaceColumn(const Position& position)
 {
+	if (m_gameEnded && !m_notificationsDisabled) return false;
+
 	bool isMinedColumn = false;
+	bool isFirstPlayer = m_turn == m_player1;
+	bool canAdd = isFirstPlayer ? m_player1->HasColumnsToAdd() : m_player2->HasColumnsToAdd();
+
+	if (!m_player1->HasColumnsToAdd() && !m_player2->HasColumnsToAdd())
+	{
+		NotifyGameEnd(EGameResult::Tie);
+		m_gameEnded = true;
+	}
 
 	if (dynamic_cast<const MinedColumn*>(m_board->GetElement(position)))
 		isMinedColumn = true;
 
-	bool isFirstPlayer = m_turn == m_player1;
 	if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) &&
 		!isFirstPlayer) return false;
 
 	if ((position.GetColumn() == 0 || position.GetColumn() == m_board->GetSize() - 1) &&
 		isFirstPlayer) return false;
 
-	bool canAdd = isFirstPlayer ? m_player1->HasColumnsToAdd() : m_player2->HasColumnsToAdd();
 	if (!canAdd && !m_notificationsDisabled) return false;
 
 	if (!m_board->PlaceColumn(position, m_turn)) return false;
@@ -84,6 +93,7 @@ bool Game::PlaceColumn(Position position)
 	{
 		isFirstPlayer ? m_player1->DecreaseColumnNumber() : m_player2->DecreaseColumnNumber();
 	}
+
 	ChangeTurn();
 
 	if (!m_firstGameMove)
@@ -102,8 +112,10 @@ bool Game::PlaceColumn(Position position)
 
 }
 
-bool Game::MakeBridge(Position firstPos, Position secondPos)
+bool Game::MakeBridge(const Position& firstPos, const Position& secondPos)
 {
+	if (m_gameEnded && !m_notificationsDisabled) return false;
+
 	bool isFirstPlayer = m_turn == m_player1;
 
 	bool canAdd = isFirstPlayer ? m_player1->HasBridgesToAdd() : m_player2->HasBridgesToAdd();
@@ -120,11 +132,20 @@ bool Game::MakeBridge(Position firstPos, Position secondPos)
 	
 	ComputePathToWin(0, firstPos, secondPos);
 
+	auto winner = CheckWinner();
+	if (winner)
+	{
+		NotifyGameEnd(winner == m_player1 ? EGameResult::FirstPlayerWon : EGameResult::SecondPlayerWon);
+		m_gameEnded = true;
+	}
+
 	return true;
 }
 
-bool Game::RemoveBridge(Position firstPos, Position secondPos)
+bool Game::RemoveBridge(const Position& firstPos, const Position& secondPos)
 {
+	if (m_gameEnded && !m_notificationsDisabled) return false;
+
 	if (!m_board->RemoveBridge(firstPos, secondPos, m_turn)) return false;
 
 	NotifyRemoveBridge(firstPos, secondPos, m_turn);
@@ -340,7 +361,7 @@ void Game::ChangeTurn()
 	m_turn = m_turn == m_player1 ? m_player2 : m_player1;
 }
 
-void Game::ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const
+void Game::ComputePathToWin(bool action, const Position& firstPos, const Position& secondPos) const
 {
 	if (m_turn == m_player1)
 	{

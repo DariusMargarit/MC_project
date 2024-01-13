@@ -26,9 +26,9 @@ public:
 	IPlayer* GetSecondPlayer() const override;
 
 	void PreviewTable(int historyIndex) override;
-	bool PlaceColumn(Position position) override;
-	bool MakeBridge(Position firstPos, Position secondPos) override;
-	bool RemoveBridge(Position firstPos, Position secondPos) override;
+	bool PlaceColumn(const Position& position) override;
+	bool MakeBridge(const Position& firstPos, const Position& secondPos) override;
+	bool RemoveBridge(const Position& firstPos, const Position& secondPos) override;
 
 	void SwapResponse(bool response) override;
 	void SwapPlayers();
@@ -53,7 +53,7 @@ private:
 	void NotifyGameEnd(EGameResult result) const;
 
 	void ChangeTurn();
-	void ComputePathToWin(bool action, Position& firstPos, Position& secondPos) const; // action = 0 - make, 1 - remove
+	void ComputePathToWin(bool action, const Position& firstPos, const Position& secondPos) const; // action = 0 - make, 1 - remove
 	parser::STNGameRepresentation GetSTNGameRepresentation() const;
 	Board STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const;
 
@@ -67,7 +67,7 @@ private:
 	EGamemode m_gamemode;
 	parser::TwixtParserPtr m_parser;
 
-	bool m_notificationsDisabled, m_firstGameMove;
+	bool m_notificationsDisabled, m_firstGameMove, m_gameEnded;
 
 	ObserverList m_observers;
 

@@ -76,7 +76,30 @@ void GameScreen::OnSwapResponse(bool response)
 
 void GameScreen::OnGameEnd(EGameResult result)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	Dialog* dialog = new Dialog(this);
+	
+	std::string resultString;
+	switch (result)
+	{
+	case EGameResult::FirstPlayerWon:
+		resultString = m_game->GetFirstPlayer()->GetName();
+		break;
+	case EGameResult::SecondPlayerWon:
+		resultString = m_game->GetSecondPlayer()->GetName();
+		break;
+	case EGameResult::Tie:
+		resultString = "It's a tie!";
+		break;
+
+	}
+
+	auto generatedText = dialog->LoadDialog(
+		"The game has ended:",
+		result == EGameResult::Tie
+			? resultString : resultString + " won the game!",
+		"Do you want to start a new game?"
+	);
+	auto response = dialog->ExecuteDialog(generatedText, true);
 }
 
 void GameScreen::OnHistoryClicked(QListWidgetItem* item)

@@ -29,9 +29,9 @@ struct IGame
 	virtual IPlayer* GetSecondPlayer() const = 0;
 
 	virtual void PreviewTable(int historyIndex) = 0;
-	virtual bool PlaceColumn(Position position) = 0;
-	virtual bool MakeBridge(Position firstPos, Position secondPos) = 0;
-	virtual bool RemoveBridge(Position firstPos , Position secondPos) = 0;
+	virtual bool PlaceColumn(const Position& position) = 0;
+	virtual bool MakeBridge(const Position& firstPos, const Position& secondPos) = 0;
+	virtual bool RemoveBridge(const Position& firstPos , const Position& secondPos) = 0;
 
 	virtual void SwapResponse(bool response) = 0;
 
