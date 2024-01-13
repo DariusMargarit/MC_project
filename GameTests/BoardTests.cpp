@@ -66,7 +66,31 @@ TEST_F(BoardTests, PlaceWrongColumnTest) {
 
 }
 
+TEST_F(BoardTests, RemoveColumnTest) {
 
+	Position positionToRemove{ 2, 3 };
+	EXPECT_EQ(m_board->PlaceColumn(positionToRemove, m_player1), true);
+
+	uint16_t columnsBeforeRemoval = m_board->RemoveColumn(positionToRemove);
+	const IColumn* removedColumn = m_board->GetElement(positionToRemove);
+	EXPECT_EQ(removedColumn, nullptr);
+
+
+}
+
+TEST_F(BoardTests, RemoveBridgeTest) {
+
+	Position firstPosition{ 2, 3 }, secondPosition{ 4, 4 };
+
+	EXPECT_EQ(m_board->PlaceColumn(firstPosition, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn(secondPosition, m_player2), true);
+
+	EXPECT_EQ(m_board->MakeBridge(firstPosition, secondPosition, m_player2), true);
+
+	EXPECT_EQ(m_board->RemoveBridge(firstPosition, secondPosition, m_player2), true);
+	
+
+}
 
 TEST_F(BoardTests, MakeValidBridgeTest)
 {
