@@ -19,6 +19,22 @@ bool Board::ValidPosition(const int16_t& row, const int16_t& column) const
 	{
 		return false;
 	}
+	else if (row == 0 && column == 0)
+	{
+		return false;
+	}
+	else if (row == 0 && column == m_matrix.size() - 1)
+	{
+		return false;
+	}
+	else if (row == m_matrix.size() - 1 && column == 0)
+	{
+		return false;
+	}
+	else if (row == m_matrix.size() - 1 && column == m_matrix.size() - 1)
+	{
+		return false;
+	}
 	return true;
 }
 
