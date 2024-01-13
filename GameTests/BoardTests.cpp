@@ -210,8 +210,109 @@ TEST_F(BoardTests, ClearTest)
 
 }
 
+TEST_F(BoardTests, CheckWinnerPlayer1Test) {
+	// Test when no player has won
+	EXPECT_EQ(m_board->CheckWinner(0), false);
+	EXPECT_EQ(m_board->CheckWinner(1), false);
+
+	// Test when player 1 wins vertically
+	EXPECT_EQ(m_board->PlaceColumn({ 0, 4 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 5 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 4, 4 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 6, 5 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 8, 4 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 10, 5 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 12, 4 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 14, 5 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 16, 4 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 18, 5 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 20, 4 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 22, 5 }, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 23, 3 }, m_player1), true);
+
+	EXPECT_EQ(m_board->MakeBridge({ 0, 4 }, { 2, 5 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 0, 4 }, { 2, 5 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 5 }, { 4, 4 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 2, 5 }, { 4, 4 });
+	EXPECT_EQ(m_board->MakeBridge({ 4, 4 }, { 6, 5 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 4, 4 }, { 6, 5 });
+	EXPECT_EQ(m_board->MakeBridge({ 6, 5 }, { 8, 4 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 6, 5 }, { 8, 4 });
+	EXPECT_EQ(m_board->MakeBridge({ 8, 4 }, { 10, 5 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 8, 4 }, { 10, 5 });
+	EXPECT_EQ(m_board->MakeBridge({ 10, 5 }, { 12, 4 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 10, 5 }, { 12, 4 });
+	EXPECT_EQ(m_board->MakeBridge({ 12, 4 }, { 14, 5 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 12, 4 }, { 14, 5 });
+	EXPECT_EQ(m_board->MakeBridge({ 14, 5 }, { 16, 4 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 14, 5 }, { 16, 4 });
+	EXPECT_EQ(m_board->MakeBridge({ 16, 4 }, { 18, 5 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 16, 4 }, { 18, 5 });
+	EXPECT_EQ(m_board->MakeBridge({ 18,5 }, { 20,4 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 18,5 }, { 20,4 });
+	EXPECT_EQ(m_board->MakeBridge({ 20, 4 }, { 22, 5 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 20, 4 }, { 22, 5 });
+	EXPECT_EQ(m_board->MakeBridge({ 22,5 }, { 23, 3 }, m_player1), true);
+	m_board->ComputePathToWin(0, 1, { 22,5 }, { 23, 3 });
+
+	EXPECT_EQ(m_board->CheckWinner(0), true);
+	EXPECT_EQ(m_board->CheckWinner(1), false);
 
 
+}
 
+
+TEST_F(BoardTests, CheckWinnerPlayer2Test) {
+	// Test when no player has won
+	EXPECT_EQ(m_board->CheckWinner(0), false);
+	EXPECT_EQ(m_board->CheckWinner(1), false);
+
+	// Test when player 2 wins horizontally
+	EXPECT_EQ(m_board->PlaceColumn({ 3, 0 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 2 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 3, 4 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 6 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 3, 8 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 10 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 3, 12 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 14 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 3, 16 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 18 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 3, 20 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 2, 22 }, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn({ 4, 23 }, m_player2), true);
+
+
+	EXPECT_EQ(m_board->MakeBridge({ 3, 0 }, { 2, 2 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 3, 0 }, { 2, 2 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 2 }, { 3, 4 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 2, 2 }, { 3, 4 });
+	EXPECT_EQ(m_board->MakeBridge({ 3, 4 }, { 2, 6 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 3, 4 }, { 2, 6 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 6 }, { 3, 8 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 2, 6 }, { 3, 8 });
+	EXPECT_EQ(m_board->MakeBridge({ 3, 8 }, { 2, 10 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 3, 8 }, { 2, 10 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 10 }, { 3, 12 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 2, 10 }, { 3, 12 });
+	EXPECT_EQ(m_board->MakeBridge({ 3, 12 }, { 2, 14 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 3, 12 }, { 2, 14 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 14 }, { 3, 16 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 2, 14 }, { 3, 16 });
+	EXPECT_EQ(m_board->MakeBridge({ 3, 16 }, { 2, 18 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 3, 16 }, { 2, 18 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 18 }, { 3, 20 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 2, 18 }, { 3, 20 });
+	EXPECT_EQ(m_board->MakeBridge({ 3, 20 }, { 2, 22 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 3, 20 }, { 2, 22 });
+	EXPECT_EQ(m_board->MakeBridge({ 2, 22 }, { 4, 23 }, m_player2), true);
+	m_board->ComputePathToWin(1, 1, { 2, 22 }, { 4, 23 });
+
+
+	EXPECT_EQ(m_board->CheckWinner(1), true);
+	EXPECT_EQ(m_board->CheckWinner(0), false);
+
+
+}
 
 
