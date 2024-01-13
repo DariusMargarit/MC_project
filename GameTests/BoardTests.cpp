@@ -40,8 +40,22 @@ TEST_F(BoardTests, PlaceColumnTest1) {
 	EXPECT_EQ(insertedColumn->GetPlayer(), m_player1);
 
 }
-//
-//
+
+TEST_F(BoardTests, MakeValidBridgeTest)
+{
+	Position pos{ {8,10} };
+	std::vector<Position> positions{  {6,11},  {7,12},  {9, 12}, {10,11}, {10,9}, {9,8}, {7,8}, {6,9} };
+
+	EXPECT_EQ(m_board->PlaceColumn(pos, m_player1), true);
+
+	for (auto position : positions)
+	{
+				EXPECT_EQ(m_board->PlaceColumn(position,m_player1), true);
+				EXPECT_EQ(m_board->MakeBridge(pos,position,m_player1), true);
+	}
+	
+
+}
 //TEST_F(BoardTests, MakeBridgeIntersection1) 
 //{
 //	std::vector<Position> positions{ {6, 11}, {8, 10},  {8, 12},  {7, 12} };
