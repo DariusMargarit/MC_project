@@ -121,41 +121,48 @@ TEST_F(BoardTests, MakeBridgeDifferentColumnsTest)
 	
 }
 
+TEST_F(BoardTests, ValidateBridgeTest)
+{
+
+	Position firstColumn = { 5,5 };
+	EXPECT_EQ(m_board->PlaceColumn(firstColumn, m_player1), true);
+	
+	EXPECT_EQ(m_board->MakeBridge(firstColumn, Position{ 7,6 }, m_player1), false);
+	EXPECT_EQ(m_board->MakeBridge(Position{0,0}, Position{2,1}, m_player1), false);
+	EXPECT_EQ(m_board->MakeBridge(Position{ 4,2 }, Position{ 2,1 }, m_player1), false);
+	
+}
+
+TEST_F(BoardTests, MakeBridgeIntersection1) 
+{
+	Position pos1{ 6,11 }, pos2{ 8,12 }, pos3{ 8,10 }, pos4{ 7,12 };
+	
+	EXPECT_EQ(m_board->PlaceColumn(pos1, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos2, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos3, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos4, m_player2), true);
+
+	EXPECT_EQ(m_board->MakeBridge(pos1, pos2,m_player1), true);
+	EXPECT_EQ(m_board->MakeBridge(pos3,pos4,m_player2), false);
+}
+
+TEST_F(BoardTests, MakeBridgeIntersection2)
+{
+
+	Position pos1{ 2, 2 }, pos2{ 3, 4 }, pos3{ 4, 3 }, pos4{ 2, 4 };
+	
+	EXPECT_EQ(m_board->PlaceColumn(pos1, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos2, m_player1), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos3, m_player2), true);
+	EXPECT_EQ(m_board->PlaceColumn(pos4, m_player2), true);
+
+	EXPECT_EQ(m_board->MakeBridge(pos1, pos2, m_player1), true);
+	EXPECT_EQ(m_board->MakeBridge(pos3, pos4, m_player2), false);
+
+	
+}
 
 
 
-
-
-
-//TEST_F(BoardTests, MakeBridgeIntersection1) 
-//{
-//	std::vector<Position> positions{ {6, 11}, {8, 10},  {8, 12},  {7, 12} };
-//
-//	// the position should be valid before insertion
-//	for (auto position : positions)
-//	{
-//		EXPECT_EQ(m_game->PlaceColumn(position), true);
-//	}
-//
-//	EXPECT_EQ(m_game->MakeBridge({ 6, 11 }, { 8, 12 }), true);
-//	EXPECT_EQ(m_game->MakeBridge({ 8, 10 }, { 7, 12 }), false);
-//}
-//
-//TEST_F(BoardTests, MakeBridgeIntersection2)
-//{
-//	std::vector<Position> positions{ {2, 2}, {4, 3},  {3, 4},  {2, 4} };
-//
-//	// the position should be valid before insertion
-//	for (auto position : positions)
-//	{
-//		EXPECT_EQ(m_game->PlaceColumn(position), true);
-//	}
-//
-//	EXPECT_EQ(m_game->MakeBridge({ 2, 2 }, { 3, 4 }), true);
-//	EXPECT_EQ(m_game->MakeBridge({ 4, 3 }, { 2, 4 }), false);
-//}
-//
-
-//
 
 
