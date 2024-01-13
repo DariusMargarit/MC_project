@@ -182,25 +182,32 @@ bool Board::ValidBridge(const Position& firstPos, const Position& secondPos) con
 	uint16_t absColumnValue = abs(firstPos.GetColumn() - secondPos.GetColumn()) ;
 	IColumnPtr firstColumn{ m_matrix[firstPos.GetRow()][firstPos.GetColumn()] };
 	IColumnPtr secondColumn{ m_matrix[secondPos.GetRow()][secondPos.GetColumn()] };
-	if (firstColumn == nullptr || secondColumn == nullptr)
+
+	if (std::shared_ptr<Column> firstColumnToVerify = std::dynamic_pointer_cast<Column> (firstColumn))
 	{
-		return false;
-	}
-	else if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
-	{
-		return false;
-	}
-	if (absRowValue == 0 || absColumnValue == 0) 
-	{
-		return false;
-	}
-	if (absRowValue + absColumnValue == 3) 
-	{
-		if (FindObstacleBridge(firstPos, secondPos))
+		if (std::shared_ptr<Column> secondColumnToVerify = std::dynamic_pointer_cast<Column> (secondColumn))
 		{
-			return false;
+			if (firstColumn == nullptr || secondColumn == nullptr)
+			{
+				return false;
+			}
+			else if (firstColumn->GetPlayer() != secondColumn->GetPlayer())
+			{
+				return false;
+			}
+			if (absRowValue == 0 || absColumnValue == 0)
+			{
+				return false;
+			}
+			if (absRowValue + absColumnValue == 3)
+			{
+				if (FindObstacleBridge(firstPos, secondPos))
+				{
+					return false;
+				}
+				return true;
+			}
 		}
-		return true;
 	}
 	return false;
 }
