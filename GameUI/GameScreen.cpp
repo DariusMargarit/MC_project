@@ -20,14 +20,14 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 			  this} }
 	, m_loadButton{new QPushButton{"Load", this}}
 	, m_saveButton{new QPushButton{"Save", this}}
-	, m_hintButton{new QPushButton{"Hint", this}}
+	, m_restartButton{new QPushButton{"Restart", this}}
 {
 
 	QWidget* panel = new QWidget{ this };
 	QGridLayout* panelLayout = new QGridLayout{ panel };
 	panelLayout->addWidget(m_saveButton, 0, 0);
 	panelLayout->addWidget(m_loadButton, 0, 1);
-	panelLayout->addWidget(m_hintButton, 0, 2);
+	panelLayout->addWidget(m_restartButton, 0, 2);
 	panelLayout->addWidget(m_history, 1, 0, 1, 3);
 
 	panel->setLayout(panelLayout);
@@ -51,7 +51,7 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 
 	connect(m_saveButton, SIGNAL(clicked()), SLOT(OnSaveClicked()));
 	connect(m_loadButton, SIGNAL(clicked()), SLOT(OnLoadClicked()));
-	connect(m_hintButton, SIGNAL(clicked()), SLOT(OnHintClicked()));
+	connect(m_restartButton, SIGNAL(clicked()), SLOT(OnRestartClicked()));
 
 	QString stylesheet{ FileUtils::StylesheetFileToString("./stylesheets/game.qss") };
 	setStyleSheet(stylesheet);
@@ -121,10 +121,11 @@ void GameScreen::OnGameEnd(EGameResult result)
 			? resultString : resultString + " won the game!",
 		"Do you want to start a new game?"
 	);
+
 	auto response = dialog->ExecuteDialog(generatedText, true);
-	m_game->Restart();
 	if (!response) emit(ReturnToMainMenu());
 	m_history->clear();
+	OnRestartClicked();
 }
 
 void GameScreen::OnHistoryClicked(QListWidgetItem* item)
@@ -206,11 +207,13 @@ void GameScreen::OnLoadClicked()
 
 }
 
-void GameScreen::OnHintClicked()
+void GameScreen::OnRestartClicked()
 {
-	if (m_game->GetBoard()->GetSize() <= 7)
-	{
-		auto hint = m_game->GetHint(6, m_game->GetTurn());
-		qDebug() << "hint";
-	}
+	m_game->Restart();
+	m_history->clear();
+	bool isFirstPlayerTurn = m_game->GetTurn() == m_game->GetFirstPlayer();
+	bool isSecondPlayerTurn = m_game->GetTurn() == m_game->GetSecondPlayer();
+	m_firstPlayerBar->Update(isFirstPlayerTurn);
+	m_secondPlayerBar->Update(isSecondPlayerTurn);
+	update();
 }

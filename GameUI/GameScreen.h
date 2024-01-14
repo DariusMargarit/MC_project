@@ -29,7 +29,7 @@ private slots:
 	void OnBoardClicked(const Position& position, const Qt::MouseButton& button);
 	void OnSaveClicked();
 	void OnLoadClicked();
-	void OnHintClicked();
+	void OnRestartClicked();
 
 signals:
 	void ReturnToMainMenu();
@@ -41,6 +41,6 @@ private:
 	PlayerBar* m_firstPlayerBar, * m_secondPlayerBar;
 	IGamePtr m_game;
 	Position m_selectedColumnPos;
-	QPushButton* m_saveButton, * m_loadButton, * m_hintButton;
+	QPushButton* m_saveButton, * m_loadButton, * m_restartButton;
 };
 
