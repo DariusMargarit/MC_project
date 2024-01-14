@@ -5,7 +5,7 @@ Minimax::Minimax(BoardPtr board, int16_t depth, IPlayerPtr firstPlayer, IPlayerP
 	, m_firstPlayer{firstPlayer}
 	, m_secondPlayer{secondPlayer}
 {
-	BoardPtr newBoard{ board };
+	BoardPtr newBoard = std::make_shared<Board> (*board);
 	const Position startPositionFirstPlayer(0, newBoard->GetSize() / 2);
 	newBoard->PlaceColumn(startPositionFirstPlayer, firstPlayer);
 	m_treeHead = std::make_shared<BoardNode>(newBoard, firstPlayer, secondPlayer);
@@ -75,7 +75,7 @@ void Minimax::GenerateTree(BoardPtr board, int16_t depth, std::shared_ptr<BoardN
 	{
 		return;
 	}
-	BoardPtr newBoard(board);
+	BoardPtr newBoard = std::make_shared<Board>(*board);
 	std::stack<Position> positionToStart;
 	std::array<int16_t, 8> rowDirection{ { -2,-1,1,2,2,1,-1,-2 } };
 	std::array<int16_t, 8> columnDirection{ { 1,2,2,1,-1,-2,-2,-1 } };

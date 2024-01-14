@@ -40,7 +40,7 @@ public:
 	bool SaveGame(const std::string_view path, StorageFormat format) override;
 	bool LoadGame(const std::string_view path, StorageFormat format) override;
 
-	std::pair<BridgeVector, Position> GetHint(int16_t depth, IPlayerPtr player) const;
+	std::pair<BridgeVector, Position> GetHint(int16_t depth, IPlayerPtr player) const override;
 
 private:
 	void NotifyPlaceColumn(Position position, IPlayerPtr player) const;

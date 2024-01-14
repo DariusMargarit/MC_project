@@ -208,5 +208,9 @@ void GameScreen::OnLoadClicked()
 
 void GameScreen::OnHintClicked()
 {
-	qDebug() << "hint";
+	if (m_game->GetBoard()->GetSize() <= 7)
+	{
+		auto hint = m_game->GetHint(6, m_game->GetTurn());
+		qDebug() << "hint";
+	}
 }
