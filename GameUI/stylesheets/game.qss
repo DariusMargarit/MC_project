@@ -2,6 +2,14 @@ QLabel#playerName {
 	font-size: 18px;
 }
 
+QPushButton {
+	font-family: "Montserrat Medium";
+	font-size: 18px;
+	border: none;
+	background-color: #262522;
+	border-radius: 15px;
+}
+
 QListWidget {
 	background-color: #262522;
 	border: none;

@@ -44,7 +44,7 @@ STNGameRepresentation parser::ITwixtParser::LoadSTN(std::string_view path)
 
 	while (std::getline(file, line))
 	{
-
+		if (line.empty() || line == " ") continue;
 		std::vector<uint16_t> positions;
 		auto it{ std::sregex_iterator(line.begin(), line.end(), pattern) };
 
@@ -69,6 +69,8 @@ bool parser::ITwixtParser::SaveSTN(const STNGameRepresentation& game, std::strin
 	if (!file.is_open()) return false;
 
 	const auto& [board, simpleMoves] = game;
+
+	file << board.size() << std::endl;
 
 	for (int row = 0; row < board.size(); row++)
 	{
@@ -140,7 +142,8 @@ size_t TwixtParser::LoadPTG(std::string_view path)
 
 bool TwixtParser::SavePTG(std::string_view path)
 {
-	std::ofstream file(std::string(std::move(path)));
+	std::ofstream file;
+	file.open(std::string(std::move(path)), std::ofstream::out | std::ofstream::trunc);
 	if (!file.is_open()) return false;
 
 	for (const auto& move : m_representation)
@@ -154,7 +157,7 @@ bool TwixtParser::SavePTG(std::string_view path)
 		if (secondPosRow || secondPosColumn)
 		{
 			file << secondPosRow << " " << secondPosColumn << " ";
-			file << removed ? "-" : "+";
+			file << (removed ? "-" : "+");
 		}
 
 		file << std::endl;

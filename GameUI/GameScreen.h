@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QPushButton>
+
 #include "BoardWidget.h"
 #include "PlayerBar.h"
 #include "HistoryWidget.h"
@@ -25,6 +27,9 @@ public:
 private slots:
 	void OnHistoryClicked(QListWidgetItem* item);
 	void OnBoardClicked(const Position& position, const Qt::MouseButton& button);
+	void OnSaveClicked();
+	void OnLoadClicked();
+	void OnHintClicked();
 
 signals:
 	void ReturnToMainMenu();
@@ -36,5 +41,6 @@ private:
 	PlayerBar* m_firstPlayerBar, * m_secondPlayerBar;
 	IGamePtr m_game;
 	Position m_selectedColumnPos;
+	QPushButton* m_saveButton, * m_loadButton, * m_hintButton;
 };
 

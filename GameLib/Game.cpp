@@ -53,7 +53,7 @@ bool Game::PlaceColumn(const Position& position)
 		NotifyGameEnd(EGameResult::Tie);
 	}
 
-	if (std::dynamic_pointer_cast<MinedColumnPtr>(m_board->GetElement(position)))
+	if (std::dynamic_pointer_cast<MinedColumn>(m_board->GetElement(position)))
 		isMinedColumn = true;
 
 	if ((position.GetRow() == 0 || position.GetRow() == m_board->GetSize() - 1) &&
@@ -64,6 +64,7 @@ bool Game::PlaceColumn(const Position& position)
 
 	if (!canAdd && !m_notificationsDisabled) return false;
 
+	if (isMinedColumn) m_board->RemoveColumn(position);
 	if (!m_board->PlaceColumn(position, m_turn)) return false;
 
 	NotifyPlaceColumn(position, m_turn);
@@ -252,6 +253,7 @@ void Game::Restart()
 
 	m_notificationsDisabled = m_firstGameMove = m_gameEnded = false;
 	if (m_gamemode == EGamemode::MinedColumns) m_minedGame->AddMines();
+	if (m_gamemode == EGamemode::Bulldozer) m_bulldozerGame->DestroyOrMove(m_player1, m_player2);
 }
 
 void Game::NotifyPlaceColumn(Position position, IPlayerPtr player) const
@@ -360,17 +362,20 @@ parser::STNGameRepresentation Game::GetSTNGameRepresentation() const
 	return std::make_pair(boardRepresentation, movesRepresentation);
 }
 
-BoardPtr Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const
+void Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation& game)
 {
+	Restart();
 	const auto& [boardRepresentation, moves] = game;
-	BoardPtr board = std::make_shared<Board>(static_cast<uint16_t>(boardRepresentation.size()));
 	for (uint16_t row = 0; row < boardRepresentation.size(); row++)
 	{
 		for (uint16_t column = 0; column < boardRepresentation.size(); column++)
 		{
 			if (boardRepresentation[row][column] == parser::Piece::Empty) continue;
-			IPlayerPtr currentPlayer = boardRepresentation[row][column] == parser::Piece::FirstPlayer ? m_player1 : m_player2;
-			board->PlaceColumn({ row, column }, currentPlayer);
+			PlayerPtr currentPlayer = boardRepresentation[row][column] == parser::Piece::FirstPlayer ? m_player1 : m_player2;
+			m_board->PlaceColumn({ row, column }, currentPlayer);
+			ChangeTurn();
+			if (!m_firstGameMove) m_firstGameMove = true;
+			currentPlayer->DecreaseColumnNumber();
 		}
 	}
 
@@ -379,12 +384,14 @@ BoardPtr Game::STNGameRepresentationToBoard(const parser::STNGameRepresentation&
 		const auto& [firstPos, secondPos] = move;
 		const auto& [firstPosRow, firstPosColumn] = firstPos;
 		const auto& [secondPosRow, secondPosColumn] = secondPos;
-		IPlayerPtr currentPlayer = board->GetElement(firstPosRow, firstPosColumn)->GetPlayer();
+		PlayerPtr currentPlayer = std::dynamic_pointer_cast<Player>(m_board->GetElement(firstPosRow, firstPosColumn)->GetPlayer());
 
-		board->MakeBridge({ firstPosRow, firstPosColumn }, { secondPosRow, secondPosColumn }, currentPlayer);
+		if (currentPlayer) 
+		{
+			m_board->MakeBridge({ firstPosRow, firstPosColumn }, { secondPosRow, secondPosColumn }, currentPlayer);
+			currentPlayer->DecreaseBridgeNumber();
+		}
 	}
-
-	return std::move(board);
 }
 
 bool Game::SaveGame(const std::string_view path, StorageFormat format)
@@ -408,7 +415,7 @@ bool Game::LoadGame(const std::string_view path, StorageFormat format)
 		auto representation = parser::ITwixtParser::LoadSTN(path);
 		const auto& [board, moves] = representation;
 		if (board.empty()) return false;
-		m_board = STNGameRepresentationToBoard(representation);
+		STNGameRepresentationToBoard(representation);
 		return true;
 	}
 	case StorageFormat::PTG:

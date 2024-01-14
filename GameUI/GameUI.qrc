@@ -14,5 +14,7 @@
         <file>images/settings.svg</file>
         <file>images/bridge.png</file>
         <file>images/column.png</file>
+        <file>images/load.png</file>
+        <file>images/save.png</file>
     </qresource>
 </RCC>

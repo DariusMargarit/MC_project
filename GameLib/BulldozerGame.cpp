@@ -37,15 +37,14 @@ void BulldozerGame::DestroyRandomColumn(PlayerPtr firstPlayer, PlayerPtr secondP
 		position = { randomRowIndex ,randomColumnIndex };
 	}
 
-	uint16_t numberOfBridgesRemoved = m_board->RemoveColumn(position);
 
-	if (numberOfBridgesRemoved)
-	{
-		PlayerPtr playerUsed = m_board->GetElement(position)->GetPlayer() == firstPlayer
-			? firstPlayer : secondPlayer;
-		playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
-		playerUsed->IncreaseColumnNumber();
-	}
+	PlayerPtr playerUsed = m_board->GetElement(position)->GetPlayer() == firstPlayer
+		? firstPlayer : secondPlayer;
+
+	uint16_t numberOfBridgesRemoved = m_board->RemoveColumn(position);
+	playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
+	playerUsed->IncreaseColumnNumber();
+
 	numberOfBridgesRemoved = m_board->RemoveColumn(m_currentPosition);
 	PlaceBulldozer(position);
 	m_currentPosition = position;

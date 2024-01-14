@@ -63,6 +63,7 @@ void Player::SetDoubleTurn(bool hasDoubleTurn)
 
 void Player::IncreaseBridgeNumber(const uint16_t& number)
 {
+	if (number == 50) m_BridgeCounter = 50;
 	if(m_BridgeCounter + number <= 50) m_BridgeCounter += number;
 }
 
@@ -73,6 +74,7 @@ void Player::DecreaseBridgeNumber(const uint16_t& number)
 
 void Player::IncreaseColumnNumber(const uint16_t& number)
 {
+	if (number == 50) m_ColumnCounter = 50;
 	if (m_ColumnCounter + number <= 50) m_ColumnCounter += number;
 }
 

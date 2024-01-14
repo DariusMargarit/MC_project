@@ -1,14 +1,14 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include "Game.h"
 
-class GameTests : public testing::Test {
+class GameTests : public ::testing::Test {
 
 protected:
 	void SetUp() override
 	{
 		m_settings = IGameSettings::GetInstance();
-		m_game = IGame::Produce(m_settings);
+		m_game = std::make_shared<Game>(m_settings);
 	}
 
 	void TearDown() override
@@ -18,7 +18,7 @@ protected:
 
 protected:
 	IGameSettingsPtr m_settings;
-	IGamePtr m_game;
+	GamePtr m_game;
 
 };
 
@@ -28,6 +28,18 @@ TEST_F(GameTests, GetTurnReturnsValidPlayer) {
 	IPlayerPtr turn = m_game->GetTurn();
 	EXPECT_NE(turn, nullptr);
 	// Add more assertions or validations based on your requirements
+}
+
+TEST_F(GameTests, SwapTest) {
+
+	std::string firstPlayerName = m_game->GetFirstPlayer()->GetName().data();
+	std::string secondPlayerName = m_game->GetSecondPlayer()->GetName().data();
+	m_game->SwapPlayers();
+	std::string newFirstPlayer = m_game->GetFirstPlayer()->GetName().data();
+	std::string newSecondPlayer = m_game->GetSecondPlayer()->GetName().data();
+
+	EXPECT_EQ(firstPlayerName, newSecondPlayer);
+	EXPECT_EQ(secondPlayerName, newFirstPlayer);
 }
 
 TEST_F(GameTests, FirstPlayerBase1Test) {

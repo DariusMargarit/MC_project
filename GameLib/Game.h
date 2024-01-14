@@ -53,7 +53,7 @@ private:
 	void ChangeTurn();
 	void ComputePathToWin(bool action, const Position& firstPos, const Position& secondPos) const; // action = 0 - make, 1 - remove
 	parser::STNGameRepresentation GetSTNGameRepresentation() const;
-	BoardPtr STNGameRepresentationToBoard(const parser::STNGameRepresentation& game) const;
+	void STNGameRepresentationToBoard(const parser::STNGameRepresentation& game);
 
 private:
 	BoardPtr m_board;

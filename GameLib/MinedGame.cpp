@@ -31,12 +31,11 @@ void MinedGame::DestroyArea(const Position& position, PlayerPtr firstPlayer, Pla
 	{
 		for (uint16_t column{ (uint16_t)(columnPosition - 1) }; column <= columnPosition + 1; ++column)
 		{
-			uint16_t numberOfBridgesRemoved {m_board->RemoveColumn({ row,column })};
-
-			if(numberOfBridgesRemoved)
+			if (auto player = m_board->GetElement(row, column); player)
 			{
-				PlayerPtr playerUsed = m_board->GetElement(row, column)->GetPlayer() == firstPlayer
-				? firstPlayer : secondPlayer;
+				PlayerPtr playerUsed = player->GetPlayer() == firstPlayer ? firstPlayer : secondPlayer;
+				uint16_t numberOfBridgesRemoved{ m_board->RemoveColumn({ row,column }) };
+
 				playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
 				playerUsed->IncreaseColumnNumber();
 			}

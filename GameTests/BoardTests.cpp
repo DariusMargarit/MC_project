@@ -1,10 +1,10 @@
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include "Board.h"
 #include "Player.h"
 
-class BoardTests : public testing::Test {
+class BoardTests : public ::testing::Test {
 
 protected:
 	void SetUp() override

@@ -1,8 +1,8 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 #include "Game.h"
 
-class PlayerTests : public testing::Test {
+class PlayerTests : public ::testing::Test{
 
 protected:
 	void SetUp() override

@@ -1,3 +1,6 @@
+#include <QFileDialog>
+#include <QFileInfo>
+
 #include "GameScreen.h"
 #include "FileUtils.h"
 #include "Dialog.h"
@@ -15,13 +18,28 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 	, m_board{ new BoardWidget{game->GetBoard(), game->GetTurn(),
 			  game->GetFirstPlayer()->GetColor(), game->GetSecondPlayer()->GetColor(),
 			  this} }
+	, m_loadButton{new QPushButton{"Load", this}}
+	, m_saveButton{new QPushButton{"Save", this}}
+	, m_hintButton{new QPushButton{"Hint", this}}
 {
+
+	QWidget* panel = new QWidget{ this };
+	QGridLayout* panelLayout = new QGridLayout{ panel };
+	panelLayout->addWidget(m_saveButton, 0, 0);
+	panelLayout->addWidget(m_loadButton, 0, 1);
+	panelLayout->addWidget(m_hintButton, 0, 2);
+	panelLayout->addWidget(m_history, 1, 0, 1, 3);
+
+	panel->setLayout(panelLayout);
+	panel->setFixedWidth(350);
+
+
 	m_layout->addWidget(m_firstPlayerBar, 0, 0, 1, 4);
 	m_layout->addWidget(m_board, 1, 0, 1, 3);
-	m_layout->addWidget(m_history, 1, 3);
+	m_layout->addWidget(panel, 1, 3);
 	m_layout->addWidget(m_secondPlayerBar, 2, 0, 1, 4);
+	
 	setLayout(m_layout);
-	m_history->setMaximumWidth(350);
 
 	connect(m_board,
 		SIGNAL(BoardClicked(const Position&, const Qt::MouseButton&)),
@@ -30,6 +48,10 @@ GameScreen::GameScreen(IGamePtr game, QWidget* parent)
 	connect(m_history,
 		SIGNAL(itemActivated(QListWidgetItem*)),
 		SLOT(OnHistoryClicked(QListWidgetItem*)));
+
+	connect(m_saveButton, SIGNAL(clicked()), SLOT(OnSaveClicked()));
+	connect(m_loadButton, SIGNAL(clicked()), SLOT(OnLoadClicked()));
+	connect(m_hintButton, SIGNAL(clicked()), SLOT(OnHintClicked()));
 
 	QString stylesheet{ FileUtils::StylesheetFileToString("./stylesheets/game.qss") };
 	setStyleSheet(stylesheet);
@@ -157,4 +179,34 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 	bool isSecondPlayerTurn = m_game->GetTurn() == m_game->GetSecondPlayer();
 	m_firstPlayerBar->Update(isFirstPlayerTurn);
 	m_secondPlayerBar->Update(isSecondPlayerTurn);
+}
+
+void GameScreen::OnSaveClicked()
+{
+	QString filePath = QFileDialog::getSaveFileName(this, "Save Game", "", "Standard Twixt Notation (*.stn);;Portable Twixt Game (*.ptg)");
+	QFileInfo fileInfo(filePath);
+	QString fileExtension = fileInfo.suffix();
+
+	m_game->SaveGame(filePath.toStdString(), fileExtension == "ptg" ? StorageFormat::PTG : StorageFormat::STN);
+}
+
+void GameScreen::OnLoadClicked()
+{
+	QString filePath = QFileDialog::getOpenFileName(this, "Load Game", "", "Standard Twixt Notation (*.stn);;Portable Twixt Game (*.ptg)");
+	QFileInfo fileInfo(filePath);
+	QString fileExtension = fileInfo.suffix();
+
+	m_game->LoadGame(filePath.toStdString(), fileExtension == "ptg" ? StorageFormat::PTG : StorageFormat::STN);
+
+	bool isFirstPlayerTurn = m_game->GetTurn() == m_game->GetFirstPlayer();
+	bool isSecondPlayerTurn = m_game->GetTurn() == m_game->GetSecondPlayer();
+	m_firstPlayerBar->Update(isFirstPlayerTurn);
+	m_secondPlayerBar->Update(isSecondPlayerTurn);
+	update();
+
+}
+
+void GameScreen::OnHintClicked()
+{
+	qDebug() << "hint";
 }
