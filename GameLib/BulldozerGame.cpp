@@ -46,8 +46,8 @@ void BulldozerGame::DestroyRandomColumn(PlayerPtr firstPlayer, PlayerPtr secondP
 		playerUsed->IncreaseBridgeNumber(numberOfBridgesRemoved);
 		playerUsed->IncreaseColumnNumber();
 	}
-	PlaceBulldozer(position);
 	numberOfBridgesRemoved = m_board->RemoveColumn(m_currentPosition);
+	PlaceBulldozer(position);
 	m_currentPosition = position;
 
 }

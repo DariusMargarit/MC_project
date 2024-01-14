@@ -16,5 +16,7 @@ private:
 	const IPlayerPtr m_player;
 	QGridLayout* m_layout;
 	QLabel* m_profilePicture, * m_playerName;
+	QLabel* m_bridgePicture, * m_columnPicture;
+	QLabel* m_columnsRemaining, * m_bridgesRemaining;
 
 };

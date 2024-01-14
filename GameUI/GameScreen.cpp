@@ -121,10 +121,6 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 	if (button == Qt::LeftButton)
 	{
 		m_game->PlaceColumn(position);
-		bool isFirstPlayerTurn = m_game->GetTurn() == m_game->GetFirstPlayer();
-		bool isSecondPlayerTurn = m_game->GetTurn() == m_game->GetSecondPlayer();
-		m_firstPlayerBar->Update(isFirstPlayerTurn);
-		m_secondPlayerBar->Update(isSecondPlayerTurn);
 	}
 	else if (button == Qt::RightButton)
 	{
@@ -157,4 +153,8 @@ void GameScreen::OnBoardClicked(const Position& position, const Qt::MouseButton&
 			m_board->ChangeSelectedColumn(Position::EmptyPosition());
 		}
 	}
+	bool isFirstPlayerTurn = m_game->GetTurn() == m_game->GetFirstPlayer();
+	bool isSecondPlayerTurn = m_game->GetTurn() == m_game->GetSecondPlayer();
+	m_firstPlayerBar->Update(isFirstPlayerTurn);
+	m_secondPlayerBar->Update(isSecondPlayerTurn);
 }
